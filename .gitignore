@@ -21,3 +21,6 @@
 /.vs/VSWorkspaceState.json
 /Obligatorio_P3/Obligatorio_P3/obj/Obligatorio_P3.csproj.nuget.g.props
 /Obligatorio_P3/Obligatorio_P3/obj/Obligatorio_P3.csproj.nuget.g.props
+/Obligatorio_P3/Servicios/obj
+/Obligatorio_P3/Data Access/obj
+/Obligatorio_P3/WebApp/obj
