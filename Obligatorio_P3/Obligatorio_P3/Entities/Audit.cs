@@ -8,6 +8,7 @@ namespace Domain.Entities
 {
     public class Audit
     {
+        public int AuditId { get; set; }
         public string Usuario { get; set; }
         public DateTime FechaModificacion { get; set; }
         public int IdEntidad { get; set; }

@@ -8,6 +8,7 @@ namespace Domain.Entities
 {
     public class EcosistemaMarino
     {
+        public int EcosistemaMarinoId { get; set; }
         public string Nombre { get; set; }
         public UbiGeografica UbicacionGeografica { get; set; }
         public double Area { get; set; }
