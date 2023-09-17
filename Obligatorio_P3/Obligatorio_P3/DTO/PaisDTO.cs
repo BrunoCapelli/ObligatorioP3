@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DTO
 {
-    internal class PaisDTO
+    public class PaisDTO
     {
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data_Access.IRepositorios
 {
-    internal class IRepositorioPais
+    public class IRepositorioPais : IRepositorio
     {
     }
 }
