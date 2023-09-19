@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,19 @@ namespace Domain.Entities
         public int PaisId { get; set; }
         public string Nombre { get; set; }
         public string Codigo { get; set; }
+
+        public Pais() { } 
+
+        public Pais(PaisDTO paisDTO) {
+            this.PaisId = paisDTO.PaisId;
+            this.Nombre = paisDTO.Nombre;
+            this.Codigo = paisDTO.Codigo;
+        }
+
+        public void Copy(PaisDTO paisDTO) {
+            this.Nombre = paisDTO.Nombre;
+            this.Codigo = paisDTO.Codigo;
+        }
 
     }
 }

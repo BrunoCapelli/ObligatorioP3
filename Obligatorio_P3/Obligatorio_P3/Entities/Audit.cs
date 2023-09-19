@@ -13,5 +13,7 @@ namespace Domain.Entities
         public DateTime FechaModificacion { get; set; }
         public int IdEntidad { get; set; }
         public string TipoEntidad { get; set; }
+
+        public Audit() { }
     }
 }

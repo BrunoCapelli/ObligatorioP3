@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Data_Access.IRepositorios
 {
-    public interface IRepositorio
-    {
+    public interface IRepositorio<T> {
+        T Add(T entity);
+        void Update(T entity);
+        void Remove(T entity);
+        void Save();
+
     }
 }
