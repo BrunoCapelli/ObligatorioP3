@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +14,72 @@ namespace Domain.Entities
         public string Password { get; set; }
         public DateTime FechaAlta { get; set; }
         public Usuario() { }
+        
+        public void Validate()
+        {
+            try
+            {
+                if(Alias.Length < 6)
+                {
+                    throw new StringException("El Alias debe tener al menos 6 caracteres.");
+                }
+                if(Password.Length < 8)
+                {
+                    throw new StringException("La contraseña debe tener al menos 8 caracteres");
+                }
+                if(!Password.Contains(".") || !Password.Contains(",") || !Password.Contains("#") || !Password.Contains(";") || 
+                    !Password.Contains(":") || !Password.Contains("!"))
+                {
+                    throw new StringException("La constraseña debe tener al menos uno de los siguientes: \" .\", \" ,\", \" #\", \" ;\", \" :\", \" !\"   ");
+                }
+                if (!tieneUnaMayus(Password) && !tieneUnaMinus(Password))
+                {
+                    throw new StringException("La contraseña debe tener al menos una mayuscula y una minuscula");
+                }
+            }catch(Exception ex) 
+            {
+                throw new Exception(ex.Message); 
+            }
+        }
+
+        public bool tieneUnaMayus(string aString)
+        {
+            int contador = 0;
+            bool result = false;
+
+            foreach (char caracter in aString)
+            {
+                if (Char.IsUpper(caracter))
+                {
+                    contador++;
+                }
+            }
+
+            if (contador >= 1)
+            {
+                result = true;
+            }
+            return result;
+        }
+        public bool tieneUnaMinus(string aString)
+        {
+            int contador = 0;
+            bool result = false;
+
+            foreach (char caracter in aString)
+            {
+                if (Char.IsLower(caracter))
+                {
+                    contador++;
+                }
+            }
+
+            if (contador >= 1)
+            {
+                result = true;
+            }
+            return result;
+        }
     }
+
 }
