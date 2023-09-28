@@ -19,7 +19,8 @@ namespace Domain.Entities
         {
             try
             {
-                if(Alias.Length < 6)
+                // Hay que fijarse que el Alias sea unico, Como? ¯\_(ツ)_/¯
+                if (Alias.Length < 6)
                 {
                     throw new StringException("El Alias debe tener al menos 6 caracteres.");
                 }
@@ -36,18 +37,23 @@ namespace Domain.Entities
                 {
                     throw new StringException("La contraseña debe tener al menos una mayuscula y una minuscula");
                 }
-            }catch(Exception ex) 
+                if (!tieneDigito(Password))
+                {
+                    throw new StringException("La contraseña debe tener al menos un digito");
+                }
+            }
+            catch(Exception ex) 
             {
                 throw new Exception(ex.Message); 
             }
         }
 
-        public bool tieneUnaMayus(string aString)
+        public bool tieneUnaMayus(string unString)
         {
             int contador = 0;
             bool result = false;
 
-            foreach (char caracter in aString)
+            foreach (char caracter in unString)
             {
                 if (Char.IsUpper(caracter))
                 {
@@ -61,12 +67,12 @@ namespace Domain.Entities
             }
             return result;
         }
-        public bool tieneUnaMinus(string aString)
+        public bool tieneUnaMinus(string unString)
         {
             int contador = 0;
             bool result = false;
 
-            foreach (char caracter in aString)
+            foreach (char caracter in unString)
             {
                 if (Char.IsLower(caracter))
                 {
@@ -79,6 +85,27 @@ namespace Domain.Entities
                 result = true;
             }
             return result;
+        }
+
+        public bool tieneDigito(string unString)
+        {
+            int contador = 0;
+            bool result = false;
+
+            foreach (char caracter in unString)
+            {
+                if (Char.IsDigit(caracter))
+                {
+                    contador++;
+                }
+            }
+
+            if (contador >= 1)
+            {
+                result = true;
+            }
+            return result;
+
         }
     }
 
