@@ -16,7 +16,7 @@ namespace Domain.Entities
         public List<Especie> Especies = new List<Especie>();
         public List<Amenaza> Amenazas = new List<Amenaza>();
         public EstadoConservacion EstadoConservacion { get; set; }
-        public List<Pais> Paises = new List<Pais>();
+        public int PaisId { get; set; }
 
         public EcosistemaMarino() { }
 

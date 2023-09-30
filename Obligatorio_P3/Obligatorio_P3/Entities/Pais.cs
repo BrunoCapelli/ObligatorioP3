@@ -13,6 +13,9 @@ namespace Domain.Entities
         public string Nombre { get; set; }
         public string Codigo { get; set; }
 
+        public List<EcosistemaMarino> ecosistemaMarinos = new List<EcosistemaMarino>();
+
+
         public Pais() { } 
 
         public Pais(PaisDTO paisDTO) {

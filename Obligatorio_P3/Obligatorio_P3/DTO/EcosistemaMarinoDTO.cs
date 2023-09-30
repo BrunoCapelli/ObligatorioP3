@@ -14,6 +14,6 @@ namespace Domain.DTO {
         public List<EspecieDTO> Especies = new List<EspecieDTO>();
         public List<AmenazaDTO> Amenazas = new List<AmenazaDTO>();
         public EstadoConservacionDTO EstadoConservacion { get; set; }
-        public List<PaisDTO> Paises = new List<PaisDTO>();
+        public int PaisId { get; set; }
     }
 }

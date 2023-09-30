@@ -12,6 +12,8 @@ namespace Domain.DTO
         public int PaisId { get; set; }
         public string Nombre { get; set; }
         public string Codigo { get; set; }
+
+        public IEnumerable<EcosistemaMarinoDTO> Ecosistemas = new List<EcosistemaMarinoDTO>();
         public PaisDTO() { }
         public PaisDTO(Pais pais) {
             this.PaisId = pais.PaisId;
