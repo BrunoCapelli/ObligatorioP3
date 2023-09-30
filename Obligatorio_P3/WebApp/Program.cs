@@ -15,7 +15,7 @@ namespace WebApp
 
             builder.Services.AddDbContext<DbContext, MiContexto>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("StringConection"));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("Connection"));
             });
 
             var app = builder.Build();

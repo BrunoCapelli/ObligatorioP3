@@ -41,7 +41,7 @@ namespace Data_Access {
             modelBuilder.Entity<UbiGeografica>().HasKey(ubi=>ubi.UbiGeograficaId);
             modelBuilder.Entity<Usuario>().HasKey(u => u.UsuarioId);
 
-            //relaciones
+            // relaciones
             modelBuilder.Entity<EcosistemaMarino>().HasMany(em => em.Amenazas).WithOne().HasForeignKey(a => a.EcosistemaMarinoId);
             modelBuilder.Entity<Pais>().HasMany(p => p.ecosistemaMarinos).WithOne().HasForeignKey(ec => ec.PaisId);
 
