@@ -1,3 +1,7 @@
+using Data_Access;
+using Microsoft.EntityFrameworkCore;
+
+
 namespace WebApp
 {
     public class Program
@@ -8,6 +12,11 @@ namespace WebApp
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<DbContext, MiContexto>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("StringConection"));
+            });
 
             var app = builder.Build();
 
