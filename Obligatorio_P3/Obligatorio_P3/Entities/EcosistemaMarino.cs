@@ -13,19 +13,20 @@ namespace Domain.Entities
         public string Nombre { get; set; }
         public UbiGeografica UbicacionGeografica { get; set; }
         public double Area { get; set; }
-        public List<Especie> Especies = new List<Especie>();
         public List<Amenaza> Amenazas = new List<Amenaza>();
         public EstadoConservacion EstadoConservacion { get; set; }
         public int PaisId { get; set; }
+        public int EspecieId { get; set; }
+        public List<Especie> Especies = new List<Especie>();
 
         public EcosistemaMarino() { }
-
+        /*
         public EcosistemaMarino(EcosistemaMarinoDTO ecosistemaMarinoDTO) {
             this.EcosistemaMarinoId = ecosistemaMarinoDTO.EcosistemaMarinoId;
             this.Nombre = ecosistemaMarinoDTO.Nombre;
             this.Area = ecosistemaMarinoDTO.Area;
             //aca hago una conversion de lo que viene en las listas?
         }
-
+        */
     }
 }

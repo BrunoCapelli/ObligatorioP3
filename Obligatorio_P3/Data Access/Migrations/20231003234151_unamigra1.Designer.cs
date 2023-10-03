@@ -4,6 +4,7 @@ using Data_Access;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_Access.Migrations
 {
     [DbContext(typeof(MiContexto))]
-    partial class MiContextoModelSnapshot : ModelSnapshot
+    [Migration("20231003234151_unamigra1")]
+    partial class unamigra1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,8 +44,6 @@ namespace Data_Access.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AmenazaId");
-
-                    b.HasIndex("EcosistemaMarinoId");
 
                     b.ToTable("Amenazas");
                 });
@@ -107,8 +108,6 @@ namespace Data_Access.Migrations
 
                     b.HasIndex("EstadoConservacionId");
 
-                    b.HasIndex("PaisId");
-
                     b.HasIndex("UbicacionGeograficaUbiGeograficaId");
 
                     b.ToTable("Ecosistemas");
@@ -172,7 +171,7 @@ namespace Data_Access.Migrations
 
                     b.HasKey("EstadoConservacionId");
 
-                    b.ToTable("EstadosConservacion");
+                    b.ToTable("EstadosCo");
                 });
 
             modelBuilder.Entity("Domain.Entities.Pais", b =>
@@ -239,16 +238,7 @@ namespace Data_Access.Migrations
 
                     b.HasKey("UsuarioId");
 
-                    b.ToTable("Usuarios");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Amenaza", b =>
-                {
-                    b.HasOne("Domain.Entities.EcosistemaMarino", null)
-                        .WithMany("Amenazas")
-                        .HasForeignKey("EcosistemaMarinoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.ToTable("usuarios");
                 });
 
             modelBuilder.Entity("Domain.Entities.EcosistemaMarino", b =>
@@ -262,12 +252,6 @@ namespace Data_Access.Migrations
                     b.HasOne("Domain.Entities.EstadoConservacion", "EstadoConservacion")
                         .WithMany()
                         .HasForeignKey("EstadoConservacionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Pais", null)
-                        .WithMany("ecosistemaMarinos")
-                        .HasForeignKey("PaisId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -301,19 +285,12 @@ namespace Data_Access.Migrations
 
             modelBuilder.Entity("Domain.Entities.EcosistemaMarino", b =>
                 {
-                    b.Navigation("Amenazas");
-
                     b.Navigation("Especies");
                 });
 
             modelBuilder.Entity("Domain.Entities.Especie", b =>
                 {
                     b.Navigation("EcosistemasHabitados");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Pais", b =>
-                {
-                    b.Navigation("ecosistemaMarinos");
                 });
 #pragma warning restore 612, 618
         }

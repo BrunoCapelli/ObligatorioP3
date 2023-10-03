@@ -12,7 +12,6 @@ namespace Domain.Entities
         public int EstadoConservacionId { get; set; }
         public string Nombre { get; set; }
         public int Valor { get; set; }
-
         public EstadoConservacion() { }
         public EstadoConservacion(EstadoConservacionDTO estadoConservacionDTO) {
             this.EstadoConservacionId = estadoConservacionDTO.EstadoConservacionId;

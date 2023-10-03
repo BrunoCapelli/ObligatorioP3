@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_Access.Migrations
 {
     [DbContext(typeof(MiContexto))]
-    [Migration("20230930195413_initial")]
-    partial class initial
+    [Migration("20231003235348_unamigra3")]
+    partial class unamigra3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -88,6 +88,9 @@ namespace Data_Access.Migrations
                     b.Property<double>("Area")
                         .HasColumnType("float");
 
+                    b.Property<int>("EspecieId")
+                        .HasColumnType("int");
+
                     b.Property<int>("EstadoConservacionId")
                         .HasColumnType("int");
 
@@ -102,6 +105,8 @@ namespace Data_Access.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("EcosistemaMarinoId");
+
+                    b.HasIndex("EspecieId");
 
                     b.HasIndex("EstadoConservacionId");
 
@@ -124,6 +129,9 @@ namespace Data_Access.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("EcosistemaMarinoId")
+                        .HasColumnType("int");
+
                     b.Property<int>("EstadoConservacionId")
                         .HasColumnType("int");
 
@@ -142,6 +150,8 @@ namespace Data_Access.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("EspecieId");
+
+                    b.HasIndex("EcosistemaMarinoId");
 
                     b.HasIndex("EstadoConservacionId");
 
@@ -246,6 +256,12 @@ namespace Data_Access.Migrations
 
             modelBuilder.Entity("Domain.Entities.EcosistemaMarino", b =>
                 {
+                    b.HasOne("Domain.Entities.Especie", null)
+                        .WithMany("EcosistemasHabitados")
+                        .HasForeignKey("EspecieId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.EstadoConservacion", "EstadoConservacion")
                         .WithMany()
                         .HasForeignKey("EstadoConservacionId")
@@ -271,6 +287,12 @@ namespace Data_Access.Migrations
 
             modelBuilder.Entity("Domain.Entities.Especie", b =>
                 {
+                    b.HasOne("Domain.Entities.EcosistemaMarino", null)
+                        .WithMany("Especies")
+                        .HasForeignKey("EcosistemaMarinoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.EstadoConservacion", "EstadoConservacion")
                         .WithMany()
                         .HasForeignKey("EstadoConservacionId")
@@ -283,6 +305,13 @@ namespace Data_Access.Migrations
             modelBuilder.Entity("Domain.Entities.EcosistemaMarino", b =>
                 {
                     b.Navigation("Amenazas");
+
+                    b.Navigation("Especies");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Especie", b =>
+                {
+                    b.Navigation("EcosistemasHabitados");
                 });
 
             modelBuilder.Entity("Domain.Entities.Pais", b =>
