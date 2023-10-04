@@ -9,5 +9,7 @@ namespace Data_Access.IRepositorios
 {
     public interface IRepositorioUsuario: IRepositorio<Usuario>
     {
+        Usuario GetUsuarioByAlias(string alias);
+        Usuario GetUsuarioById(int id);
     }
 }

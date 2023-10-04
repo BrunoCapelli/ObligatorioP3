@@ -11,9 +11,9 @@ namespace Data_Access.Repositorios
 {
     public class RepositorioUsuario : IRepositorioUsuario
     {
-        private DbContext Context { get; set; }
+        private MiContexto Context { get; set; }
 
-        public RepositorioUsuario(DbContext _context)
+        public RepositorioUsuario(MiContexto _context)
         {
             Context = _context;
         }
@@ -37,6 +37,13 @@ namespace Data_Access.Repositorios
         public void Update(Usuario entity)
         {
             Context.Entry(entity).State = EntityState.Modified;
+        }
+
+        public Usuario GetUsuarioByAlias(string userAlias)
+        {
+            Usuario user = Context.Usuarios.FirstOrDefault(u => u.Alias == userAlias);
+
+            return user;
         }
     }
 }

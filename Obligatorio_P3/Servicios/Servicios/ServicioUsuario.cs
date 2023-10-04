@@ -17,12 +17,12 @@ namespace Servicios.Servicios
         {
             _repoUsuario = repoUsuario;
         }
-        public Usuario Find(string user, string password)
+        public Usuario Find(string alias, string password)
         {
             Usuario aUser = new Usuario();
-            if(user != null)
+            if(aUser != null)
             {
-               // aUser = _repoUsuario.Get(user);
+                aUser = _repoUsuario.GetUsuarioByAlias(alias);
             }
             return aUser;
         }
