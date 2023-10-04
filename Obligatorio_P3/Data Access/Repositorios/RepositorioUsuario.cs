@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Data_Access.Repositorios
 {
-    public class RepositorioUsuario : IRepositorioUsuario
+    public class RepositorioUsuario : Repositorio<Usuario>, IRepositorioUsuario 
     {
         private MiContexto Context { get; set; }
 
@@ -18,32 +18,16 @@ namespace Data_Access.Repositorios
             Context = _context;
         }
 
-        public Usuario Add(Usuario entity)
-        {
-            Context.Set<Usuario>().Add(entity);
-            return entity;
-        }
-
-        public void Remove(Usuario entity)
-        {
-            Context.Set<Usuario>().Remove(entity);
-        }
-
-        public void Save()
-        {
-           Context.SaveChanges();
-        }
-
-        public void Update(Usuario entity)
-        {
-            Context.Entry(entity).State = EntityState.Modified;
-        }
-
         public Usuario GetUsuarioByAlias(string userAlias)
         {
             Usuario user = Context.Usuarios.FirstOrDefault(u => u.Alias == userAlias);
 
             return user;
+        }
+
+        public Usuario GetUsuarioById(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

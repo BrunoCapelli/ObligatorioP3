@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Servicios.Servicios
 {
-    public class ServicioUsuario: IServicioUsuario
+    public class ServicioUsuario: Servicio, IServicioUsuario
     {
         private IRepositorioUsuario _repoUsuario;
         public ServicioUsuario(IRepositorioUsuario repoUsuario)
