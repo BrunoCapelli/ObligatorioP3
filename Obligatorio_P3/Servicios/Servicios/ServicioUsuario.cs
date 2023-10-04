@@ -1,4 +1,5 @@
 ﻿using Data_Access.IRepositorios;
+using Domain.DTO;
 using Domain.Entities;
 using Servicios.IServicios;
 using System;
@@ -17,12 +18,14 @@ namespace Servicios.Servicios
         {
             _repoUsuario = repoUsuario;
         }
-        public Usuario Find(string alias, string password)
+        public Usuario Find(UsuarioDTO user)
         {
-            Usuario aUser = new Usuario();
+
+            Usuario aUser = new Usuario() { Alias = user.Alias, Password = user.Password };
+
             if(aUser != null)
             {
-                aUser = _repoUsuario.GetUsuarioByAlias(alias);
+                aUser = _repoUsuario.GetUsuarioByAlias(aUser.Alias);
             }
             return aUser;
         }

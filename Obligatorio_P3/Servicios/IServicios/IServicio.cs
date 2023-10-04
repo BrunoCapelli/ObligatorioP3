@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Servicios.IServicios
 {
-    internal interface IServicio
+    public interface IServicio<T> where T : class
     {
+        T Add(T entity);
+        void Update(T entity);
+        void Remove(T entity);
     }
 }

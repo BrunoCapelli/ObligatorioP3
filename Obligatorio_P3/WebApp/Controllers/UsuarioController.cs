@@ -100,7 +100,9 @@ namespace WebApp.Controllers
         {
             if (!String.IsNullOrEmpty(user) && !String.IsNullOrEmpty(password))
             {
-                UsuarioDTO userLogged = _servicioUsuario.Find(user, password);
+                UsuarioDTO usuario = new UsuarioDTO { Alias = user, Password = password };
+                Usuario userLogged = _servicioUsuario.Find(usuario);
+
                 if(userLogged != null)
                 {
                     HttpContext.Session.SetString("email", userLogged.Alias);
