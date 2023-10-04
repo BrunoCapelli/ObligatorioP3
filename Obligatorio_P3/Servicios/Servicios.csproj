@@ -23,4 +23,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Data Access\Data Access.csproj" />
+    <ProjectReference Include="..\Obligatorio_P3\Domain.csproj" />
+  </ItemGroup>
+
 </Project>

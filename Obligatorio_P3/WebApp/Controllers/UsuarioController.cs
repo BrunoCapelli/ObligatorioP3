@@ -1,10 +1,18 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Domain.DTO;
+using Domain.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Servicios.IServicios;
 
 namespace WebApp.Controllers
 {
     public class UsuarioController : Controller
     {
+        protected IServicioUsuario _servicioUsuario;
+        public UsuarioController(IServicioUsuario servicioUsuario)
+        {
+            _servicioUsuario = servicioUsuario;
+        }
         // GET: UsuarioController
         public ActionResult Index()
         {
@@ -78,6 +86,45 @@ namespace WebApp.Controllers
             {
                 return View();
             }
+        }
+
+        // Register y Login al sistema
+        [HttpGet]
+        public IActionResult LogIn() 
+        {
+            return View();        
+        }
+
+        [HttpPost]
+        public IActionResult Login(string user, string password)
+        {
+            if (!String.IsNullOrEmpty(user) && !String.IsNullOrEmpty(password))
+            {
+                UsuarioDTO userLogged = _servicioUsuario.Find(user, password);
+                if(userLogged != null)
+                {
+                    HttpContext.Session.SetString("email", userLogged.Alias);
+
+                }
+                else
+                {
+                    ViewBag.DatosErroneos = "Los datos son incorrectos";
+                    return View();
+                }
+                return View();
+            }
+            else
+            {
+                ViewBag.DatosErroneos = "Debe completar los campos";
+                return View();
+            }
+        }
+
+       
+        [HttpGet]
+        public IActionResult Home()
+        {
+            return View();
         }
     }
 }
