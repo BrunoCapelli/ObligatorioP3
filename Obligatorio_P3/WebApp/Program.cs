@@ -1,5 +1,6 @@
 using Data_Access;
 using Data_Access.IRepositorios;
+using Data_Access.Repositorios;
 using Microsoft.EntityFrameworkCore;
 using Servicios.IServicios;
 using Servicios.Servicios;
@@ -22,8 +23,8 @@ namespace WebApp
 
             builder.Services.AddScoped(typeof(IServicioUsuario), typeof(ServicioUsuario));
 
-            builder.Services.AddScoped(typeof(IRepositorioEspecie), typeof(IRepositorioEspecie));
-            builder.Services.AddScoped(typeof(IRepositorioEspecie), typeof(IRepositorioEspecie));
+            //builder.Services.AddScoped(typeof(IRepositorioEspecie), typeof(RepositorioEspecie));
+            builder.Services.AddScoped(typeof(IRepositorioUsuario), typeof(RepositorioUsuario));
 
             var app = builder.Build();
 
