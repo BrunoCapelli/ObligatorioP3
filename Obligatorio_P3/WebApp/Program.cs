@@ -1,6 +1,8 @@
 using Data_Access;
+using Data_Access.IRepositorios;
 using Microsoft.EntityFrameworkCore;
-
+using Servicios.IServicios;
+using Servicios.Servicios;
 
 namespace WebApp
 {
@@ -17,6 +19,11 @@ namespace WebApp
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Connection"));
             });
+
+            builder.Services.AddScoped(typeof(IServicioUsuario), typeof(ServicioUsuario));
+
+            builder.Services.AddScoped(typeof(IRepositorioEspecie), typeof(IRepositorioEspecie));
+            builder.Services.AddScoped(typeof(IRepositorioEspecie), typeof(IRepositorioEspecie));
 
             var app = builder.Build();
 
