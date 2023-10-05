@@ -16,6 +16,9 @@ namespace WebApp
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            //Añado que el builder de Session
+            builder.Services.AddSession();
+
             builder.Services.AddDbContext<DbContext, MiContexto>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Connection"));
@@ -24,23 +27,22 @@ namespace WebApp
             // Scopes Servicios
 
             //builder.Services.AddScoped(typeof(IServicio<T>), typeof(Servicio));
-            builder.Services.AddScoped(typeof(IServicioAmenaza), typeof(ServicioAmenaza));
+          /*  builder.Services.AddScoped(typeof(IServicioAmenaza), typeof(ServicioAmenaza));
             builder.Services.AddScoped(typeof(IServicioAudit), typeof(ServicioAudit));
             builder.Services.AddScoped(typeof(IServicioEcosistemaMarino), typeof(ServicioEcosistemaMarino));
             builder.Services.AddScoped(typeof(IServicioEspecie), typeof(ServicioEspecie));
             builder.Services.AddScoped(typeof(IServicioEstadoConservacion), typeof(ServicioEstadoConservacion));
-            builder.Services.AddScoped(typeof(IServicioPais), typeof(ServicioPais));
+            builder.Services.AddScoped(typeof(IServicioPais), typeof(ServicioPais));  */
             builder.Services.AddScoped(typeof(IServicioUsuario), typeof(ServicioUsuario));
 
             //builder.Services.AddScoped(typeof(IRepositorioEspecie), typeof(RepositorioEspecie));
-            builder.Services.AddScoped(typeof(IRepositorioAmenaza), typeof(RepositorioAmenaza));
+          /*  builder.Services.AddScoped(typeof(IRepositorioAmenaza), typeof(RepositorioAmenaza));
             builder.Services.AddScoped(typeof(IRepositorioAudit), typeof(RepositorioAudit));
             builder.Services.AddScoped(typeof(IRepositorioEcosistemaMarino), typeof(RepositorioEcosistemaMarino));
             builder.Services.AddScoped(typeof(IRepositorioEspecie), typeof(RepositorioEspecie));
             builder.Services.AddScoped(typeof(IRepositorioEstadoConservacion), typeof(RepositorioEstadoConservacion));
-            builder.Services.AddScoped(typeof(IRepositorioPais), typeof(RepositorioPais));
+            builder.Services.AddScoped(typeof(IRepositorioPais), typeof(RepositorioPais));*/
             builder.Services.AddScoped(typeof(IRepositorioUsuario), typeof(RepositorioUsuario));
-
 
 
 
@@ -62,9 +64,12 @@ namespace WebApp
 
             app.UseAuthorization();
 
+            // Añado que la app use Session
+            app.UseSession();
+
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Usuario}/{action=LogIn}/{id?}");
 
             app.Run();
         }

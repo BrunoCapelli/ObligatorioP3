@@ -94,7 +94,7 @@ namespace WebApp.Controllers
         {
             return View();        
         }
-        /*
+        
         [HttpPost]
         public IActionResult Login(string Alias, string password)
         {
@@ -106,6 +106,7 @@ namespace WebApp.Controllers
                 if(userLogged != null)
                 {
                     HttpContext.Session.SetString("email", userLogged.Alias);
+                    return RedirectToAction("Index", "Home");
 
                 }
                 else
@@ -113,7 +114,6 @@ namespace WebApp.Controllers
                     ViewBag.DatosErroneos = "Los datos son incorrectos";
                     return View();
                 }
-                return View();
             }
             else
             {
@@ -121,12 +121,21 @@ namespace WebApp.Controllers
                 return View();
             }
         }
-        */
+        
        
         [HttpGet]
         public IActionResult Home()
         {
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login", "Usuario");
+        }
+
+
     }
 }

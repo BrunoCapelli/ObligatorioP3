@@ -3,6 +3,17 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    @if (Context.Session.GetString("email") != null)
+    {
+
+        <h1 class="display-4">Bienvenido/a @Context.Session.GetString("email") ! </h1>
+    }
+    else
+    {
+        <h1 class="display-4"> ¡Bienvenido a nuestro sitio! </h1>
+        <div>
+            <h6> <a asp-action="LogIn" asp-controller="Usuario"> Ir al Login </a> </h6>
+        </div>
+    }
+
 </div>

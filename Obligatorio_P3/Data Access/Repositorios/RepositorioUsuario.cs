@@ -25,16 +25,6 @@ namespace Data_Access.Repositorios
             return user;
         }
 
-            return user;
-        }
-
-        public Usuario GetUsuarioById(int id)
-        {
-            Usuario user = Context.Usuarios.FirstOrDefault(u => u.UsuarioId == id);
-
-            return user;
-        }
-
         public Usuario GetUsuarioById(int id)
         {
             Usuario user = Context.Usuarios.FirstOrDefault(u => u.UsuarioId == id);
