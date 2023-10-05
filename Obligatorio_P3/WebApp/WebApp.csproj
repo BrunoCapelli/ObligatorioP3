@@ -17,16 +17,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.10" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Data Access\Data Access.csproj" />
     <ProjectReference Include="..\Obligatorio_P3\Domain.csproj" />
     <ProjectReference Include="..\Servicios\Servicios.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Usuario\" />
   </ItemGroup>
 
 </Project>

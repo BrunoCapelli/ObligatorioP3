@@ -96,11 +96,11 @@ namespace WebApp.Controllers
         }
         /*
         [HttpPost]
-        public IActionResult Login(string user, string password)
+        public IActionResult Login(string Alias, string password)
         {
-            if (!String.IsNullOrEmpty(user) && !String.IsNullOrEmpty(password))
+            if (!String.IsNullOrEmpty(Alias) && !String.IsNullOrEmpty(password))
             {
-                UsuarioDTO usuario = new UsuarioDTO { Alias = user, Password = password };
+                UsuarioDTO usuario = new UsuarioDTO { Alias = Alias, Password = password };
                 Usuario userLogged = _servicioUsuario.Find(usuario);
 
                 if(userLogged != null)

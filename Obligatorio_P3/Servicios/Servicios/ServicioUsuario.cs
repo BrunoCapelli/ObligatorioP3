@@ -18,6 +18,12 @@ namespace Servicios.Servicios
         {
             _repoUsuario = repoUsuario;
         }
+
+        public Usuario Add(Usuario user)
+        {
+           return _repoUsuario.Add(user);
+        }
+
         public Usuario Find(UsuarioDTO user)
         {
 
@@ -28,6 +34,16 @@ namespace Servicios.Servicios
                 aUser = _repoUsuario.GetUsuarioByAlias(aUser.Alias);
             }
             return aUser;
+        }
+
+        public void Remove(Usuario user)
+        {
+            _repoUsuario.Remove(user);
+        }
+
+        public void Update(Usuario user)
+        {
+            _repoUsuario.Update(user);
         }
     }
 }
