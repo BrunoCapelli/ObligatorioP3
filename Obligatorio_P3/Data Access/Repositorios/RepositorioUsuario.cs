@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Data_Access.Repositorios
 {
-    public class RepositorioUsuario : Repositorio<Usuario>, IRepositorioUsuario 
+    public class RepositorioUsuario : Repositorio<Usuario>, IRepositorioUsuario
     {
         private MiContexto Context { get; set; }
 
@@ -25,9 +25,14 @@ namespace Data_Access.Repositorios
             return user;
         }
 
+            return user;
+        }
+
         public Usuario GetUsuarioById(int id)
         {
-            throw new NotImplementedException();
+            Usuario user = Context.Usuarios.FirstOrDefault(u => u.UsuarioId == id);
+
+            return user;
         }
     }
 }

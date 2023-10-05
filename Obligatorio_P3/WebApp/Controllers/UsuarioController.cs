@@ -94,7 +94,7 @@ namespace WebApp.Controllers
         {
             return View();        
         }
-
+        /*
         [HttpPost]
         public IActionResult Login(string user, string password)
         {
@@ -121,7 +121,7 @@ namespace WebApp.Controllers
                 return View();
             }
         }
-
+        */
        
         [HttpGet]
         public IActionResult Home()
