@@ -1,5 +1,6 @@
 ﻿using Domain.DTO;
 using Domain.Exceptions;
+using Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Usuario
+    public class Usuario:IValidate
     {
         public int UsuarioId { get; set; }
         public string Alias { get; set; }

@@ -4,10 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-/*namespace Servicios.Servicios
-{
-    public class ServicioAudit
-    {
+namespace Domain.Interfaces {
+    public interface IValidate {
+        void Validate();
     }
 }
-*/

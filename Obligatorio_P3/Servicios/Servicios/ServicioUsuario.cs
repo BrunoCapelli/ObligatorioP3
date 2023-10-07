@@ -28,7 +28,7 @@ namespace Servicios.Servicios
             if (foundUserDTO == null) // En este punto el Alias chequea que el Alias sea nulo, es decir, que no existe.
             {
                 Usuario usuario = new Usuario(userDTO);
-                if(usuario != null)
+                if(usuario != null) //programacion defensiva
                 {
                     usuario.Password = HashPassword(usuario.Password); // Guardo la contraseña hasheada. Si quiero ver si es correcta, hasheo la que entra y la comparo con la guardada en la base
                     Usuario newUser = _repoUsuario.Add(usuario);
