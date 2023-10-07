@@ -19,8 +19,8 @@ namespace Servicios.Servicios
         public EcosistemaMarinoDTO Add(EcosistemaMarinoDTO entity) {
             
             entity.Validate();
-            EcosistemaMarinoDTO ?eco = FindByName(entity.Nombre);
-            if (eco == null) {
+            //EcosistemaMarinoDTO eco = FindByName(entity.Nombre);
+            if (entity != null) {
                 EcosistemaMarino ecosistema = new EcosistemaMarino(entity);
                 EcosistemaMarino newEco = _repoEcosistemaMarino.Add(ecosistema);
                 _repoEcosistemaMarino.Save();

@@ -12,7 +12,7 @@ namespace Domain.Entities
         public double PesoMax { get; set; }
         public List<Amenaza> Amenazas = new List<Amenaza>();
         public EstadoConservacion EstadoConservacion { get; set; }
-        public int EcosistemaMarinoId  { get; set; }
+        public int? EcosistemaMarinoId  { get; set; }
         public List<EcosistemaMarino> EcosistemasHabitados = new List<EcosistemaMarino>();
         
 

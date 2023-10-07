@@ -8,9 +8,11 @@ namespace WebApp.Controllers {
     public class EcosistemaMarinoController : Controller {
 
         IServicioEcosistemaMarino _servicioEcosistemaMarino;
+        IServicioUbiGeografica _servicioUbiGeografica;
 
-        public EcosistemaMarinoController(IServicioEcosistemaMarino servicioEcosistemaMarino) {
+        public EcosistemaMarinoController(IServicioEcosistemaMarino servicioEcosistemaMarino, IServicioUbiGeografica servicioUbiGeografica) {
             _servicioEcosistemaMarino = servicioEcosistemaMarino;
+            _servicioUbiGeografica = servicioUbiGeografica;
         }
 
         
@@ -32,6 +34,7 @@ namespace WebApp.Controllers {
                 Double.TryParse(Longitud, out double longitudParsed);
 
                 UbiGeograficaDTO newUbi = new UbiGeograficaDTO(latitudParsed,longitudParsed);
+                _servicioUbiGeografica.Add(newUbi);
                 EstadoConservacionDTO newEstadoC = new EstadoConservacionDTO();
                 Double.TryParse(Area, out double areaPArsed);
 
