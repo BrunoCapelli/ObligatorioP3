@@ -5,8 +5,8 @@ namespace Data_Access.Repositorios
 {
     public class Repositorio<T> : IRepositorio<T> where T: class
     {
-        protected DbContext Context { get; set; }
-
+        //protected DbContext Context { get; set; }
+        protected MiContexto Context { get; set; }
         public T Add(T entity)
         {
             Context.Set<T>().Add(entity);

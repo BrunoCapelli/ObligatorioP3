@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace Servicios.IServicios
 {
-    public interface IServicioUsuario: IServicio<Usuario>
+    public interface IServicioUsuario: IServicio<UsuarioDTO>
     {
-        Usuario Find(UsuarioDTO user);
+        UsuarioDTO FindAlias(UsuarioDTO user);
+        UsuarioDTO FindUser(UsuarioDTO user);
     }
 }

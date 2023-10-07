@@ -1,4 +1,5 @@
-﻿using Domain.Exceptions;
+﻿using Domain.DTO;
+using Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,13 @@ namespace Domain.Entities
         public string Password { get; set; }
         public DateTime FechaAlta { get; set; }
         public Usuario() { }
-        
+        public Usuario(UsuarioDTO user)
+        {
+            this.Alias = user.Alias;
+            this.Password = user.Password;
+            this.FechaAlta = user.FechaAlta;
+        }
+
         public void Validate()
         {
             try

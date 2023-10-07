@@ -19,101 +19,39 @@ namespace WebApp.Controllers
             return View();
         }
 
-        // GET: UsuarioController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: UsuarioController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: UsuarioController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: UsuarioController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: UsuarioController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: UsuarioController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: UsuarioController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+       
 
         // Register y Login al sistema
         [HttpGet]
-        public IActionResult LogIn() 
+        public IActionResult LogIn()
         {
-            return View();        
+            return View();
         }
-        
+
         [HttpPost]
         public IActionResult Login(string Alias, string password)
         {
             if (!String.IsNullOrEmpty(Alias) && !String.IsNullOrEmpty(password))
             {
                 UsuarioDTO usuario = new UsuarioDTO { Alias = Alias, Password = password };
-                Usuario userLogged = _servicioUsuario.Find(usuario);
 
-                if(userLogged != null)
+                try
                 {
-                    HttpContext.Session.SetString("email", userLogged.Alias);
-                    return RedirectToAction("Index", "Home");
+                    UsuarioDTO userLogged = _servicioUsuario.FindUser(usuario);
+                    if (userLogged != null)
+                    {
+                        HttpContext.Session.SetString("email", userLogged.Alias);
+                        return RedirectToAction("Index", "Home");
 
-                }
-                else
+                    }
+                    
+                }catch(Exception ex)
                 {
-                    ViewBag.DatosErroneos = "Los datos son incorrectos";
-                    return View();
+                    ViewBag.DatosErroneos = ex.Message;
                 }
+                
+                return View();
+
             }
             else
             {
@@ -121,8 +59,8 @@ namespace WebApp.Controllers
                 return View();
             }
         }
-        
-       
+
+
         [HttpGet]
         public IActionResult Home()
         {
@@ -136,6 +74,62 @@ namespace WebApp.Controllers
             return RedirectToAction("Login", "Usuario");
         }
 
+        [HttpGet]
+        public IActionResult Register()
+        {
+            if (HttpContext.Session.GetString("email") == null)
+            {
+                //  Acá hay que cambiar el email por el usuario admin12
+                return View();
 
+            }
+            else
+            {
+                return RedirectToAction("Index", "Usuario");
+
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Register(string Alias, string Password, string PassConfirm)
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(Alias) && !String.IsNullOrEmpty(Password) && !String.IsNullOrEmpty(PassConfirm))
+                {
+                    if (Password.ToLower() == PassConfirm.ToLower())
+                    {
+                        UsuarioDTO usuario = new UsuarioDTO { Alias = Alias, Password = Password };
+                        try
+                        {
+                            _servicioUsuario.Add(usuario);
+                            ViewBag.Msg = "El usuario se creó correctamente!";
+
+                        }
+                        catch (Exception ex)
+                        {
+                            ViewBag.Msg = ex.Message;
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.Msg = "Las contraseñas deben coincidir";
+                    }
+                }
+                else
+                {
+                    ViewBag.Msg = "Debe completar todos los campos";
+                }
+
+                
+                    
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Msg = "Error: " + ex.Message;
+            }
+
+            return View();
+        }
     }
 }

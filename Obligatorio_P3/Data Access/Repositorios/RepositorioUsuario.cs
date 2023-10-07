@@ -11,11 +11,11 @@ namespace Data_Access.Repositorios
 {
     public class RepositorioUsuario : Repositorio<Usuario>, IRepositorioUsuario
     {
-        private MiContexto Context { get; set; }
+        //private MiContexto Context { get; set; }
 
-        public RepositorioUsuario(MiContexto _context)
+        public RepositorioUsuario(MiContexto context)
         {
-            Context = _context;
+            Context = context;
         }
 
         public Usuario GetUsuarioByAlias(string userAlias)
@@ -30,6 +30,11 @@ namespace Data_Access.Repositorios
             Usuario user = Context.Usuarios.FirstOrDefault(u => u.UsuarioId == id);
 
             return user;
+        }
+
+        public IEnumerable<Usuario> GetAll()
+        {
+            return Context.Usuarios;
         }
     }
 }

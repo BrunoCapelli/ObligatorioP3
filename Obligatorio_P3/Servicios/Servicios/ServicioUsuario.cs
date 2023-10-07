@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace Servicios.Servicios
@@ -19,31 +20,112 @@ namespace Servicios.Servicios
             _repoUsuario = repoUsuario;
         }
 
-        public Usuario Add(Usuario user)
+        public UsuarioDTO Add(UsuarioDTO userDTO)
         {
-           return _repoUsuario.Add(user);
+            userDTO.Validate();
+            UsuarioDTO foundUserDTO = FindAlias(userDTO);
+
+            if (foundUserDTO == null) // En este punto el Alias chequea que el Alias sea nulo, es decir, que no existe.
+            {
+                Usuario usuario = new Usuario(userDTO);
+                if(usuario != null)
+                {
+                    usuario.Password = HashPassword(usuario.Password); // Guardo la contraseña hasheada. Si quiero ver si es correcta, hasheo la que entra y la comparo con la guardada en la base
+                    Usuario newUser = _repoUsuario.Add(usuario);
+                    _repoUsuario.Save();
+
+                }
+
+            }
+            else
+            {
+                throw new Exception("El usuario ingresado ya existe.");
+            }
+            
+            
+            return userDTO;
         }
 
-        public Usuario Find(UsuarioDTO user)
+        public UsuarioDTO FindAlias(UsuarioDTO user)
         {
 
-            Usuario aUser = new Usuario() { Alias = user.Alias, Password = user.Password };
-
+            Usuario aUser = new Usuario(user);
+            UsuarioDTO foundUser = new UsuarioDTO();
             if(aUser != null)
             {
                 aUser = _repoUsuario.GetUsuarioByAlias(aUser.Alias);
+
+                if(aUser != null)
+                {
+                    foundUser = new UsuarioDTO(aUser);
+                }
+                else
+                {
+                    foundUser = null;
+                }
             }
-            return aUser;
+
+            return foundUser;
         }
 
-        public void Remove(Usuario user)
+        public UsuarioDTO FindUser(UsuarioDTO user)
         {
-            _repoUsuario.Remove(user);
+
+            Usuario aUser = new Usuario(user);
+            UsuarioDTO foundUser = new UsuarioDTO();
+            if (aUser != null)
+            {
+                try
+                {
+                    aUser = _repoUsuario.GetUsuarioByAlias(aUser.Alias);
+                    if (aUser != null && HashPassword(user.Password) == aUser.Password )
+                    {
+                        foundUser = new UsuarioDTO(aUser);
+                    }
+                    else
+                    {
+                        throw new Exception("No se encontro el usuario");
+                    }
+
+                }catch(Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
+
+            return foundUser;
         }
 
-        public void Update(Usuario user)
+
+
+
+
+        public void Remove(UsuarioDTO user)
         {
-            _repoUsuario.Update(user);
+            Usuario auxUser = new Usuario(user);
+            _repoUsuario.Remove(auxUser);
+        }
+
+        public void Update(UsuarioDTO user)
+        {
+            Usuario auxUser = new Usuario(user);
+            _repoUsuario.Update(auxUser);
+        }
+
+        public string HashPassword(string password)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                StringBuilder builder = new StringBuilder();
+
+                foreach (byte b in hashedBytes)
+                {
+                    builder.Append(b.ToString("x2"));
+                }
+
+                return builder.ToString();
+            }
         }
     }
 }
