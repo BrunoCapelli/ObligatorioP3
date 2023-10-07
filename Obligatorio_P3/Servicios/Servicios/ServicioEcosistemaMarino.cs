@@ -19,7 +19,7 @@ namespace Servicios.Servicios
         public EcosistemaMarinoDTO Add(EcosistemaMarinoDTO entity) {
             
             entity.Validate();
-            EcosistemaMarinoDTO eco = FindByName(entity.Nombre);
+            EcosistemaMarinoDTO ?eco = FindByName(entity.Nombre);
             if (eco == null) {
                 EcosistemaMarino ecosistema = new EcosistemaMarino(entity);
                 EcosistemaMarino newEco = _repoEcosistemaMarino.Add(ecosistema);
@@ -28,22 +28,29 @@ namespace Servicios.Servicios
             } else {
                 throw new Exception("El Ecosistema ingresado ya existe.");
             }
+            return entity;
 
         }
 
         public void Remove(EcosistemaMarinoDTO entity) {
-            throw new NotImplementedException();
+            EcosistemaMarino ecoToRemove = new EcosistemaMarino(entity);
+            _repoEcosistemaMarino.Remove(ecoToRemove);
         }
 
         public void Update(EcosistemaMarinoDTO entity) {
-            throw new NotImplementedException();
+            
+        }
+
+        public IEnumerable<EcosistemaMarino> GetAll()
+        {
+            return _repoEcosistemaMarino.GetAll();
         }
 
         public EcosistemaMarinoDTO FindByName(string nombre) {
             EcosistemaMarino eco = _repoEcosistemaMarino.GetEcosistemaByName(nombre);
             EcosistemaMarinoDTO ecoDTO = new EcosistemaMarinoDTO(eco);
 
-            
+            return ecoDTO; 
         }
     }
 }

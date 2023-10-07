@@ -12,6 +12,11 @@ namespace Domain.DTO {
         public double Longitud { get; set; }
         public int GradoPeligro { get; set; }
         public UbiGeograficaDTO() { }
+        public UbiGeograficaDTO(double latitud, double longitud) 
+        {
+            this.Latitud = latitud;
+            this.Longitud = longitud;   
+        }
         public UbiGeograficaDTO(UbiGeografica ubiGeografica) {
             this.UbiGeograficaId = ubiGeografica.UbiGeograficaId;
             this.Latitud = ubiGeografica.Latitud;  

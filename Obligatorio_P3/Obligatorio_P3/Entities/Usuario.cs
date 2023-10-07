@@ -24,35 +24,27 @@ namespace Domain.Entities
         }
 
         public void Validate()
-        {
-            try
+        {          
+            if (Alias.Length < 6)
             {
-                // Hay que fijarse que el Alias sea unico, Como? ¯\_(ツ)_/¯
-                if (Alias.Length < 6)
-                {
-                    throw new StringException("El Alias debe tener al menos 6 caracteres.");
-                }
-                if(Password.Length < 8)
-                {
-                    throw new StringException("La contraseña debe tener al menos 8 caracteres");
-                }
-                if(!Password.Contains(".") || !Password.Contains(",") || !Password.Contains("#") || !Password.Contains(";") || 
-                    !Password.Contains(":") || !Password.Contains("!"))
-                {
-                    throw new StringException("La constraseña debe tener al menos uno de los siguientes: \" .\", \" ,\", \" #\", \" ;\", \" :\", \" !\"   ");
-                }
-                if (!tieneUnaMayus(Password) && !tieneUnaMinus(Password))
-                {
-                    throw new StringException("La contraseña debe tener al menos una mayuscula y una minuscula");
-                }
-                if (!tieneDigito(Password))
-                {
-                    throw new StringException("La contraseña debe tener al menos un digito");
-                }
+                throw new StringException("El Alias debe tener al menos 6 caracteres.");
             }
-            catch(Exception ex) 
+            if(Password.Length < 8)
             {
-                throw new Exception(ex.Message); 
+                throw new StringException("La contraseña debe tener al menos 8 caracteres");
+            }
+            if(!Password.Contains(".") || !Password.Contains(",") || !Password.Contains("#") || !Password.Contains(";") || 
+                !Password.Contains(":") || !Password.Contains("!"))
+            {
+                throw new StringException("La constraseña debe tener al menos uno de los siguientes: \" .\", \" ,\", \" #\", \" ;\", \" :\", \" !\"   ");
+            }
+            if (!tieneUnaMayus(Password) && !tieneUnaMinus(Password))
+            {
+                throw new StringException("La contraseña debe tener al menos una mayuscula y una minuscula");
+            }
+            if (!tieneDigito(Password))
+            {
+                throw new StringException("La contraseña debe tener al menos un digito");
             }
         }
 

@@ -20,21 +20,25 @@
             </div>
             <div class="form-group">
                 <label asp-for="Area" class="control-label"></label>
-                <input asp-for="Area" class="form-control" />
+                <input asp-for="Area" class=" form-control" />
                 <span asp-validation-for="Area" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="PaisId" class="control-label"></label>
-                <input asp-for="PaisId" class="form-control" />
-                <span asp-validation-for="PaisId" class="text-danger"></span>
+                <label class="control-label">Latitud Geograifca</label>
+                <input name="Latitud" class="form-control" />
+                <span asp-validation-for="UbicacionGeografica" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UbicacionGeografica" class="control-label"></label>
-                <input asp-for="UbicacionGeografica" class="form-control" />
+                <label class="control-label">Longitud Geografica</label>
+                <input name="Longitud" class="form-control" />
                 <span asp-validation-for="UbicacionGeografica" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+            <div>
+                <p>@ViewBag.Msg</p>
             </div>
         </form>
     </div>

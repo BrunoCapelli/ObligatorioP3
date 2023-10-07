@@ -21,7 +21,7 @@ namespace Domain.DTO {
         public EcosistemaMarinoDTO() { }
 
         public EcosistemaMarinoDTO(EcosistemaMarino eco) {
-            this.EcosistemaMarinoId = eco.EcosistemaMarinoId;
+            //this.EcosistemaMarinoId = eco.EcosistemaMarinoId;
             this.Nombre = eco.Nombre;
             this.Area = eco.Area;
             this.UbicacionGeografica = new UbiGeograficaDTO(eco.UbicacionGeografica);
@@ -31,19 +31,20 @@ namespace Domain.DTO {
             //llamar al validate de EstadoConservacionDTO
         }
 
-        public EcosistemaMarinoDTO(string Nombre, UbiGeograficaDTO UbicacionGeografica, EstadoConservacionDTO estadoConservacion, int PaisId) {
+        public EcosistemaMarinoDTO(string Nombre, UbiGeograficaDTO UbicacionGeografica, double Area, EstadoConservacionDTO estadoConservacion) {
             //this.EcosistemaMarinoId = EcosistemaMarinoId;
             this.Nombre = Nombre;
             this.UbicacionGeografica = UbicacionGeografica;
+            this.Area = Area;
             this.EstadoConservacion = estadoConservacion;
-            this.PaisId = PaisId;
+            //this.PaisId = PaisId;
         }
 
         public void Validate() {
             if (this.Nombre.Length < 2 || this.Nombre.Length> 50) {
                 throw new NombreLargoException("El largo del nombre debe estar entre 2 y 50 caracteres");
             }
-            if (this.Area <= 0) {
+            if (Area <= 0) {
                 throw new MagnitudException("El area debe ser positiva");
             }
 

@@ -8,7 +8,7 @@ using Domain.Interfaces;
 
 namespace Domain.Entities
 {
-    public class EcosistemaMarino:IValidate
+    public class EcosistemaMarino//:IValidate
     {
         public int EcosistemaMarinoId { get; set; }
         public string Nombre { get; set; }
