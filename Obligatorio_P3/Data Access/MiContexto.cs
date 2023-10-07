@@ -44,9 +44,9 @@ namespace Data_Access {
             modelBuilder.Entity<Especie>().HasKey(e => e.EspecieId);
 
             modelBuilder.Entity<EstadoConservacion>().HasKey(ec => ec.EstadoConservacionId);
-            // modelBuilder.Entity<Pais>().HasKey(pais => pais.PaisId);
-            // modelBuilder.Entity<UbiGeografica>().HasKey(ubi=>ubi.UbiGeograficaId);
-            // modelBuilder.Entity<Usuario>().HasKey(u => u.UsuarioId);
+            modelBuilder.Entity<Pais>().HasKey(pais => pais.PaisId);
+            modelBuilder.Entity<UbiGeografica>().HasKey(ubi=>ubi.UbiGeograficaId);
+            modelBuilder.Entity<Usuario>().HasKey(u => u.UsuarioId);
 
             // relaciones
             modelBuilder.Entity<EcosistemaMarino>().HasMany(em => em.Amenazas).WithOne().HasForeignKey(a => a.EcosistemaMarinoId);
