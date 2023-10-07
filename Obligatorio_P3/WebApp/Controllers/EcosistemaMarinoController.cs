@@ -8,11 +8,10 @@ namespace WebApp.Controllers {
     public class EcosistemaMarinoController : Controller {
 
         IServicioEcosistemaMarino _servicioEcosistemaMarino;
-        IServicioUbiGeografica _servicioUbiGeografica;
+       
 
-        public EcosistemaMarinoController(IServicioEcosistemaMarino servicioEcosistemaMarino, IServicioUbiGeografica servicioUbiGeografica) {
+        public EcosistemaMarinoController(IServicioEcosistemaMarino servicioEcosistemaMarino) {
             _servicioEcosistemaMarino = servicioEcosistemaMarino;
-            _servicioUbiGeografica = servicioUbiGeografica;
         }
 
         
@@ -27,18 +26,19 @@ namespace WebApp.Controllers {
 
         
         [HttpPost]
-        public ActionResult Create(string Nombre, string Area, string Latitud, string Longitud  ) {
+        public ActionResult Create(string Nombre, string Area, string Latitud, string Longitud ,string GradoPeligro) {
             try 
             {
                 Double.TryParse(Latitud, out double latitudParsed);
                 Double.TryParse(Longitud, out double longitudParsed);
+                int.TryParse(GradoPeligro, out int gradoPeligro);
 
-                UbiGeograficaDTO newUbi = new UbiGeograficaDTO(latitudParsed,longitudParsed);
-                _servicioUbiGeografica.Add(newUbi);
+                UbiGeografica ubi = new UbiGeografica(latitudParsed,longitudParsed, gradoPeligro);
+                
                 EstadoConservacionDTO newEstadoC = new EstadoConservacionDTO();
                 Double.TryParse(Area, out double areaPArsed);
 
-                EcosistemaMarinoDTO ecoDTO = new EcosistemaMarinoDTO(Nombre, newUbi, areaPArsed, newEstadoC);
+                EcosistemaMarinoDTO ecoDTO = new EcosistemaMarinoDTO(Nombre, ubi, areaPArsed, newEstadoC);
                 _servicioEcosistemaMarino.Add(ecoDTO);
                 ViewBag.Msg = "Ecosistema creado!";
                 return RedirectToAction(nameof(Index));

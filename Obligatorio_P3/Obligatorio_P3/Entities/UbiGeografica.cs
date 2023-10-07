@@ -9,21 +9,15 @@ namespace Domain.Entities
 {
     public class UbiGeografica
     {
-        public int UbiGeograficaId { get; set; }
-        public double Latitud { get; set; }
-        public double Longitud { get; set;}
-        public int GradoPeligro { get; set; }
+        public double Latitud { get; private set; }
+        public double Longitud { get; private set;}
+        public int GradoPeligro { get; private set; }
         public UbiGeografica() { }
-        public UbiGeografica(UbiGeograficaDTO ubiGeograficaDTO) {
-            this.UbiGeograficaId = ubiGeograficaDTO.UbiGeograficaId;
-            this.GradoPeligro = ubiGeograficaDTO.GradoPeligro;
-            this.Longitud = ubiGeograficaDTO.Longitud;
-            this.Latitud = ubiGeograficaDTO.Latitud;
+        public UbiGeografica(double latitud, double longitud, int gradoPeligro) {
+            this.GradoPeligro = gradoPeligro;
+            this.Longitud = longitud;
+            this.Latitud = latitud;
         }
-        public void Copy(UbiGeograficaDTO ubiGeograficaDTO) {
-            this.Latitud = ubiGeograficaDTO.Latitud;
-            this.Longitud = ubiGeograficaDTO.Longitud;
-            this.GradoPeligro = ubiGeograficaDTO .GradoPeligro;
-        }
+       
     }
 }

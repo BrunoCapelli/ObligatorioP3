@@ -8,10 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Domain.DTO {
-    public class EcosistemaMarinoDTO:IValidate {
+    public class EcosistemaMarinoDTO:IValidable {
         public int EcosistemaMarinoId { get; set; }
         public string Nombre { get; set; }
-        public UbiGeograficaDTO UbicacionGeografica { get; set; }
+        public UbiGeografica UbicacionGeografica { get; set; }
         public double Area { get; set; }
         public List<EspecieDTO> Especies = new List<EspecieDTO>();
         public List<AmenazaDTO> Amenazas = new List<AmenazaDTO>();
@@ -24,14 +24,14 @@ namespace Domain.DTO {
             //this.EcosistemaMarinoId = eco.EcosistemaMarinoId;
             this.Nombre = eco.Nombre;
             this.Area = eco.Area;
-            this.UbicacionGeografica = new UbiGeograficaDTO(eco.UbicacionGeografica);
+            this.UbicacionGeografica = eco.UbicacionGeografica;
             //llamar al validate de UbiGeograficaDTO
             this.PaisId = eco.PaisId;
             this.EstadoConservacion = new EstadoConservacionDTO(eco.EstadoConservacion);
             //llamar al validate de EstadoConservacionDTO
         }
 
-        public EcosistemaMarinoDTO(string Nombre, UbiGeograficaDTO UbicacionGeografica, double Area, EstadoConservacionDTO estadoConservacion) {
+        public EcosistemaMarinoDTO(string Nombre, UbiGeografica UbicacionGeografica, double Area, EstadoConservacionDTO estadoConservacion) {
             //this.EcosistemaMarinoId = EcosistemaMarinoId;
             this.Nombre = Nombre;
             this.UbicacionGeografica = UbicacionGeografica;

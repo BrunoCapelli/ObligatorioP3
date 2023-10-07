@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Domain.Interfaces {
-    public interface IValidate {
+    public interface IValidable {
         void Validate();
     }
 }

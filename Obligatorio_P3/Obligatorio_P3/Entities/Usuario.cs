@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Usuario:IValidate
+    public class Usuario:IValidable
     {
         public int UsuarioId { get; set; }
         public string Alias { get; set; }

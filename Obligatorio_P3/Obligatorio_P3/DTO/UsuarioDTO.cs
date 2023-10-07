@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DTO
 {
-    public class UsuarioDTO:IValidate
+    public class UsuarioDTO:IValidable
     {
         public int UsuarioDTOId { get; set; }
         public string Alias { get; set; }
