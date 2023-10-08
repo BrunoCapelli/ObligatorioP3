@@ -11,12 +11,15 @@ namespace Domain.DTO {
     public class EstadoConservacionDTO {
         public int EstadoConservacionId { get; set; }
         public string Nombre { get; set; }
-        public int Valor { get; set; }
+        public int ValorDesde { get; set; }
+        public int ValorHasta { get; set; }
         public EstadoConservacionDTO() { }
         public EstadoConservacionDTO(EstadoConservacion estadoConservacion) {
             this.EstadoConservacionId = estadoConservacion.EstadoConservacionId;
             this.Nombre = estadoConservacion.Nombre;
-            this.Valor = estadoConservacion.Valor;
+            this.ValorDesde = estadoConservacion.ValorDesde;
+            this.ValorHasta = estadoConservacion.ValorHasta;
+
         }
         public EstadoConservacionDTO(int valor) 
         {

@@ -11,16 +11,19 @@ namespace Domain.Entities
     {
         public int EstadoConservacionId { get; set; }
         public string Nombre { get; set; }
-        public int Valor { get; set; }
+        public int ValorDesde { get; set; }
+        public int ValorHasta { get; set; }
         public EstadoConservacion() { }
         public EstadoConservacion(EstadoConservacionDTO estadoConservacionDTO) {
             this.EstadoConservacionId = estadoConservacionDTO.EstadoConservacionId;
             this.Nombre = estadoConservacionDTO.Nombre;
-            this.Valor = estadoConservacionDTO.Valor;
+            this.ValorDesde = estadoConservacionDTO.ValorDesde;
+            this.ValorHasta = estadoConservacionDTO.ValorHasta;
         }
         public void Copy(EstadoConservacionDTO estadoConservacionDTO) {
             this.Nombre = estadoConservacionDTO.Nombre;
-            this.Valor = estadoConservacionDTO .Valor;
+            this.ValorDesde = estadoConservacionDTO.ValorDesde;
+            this.ValorHasta = estadoConservacionDTO.ValorHasta;
         }
     }
 }

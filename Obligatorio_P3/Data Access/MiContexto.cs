@@ -42,6 +42,8 @@ namespace Data_Access {
             modelBuilder.Entity<Especie>().HasKey(e => e.EspecieId);
 
             modelBuilder.Entity<EstadoConservacion>().HasKey(ec => ec.EstadoConservacionId);
+            modelBuilder.Entity<EstadoConservacion>().HasAlternateKey(e => e.Nombre);
+
             modelBuilder.Entity<Pais>().HasKey(pais => pais.PaisId);
             
             modelBuilder.Entity<Usuario>().HasKey(u => u.UsuarioId);

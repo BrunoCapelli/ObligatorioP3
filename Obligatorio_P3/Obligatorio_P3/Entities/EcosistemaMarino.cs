@@ -27,6 +27,11 @@ namespace Domain.Entities
             this.Nombre = ecosistemaMarinoDTO.Nombre;
             this.Area = ecosistemaMarinoDTO.Area;
             this.UbicacionGeografica = ecosistemaMarinoDTO.UbicacionGeografica;
+            this.PaisId = ecosistemaMarinoDTO.PaisId;
+
+            EstadoConservacion newEstado = new EstadoConservacion(ecosistemaMarinoDTO.EstadoConservacion);
+
+            this.EstadoConservacion = newEstado;
 
 
         }
