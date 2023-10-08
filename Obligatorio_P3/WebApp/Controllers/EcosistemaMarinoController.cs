@@ -31,23 +31,22 @@ namespace WebApp.Controllers {
 
         
         [HttpPost]
-        public ActionResult Create(string Nombre, string Area, string Latitud, string Longitud ,string GradoPeligro,int Pais) {
+        public ActionResult Create(string Nombre, string Area, string Latitud, string Longitud ,string GradoPeligro,int Pais, string EstadoConservacion) {
             try 
             {
                 Double.TryParse(Latitud, out double latitudParsed);
                 Double.TryParse(Longitud, out double longitudParsed);
-                int.TryParse(GradoPeligro, out int gradoPeligro);
+                Int32.TryParse(GradoPeligro, out int gradoPeligro);
+                Double.TryParse(Area, out double areaParsed);
+                Int32.TryParse(EstadoConservacion, out int estConservacionParsed);
 
                 UbiGeografica ubi = new UbiGeografica(latitudParsed,longitudParsed, gradoPeligro);
+                EstadoConservacionDTO newEstadoC = new EstadoConservacionDTO(estConservacionParsed);
 
-                
-                
-                EstadoConservacionDTO newEstadoC = new EstadoConservacionDTO();
-                Double.TryParse(Area, out double areaPArsed);
-
-                EcosistemaMarinoDTO ecoDTO = new EcosistemaMarinoDTO(Nombre, ubi, areaPArsed, newEstadoC,Pais);
+                EcosistemaMarinoDTO ecoDTO = new EcosistemaMarinoDTO(Nombre, ubi, areaParsed, newEstadoC,Pais);
                 _servicioEcosistemaMarino.Add(ecoDTO);
-                // aca hay que asignarle el Ecositema al Pais
+                // Aca hay que asignarle el Ecositema al Pais?
+
                 ViewBag.Msg = "Ecosistema creado!";
                 return RedirectToAction(nameof(Index));
             }

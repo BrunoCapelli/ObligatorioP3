@@ -40,6 +40,11 @@
                 <span asp-validation-for="UbicacionGeografica" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label class="control-label">Estado de conservacion</label>
+                <input name="EstadoConservacion" class="form-control" />
+                <span asp-validation-for="UbicacionGeografica" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label class="control-label">Pais</label>
                 <select name="Pais" id="Pais">
                     @foreach (var p in ViewBag.paises) {

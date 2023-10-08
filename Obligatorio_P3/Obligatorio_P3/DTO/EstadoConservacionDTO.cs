@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities;
+using Domain.Exceptions;
 
 namespace Domain.DTO {
     public class EstadoConservacionDTO {
@@ -16,6 +18,33 @@ namespace Domain.DTO {
             this.Nombre = estadoConservacion.Nombre;
             this.Valor = estadoConservacion.Valor;
         }
+        public EstadoConservacionDTO(int valor) 
+        {
+            if (valor > 100 && valor < 0)
+            {
+                throw new RangoException("Valor fuera de rango");
+            }
+            else
+            {
+                if (valor < 60)
+                {
+                    this.Nombre = "Malo";
+                }
+                if (valor >60 && valor < 70)
+                {
+                    this.Nombre = "Aceptable";
+                }
 
+                if(valor >= 70 && valor <= 95)
+                {
+                    this.Nombre = "Bueno";
+                }
+
+                if(valor > 95 && valor < 100)
+                {
+                    this.Nombre = "Optimo";
+                }
+            }
+        }
     }
 }

@@ -45,7 +45,7 @@ namespace Domain.DTO {
                 throw new NombreLargoException("El largo del nombre debe estar entre 2 y 50 caracteres");
             }
             if (Area <= 0) {
-                throw new MagnitudException("El area debe ser positiva");
+                throw new RangoException("El area debe ser positiva");
             }
 
         }
