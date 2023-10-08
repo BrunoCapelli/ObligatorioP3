@@ -30,18 +30,18 @@ namespace WebApp
           /*  builder.Services.AddScoped(typeof(IServicioAmenaza), typeof(ServicioAmenaza));
             builder.Services.AddScoped(typeof(IServicioAudit), typeof(ServicioAudit));
             builder.Services.AddScoped(typeof(IServicioEspecie), typeof(ServicioEspecie));
-            builder.Services.AddScoped(typeof(IServicioEstadoConservacion), typeof(ServicioEstadoConservacion));
-            builder.Services.AddScoped(typeof(IServicioPais), typeof(ServicioPais));  */
+            builder.Services.AddScoped(typeof(IServicioEstadoConservacion), typeof(ServicioEstadoConservacion));*/
+            builder.Services.AddScoped(typeof(IServicioPais), typeof(ServicioPais));  
             builder.Services.AddScoped(typeof(IServicioEcosistemaMarino), typeof(ServicioEcosistemaMarino));
             builder.Services.AddScoped(typeof(IServicioUsuario), typeof(ServicioUsuario));
-            
+
 
             //builder.Services.AddScoped(typeof(IRepositorio), typeof(Repositorio));
             /*  builder.Services.AddScoped(typeof(IRepositorioAmenaza), typeof(RepositorioAmenaza));
               builder.Services.AddScoped(typeof(IRepositorioAudit), typeof(RepositorioAudit));
               builder.Services.AddScoped(typeof(IRepositorioEspecie), typeof(RepositorioEspecie));
-              builder.Services.AddScoped(typeof(IRepositorioEstadoConservacion), typeof(RepositorioEstadoConservacion));
-              builder.Services.AddScoped(typeof(IRepositorioPais), typeof(RepositorioPais));*/
+              builder.Services.AddScoped(typeof(IRepositorioEstadoConservacion), typeof(RepositorioEstadoConservacion));*/
+            builder.Services.AddScoped(typeof(IRepositorioPais), typeof(RepositorioPais));
             builder.Services.AddScoped(typeof(IRepositorioEcosistemaMarino), typeof(RepositorioEcosistemaMarino));
             builder.Services.AddScoped(typeof(IRepositorioUsuario), typeof(RepositorioUsuario));
 

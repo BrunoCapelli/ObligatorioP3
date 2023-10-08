@@ -31,13 +31,13 @@ namespace Domain.DTO {
             //llamar al validate de EstadoConservacionDTO
         }
 
-        public EcosistemaMarinoDTO(string Nombre, UbiGeografica UbicacionGeografica, double Area, EstadoConservacionDTO estadoConservacion) {
+        public EcosistemaMarinoDTO(string Nombre, UbiGeografica UbicacionGeografica, double Area, EstadoConservacionDTO estadoConservacion,int PaisId) {
             //this.EcosistemaMarinoId = EcosistemaMarinoId;
             this.Nombre = Nombre;
             this.UbicacionGeografica = UbicacionGeografica;
             this.Area = Area;
             this.EstadoConservacion = estadoConservacion;
-            //this.PaisId = PaisId;
+            this.PaisId = PaisId;
         }
 
         public void Validate() {
