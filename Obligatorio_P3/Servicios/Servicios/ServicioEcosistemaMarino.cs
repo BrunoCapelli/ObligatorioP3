@@ -1,6 +1,7 @@
 ﻿using Data_Access.IRepositorios;
 using Domain.DTO;
 using Domain.Entities;
+using Microsoft.AspNetCore.Http;
 using Servicios.IServicios;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,13 @@ namespace Servicios.Servicios
     public class ServicioEcosistemaMarino : IServicioEcosistemaMarino {
 
         private IRepositorioEcosistemaMarino _repoEcosistemaMarino;
-        public ServicioEcosistemaMarino(IRepositorioEcosistemaMarino repoEcosistemaMarino) {
+        private IServicioAudit _servicioAudit;
+        private readonly ISession _session;
+
+        public ServicioEcosistemaMarino(IRepositorioEcosistemaMarino repoEcosistemaMarino, IServicioAudit servicioAudit)
+        {
             _repoEcosistemaMarino = repoEcosistemaMarino;
+            _servicioAudit = servicioAudit;
         }
         public EcosistemaMarinoDTO Add(EcosistemaMarinoDTO entity) {
             
@@ -24,6 +30,9 @@ namespace Servicios.Servicios
                 EcosistemaMarino ecosistema = new EcosistemaMarino(entity);
                 EcosistemaMarino newEco = _repoEcosistemaMarino.Add(ecosistema);
                 _repoEcosistemaMarino.Save();
+
+                // Audit Add
+                //_servicioAudit.Log()
 
             } else {
                 throw new Exception("El Ecosistema ingresado ya existe.");
