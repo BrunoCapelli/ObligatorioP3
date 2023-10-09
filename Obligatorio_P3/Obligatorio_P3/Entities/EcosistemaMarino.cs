@@ -22,16 +22,13 @@ namespace Domain.Entities
 
         public EcosistemaMarino() { }
         
-        public EcosistemaMarino(EcosistemaMarinoDTO ecosistemaMarinoDTO) {
+        public EcosistemaMarino(EcosistemaMarinoDTO ecosistemaMarinoDTO,EstadoConservacion estado) {
             this.EcosistemaMarinoId = ecosistemaMarinoDTO.EcosistemaMarinoId;
             this.Nombre = ecosistemaMarinoDTO.Nombre;
             this.Area = ecosistemaMarinoDTO.Area;
             this.UbicacionGeografica = ecosistemaMarinoDTO.UbicacionGeografica;
             this.PaisId = ecosistemaMarinoDTO.PaisId;
-
-            EstadoConservacion newEstado = new EstadoConservacion(ecosistemaMarinoDTO.EstadoConservacion);
-
-            this.EstadoConservacion = newEstado;
+            this.EstadoConservacion = estado;
 
 
         }

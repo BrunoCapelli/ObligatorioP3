@@ -13,15 +13,25 @@ namespace Servicios.Servicios
     public class ServicioEcosistemaMarino : IServicioEcosistemaMarino {
 
         private IRepositorioEcosistemaMarino _repoEcosistemaMarino;
-        public ServicioEcosistemaMarino(IRepositorioEcosistemaMarino repoEcosistemaMarino) {
+        private IRepositorioEstadoConservacion _repoEstadoConservacion;
+
+        public ServicioEcosistemaMarino(IRepositorioEcosistemaMarino repoEcosistemaMarino, IRepositorioEstadoConservacion repoEstadoConservacion) {
             _repoEcosistemaMarino = repoEcosistemaMarino;
+            _repoEstadoConservacion = repoEstadoConservacion;
         }
         public EcosistemaMarinoDTO Add(EcosistemaMarinoDTO entity) {
             
             entity.Validate();
             //EcosistemaMarinoDTO eco = FindByName(entity.Nombre);
             if (entity != null) {
-                EcosistemaMarino ecosistema = new EcosistemaMarino(entity);
+
+                int EstadoId = entity.EstadoConservacion.EstadoConservacionId;
+                EstadoConservacion estado = _repoEstadoConservacion.GetEstado(EstadoId);
+
+                EcosistemaMarino ecosistema = new EcosistemaMarino(entity, estado);
+
+               
+
                 EcosistemaMarino newEco = _repoEcosistemaMarino.Add(ecosistema);
                 _repoEcosistemaMarino.Save();
 
@@ -32,9 +42,10 @@ namespace Servicios.Servicios
 
         }
 
+
         public void Remove(EcosistemaMarinoDTO entity) {
-            EcosistemaMarino ecoToRemove = new EcosistemaMarino(entity);
-            _repoEcosistemaMarino.Remove(ecoToRemove);
+            //EcosistemaMarino ecoToRemove = new EcosistemaMarino(entity);
+           // _repoEcosistemaMarino.Remove(ecoToRemove);
         }
 
         public void Update(EcosistemaMarinoDTO entity) {

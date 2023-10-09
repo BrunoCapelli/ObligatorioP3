@@ -25,10 +25,8 @@ namespace Domain.DTO {
             this.Nombre = eco.Nombre;
             this.Area = eco.Area;
             this.UbicacionGeografica = eco.UbicacionGeografica;
-            //llamar al validate de UbiGeograficaDTO
             this.PaisId = eco.PaisId;
             this.EstadoConservacion = new EstadoConservacionDTO(eco.EstadoConservacion);
-            //llamar al validate de EstadoConservacionDTO
         }
 
         public EcosistemaMarinoDTO(string Nombre, UbiGeografica UbicacionGeografica, double Area, EstadoConservacionDTO estadoConservacion,int PaisId) {
