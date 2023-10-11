@@ -38,7 +38,7 @@ namespace WebApp.Controllers {
 
         
         [HttpPost]
-        public ActionResult Create(string Nombre, string Area, string Latitud, string Longitud ,string GradoPeligro,int Pais, int EstadoConservacion) {
+        public ActionResult Create(string Nombre, string Area, string Latitud, string Longitud ,string GradoPeligro,int Pais, int EstadoConservacion,IFormFile Imagen) {
             try 
             {
                 Double.TryParse(Latitud, out double latitudParsed);
@@ -46,6 +46,8 @@ namespace WebApp.Controllers {
                 Int32.TryParse(GradoPeligro, out int gradoPeligro);
                 Double.TryParse(Area, out double areaParsed);
                 //Int32.TryParse(EstadoConservacion, out int estConservacionParsed);
+                string fileName = Imagen.FileName;
+                
 
                 UbiGeografica ubi = new UbiGeografica(latitudParsed,longitudParsed, gradoPeligro);
                 //EstadoConservacionDTO newEstadoC = new EstadoConservacionDTO(estConservacionParsed);

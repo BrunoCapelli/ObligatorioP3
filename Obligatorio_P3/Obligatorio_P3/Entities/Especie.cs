@@ -10,7 +10,7 @@ namespace Domain.Entities
         public string Descripcion {  get; set; }
         public double PesoMin { get; set; }
         public double PesoMax { get; set; }
-        public List<Amenaza> Amenazas = new List<Amenaza>();
+        public List<EspecieAmenaza> EspecieAmenazas = new List<EspecieAmenaza>();
         public EstadoConservacion EstadoConservacion { get; set; }
         public int? EcosistemaMarinoId  { get; set; }
         public List<EcosistemaMarino> EcosistemasHabitados = new List<EcosistemaMarino>();
