@@ -25,17 +25,8 @@ namespace Domain.DTO {
             this.Descripcion = especie.Descripcion;
             this.PesoMin = especie.PesoMin;
             this.PesoMax = especie.PesoMax;
-            //aca no puedo asignar las listas porque estaria apuntando a una lista en el dominio en vez de los DTO
-            foreach (Amenaza a in especie.Amenazas) {
-                AmenazaDTO amenazaDTO = new AmenazaDTO(a);
-                this.Amenazas.Add(amenazaDTO);
-            }
-            this.EstadoConservacion = new EstadoConservacionDTO(especie.EstadoConservacion);
-            
-            foreach (EcosistemaMarino e in especie.EcosistemasHabitados) {
-                EcosistemaMarinoDTO ecosistemaMarinoDTO = new EcosistemaMarinoDTO();
-                this.EcosistemasHabitados.Add(ecosistemaMarinoDTO);
-            }
+
+
 
         }
     }

@@ -18,6 +18,18 @@ namespace Servicios.Servicios
             _repoEspecie = repoEspecie;
         }
 
+        public EspecieDTO Add(EspecieDTO especieDTO)
+        {
+            Especie especie = new Especie(especieDTO);
+            if(especie != null)
+            {
+                _repoEspecie.Add(especie);
+                _repoEspecie.Save();
+            }
+
+            return especieDTO;
+        }
+
         public IEnumerable<EspecieDTO> GetAll()
         {
             List<EspecieDTO> especiesDTO = new List<EspecieDTO>();
@@ -29,6 +41,16 @@ namespace Servicios.Servicios
             }
             return especiesDTO;
 
+        }
+
+        public void Remove(EspecieDTO entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(EspecieDTO entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }
