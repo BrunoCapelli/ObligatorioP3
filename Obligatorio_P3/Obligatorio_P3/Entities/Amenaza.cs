@@ -14,6 +14,9 @@ namespace Domain.Entities
         public int EcosistemaMarinoId { get; set; }
         public int GradoPeligrosidad { get; set; }
 
+        List<EspecieAmenaza> especieAmenazas = new List<EspecieAmenaza>();
+        List<EcosistemaAmenaza> ecosistemaAmenazas = new List<EcosistemaAmenaza> { };
+
         public Amenaza() { }
         public Amenaza(AmenazaDTO amenazaDTO) {
             this.AmenazaId = amenazaDTO.AmenazaId;
