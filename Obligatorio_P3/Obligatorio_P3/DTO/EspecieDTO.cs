@@ -17,7 +17,7 @@ namespace Domain.DTO {
         public EstadoConservacionDTO EstadoConservacion { get; set; }
         public List<EcosistemaMarinoDTO> EcosistemasHabitados { get; set; }
         public EspecieDTO() { }
-        /*public EspecieDTO(Especie especie) {
+        public EspecieDTO(Especie especie) {
             
             this.EspecieId = especie.EspecieId;
             this.NombreCientifico = especie.NombreCientifico;
@@ -33,10 +33,10 @@ namespace Domain.DTO {
             this.EstadoConservacion = new EstadoConservacionDTO(especie.EstadoConservacion);
             
             foreach (EcosistemaMarino e in especie.EcosistemasHabitados) {
-                EcosistemaMarinoDTO ecosistemaMarinoDTO = new EcosistemaMarino();
+                EcosistemaMarinoDTO ecosistemaMarinoDTO = new EcosistemaMarinoDTO();
                 this.EcosistemasHabitados.Add(ecosistemaMarinoDTO);
             }
 
-        }*/
+        }
     }
 }
