@@ -49,7 +49,9 @@ namespace Data_Access {
             modelBuilder.Entity<Usuario>().HasKey(u => u.UsuarioId);
 
             // relaciones
-            modelBuilder.Entity<EcosistemaMarino>().HasMany(em => em.Amenazas).WithOne().HasForeignKey(a => a.EcosistemaMarinoId);
+            //modelBuilder.Entity<EcosistemaMarino>().HasMany(em => em.Amenazas).WithOne().HasForeignKey(a => a.EcosistemaMarinoId);
+            modelBuilder.Entity<EcosistemaAmenaza>().HasKey(ea => new { ea.AmenazaId, ea.EcosistemaMarinoId });
+            modelBuilder.Entity<EspecieAmenaza>().HasKey(ea => new {ea.EspecieId, ea.AmenazaId });
             modelBuilder.Entity<EcosistemaMarino>().OwnsOne(em => em.UbicacionGeografica);
             modelBuilder.Entity<Pais>().HasMany(p => p.ecosistemaMarinos).WithOne().HasForeignKey(ec => ec.PaisId);
 

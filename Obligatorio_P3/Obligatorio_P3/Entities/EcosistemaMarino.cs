@@ -14,7 +14,7 @@ namespace Domain.Entities
         public string Nombre { get; set; }
         public UbiGeografica UbicacionGeografica { get; set; }
         public double Area { get; set; }
-        public List<Amenaza> Amenazas = new List<Amenaza>();
+        public List<EcosistemaAmenaza> EcosistemaAmenazas = new List<EcosistemaAmenaza>();
         public EstadoConservacion EstadoConservacion { get; set; }
         public int PaisId { get; set; }
         public int? EspecieId { get; set; }
@@ -29,8 +29,6 @@ namespace Domain.Entities
             this.UbicacionGeografica = ecosistemaMarinoDTO.UbicacionGeografica;
             this.PaisId = ecosistemaMarinoDTO.PaisId;
             this.EstadoConservacion = estado;
-
-
         }
 
 
