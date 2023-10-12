@@ -26,4 +26,9 @@
     <ProjectReference Include="..\Servicios\Servicios.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\img\ecosistemas\" />
+    <Folder Include="wwwroot\img\especies\" />
+  </ItemGroup>
+
 </Project>
