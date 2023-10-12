@@ -9,6 +9,6 @@ namespace Data_Access.IRepositorios
 {
     public interface IRepositorioAmenaza :IRepositorio<Amenaza>
     {
-
+        Amenaza GetAmenazaById(int id);
     }
 }

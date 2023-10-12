@@ -24,7 +24,7 @@ namespace Domain.DTO {
         public EcosistemaMarinoDTO() { }
 
         public EcosistemaMarinoDTO(EcosistemaMarino eco) {
-            //this.EcosistemaMarinoId = eco.EcosistemaMarinoId;
+            this.EcosistemaMarinoId = eco.EcosistemaMarinoId;
             this.Nombre = eco.Nombre;
             this.Area = eco.Area;
             this.UbicacionGeografica = eco.UbicacionGeografica;

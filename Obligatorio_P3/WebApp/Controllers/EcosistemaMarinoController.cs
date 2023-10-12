@@ -12,13 +12,16 @@ namespace WebApp.Controllers {
         IServicioEcosistemaMarino _servicioEcosistemaMarino;
         IServicioPais _servicioPais;
         IServicioEstadoConservacion _servicioEstadoConservacion;
+        IWebHostEnvironment _webHostEnvironment { get; set; }
 
 
 
-        public EcosistemaMarinoController(IServicioEcosistemaMarino servicioEcosistemaMarino,IServicioPais servicioPais, IServicioEstadoConservacion servicioEstadoConservacion) {
+
+        public EcosistemaMarinoController(IServicioEcosistemaMarino servicioEcosistemaMarino,IServicioPais servicioPais, IServicioEstadoConservacion servicioEstadoConservacion, IWebHostEnvironment webHostEnvironment) {
             _servicioEcosistemaMarino = servicioEcosistemaMarino;
             _servicioPais = servicioPais;
             _servicioEstadoConservacion = servicioEstadoConservacion;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         
@@ -46,7 +49,7 @@ namespace WebApp.Controllers {
                 Int32.TryParse(GradoPeligro, out int gradoPeligro);
                 Double.TryParse(Area, out double areaParsed);
                 //Int32.TryParse(EstadoConservacion, out int estConservacionParsed);
-                string fileName = Imagen.FileName;
+                
                 
 
                 UbiGeografica ubi = new UbiGeografica(latitudParsed,longitudParsed, gradoPeligro);
@@ -56,13 +59,34 @@ namespace WebApp.Controllers {
                 
 
                 EcosistemaMarinoDTO ecoDTO = new EcosistemaMarinoDTO(Nombre, ubi, areaParsed, EstadoC, Pais);
-                _servicioEcosistemaMarino.Add(ecoDTO);
+                EcosistemaMarinoDTO nuevoEco = _servicioEcosistemaMarino.Add(ecoDTO);
+
                 // Aca hay que asignarle el Ecositema al Pais?
 
+                string ArchivoName = Path.GetFileName(Imagen.FileName);
+                //string fileName = Path.GetFileNameWithoutExtension(Imagen.FileName);
+                string extension = Path.GetExtension(ArchivoName);
+
+                if (extension != ".jpg" && extension !=".jpeg" && extension!= ".png") {
+                    ViewBag.Msg = "Formatos de imagen admitidos: jpeg,jpg o png";
+                    return View();
+                }
+
+                string rutaRaiz = _webHostEnvironment.WebRootPath;
+                rutaRaiz = Path.Combine(rutaRaiz, "img","ecosistemas");
+                string nuevoNombre = nuevoEco.EcosistemaMarinoId.ToString() + "_001" + extension;
+                string ruta = Path.Combine(rutaRaiz, nuevoNombre);
+                using (FileStream stream = new FileStream(ruta, FileMode.Create)) {
+                    Imagen.CopyTo(stream);
+                }
                 ViewBag.Msg = "Ecosistema creado!";
                 return RedirectToAction(nameof(Index));
             }
             catch(Exception ex) {
+                IEnumerable<EstadoConservacionDTO> estados = _servicioEstadoConservacion.GetAll();
+                IEnumerable<PaisDTO> paises = _servicioPais.GetAll();
+                ViewBag.estados = estados;
+                ViewBag.paises = paises;
                 ViewBag.Msg = ex.Message;
                 return View();
             }

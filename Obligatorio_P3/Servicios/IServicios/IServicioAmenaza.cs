@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace Servicios.IServicios
 {
-    public interface IServicioAmenaza
+    public interface IServicioAmenaza:IServicio<AmenazaDTO>
     {
+        IEnumerable<AmenazaDTO> GetAll();
+
+        AmenazaDTO GetAmenaza(int id);
     }
 }

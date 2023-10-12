@@ -23,6 +23,7 @@ namespace Servicios.Servicios
             
             entity.Validate();
             //EcosistemaMarinoDTO eco = FindByName(entity.Nombre);
+            
             if (entity != null) {
 
                 int EstadoId = entity.EstadoConservacion.EstadoConservacionId;
@@ -33,12 +34,15 @@ namespace Servicios.Servicios
                
 
                 EcosistemaMarino newEco = _repoEcosistemaMarino.Add(ecosistema);
+               
                 _repoEcosistemaMarino.Save();
+                EcosistemaMarinoDTO newECODto = new EcosistemaMarinoDTO(newEco);
+                return newECODto;
 
             } else {
                 throw new Exception("El Ecosistema ingresado ya existe.");
             }
-            return entity;
+            
 
         }
 

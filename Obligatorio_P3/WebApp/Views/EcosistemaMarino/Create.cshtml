@@ -6,65 +6,122 @@
 
 <h1>Create</h1>
 
-<h4>EcosistemaMarinoDTO</h4>
+<h4>Ecosistema Marino</h4>
+
+@if (ViewBag.Msg != "") {
+    <h5>@ViewBag.Msg</h5>
+}
 <hr />
+
+<style>
+    /* Estilos para el formulario */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label.control-label {
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="file"],
+    select {
+        width: 100%;
+        padding: 10px;
+    }
+
+    input[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+    }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+    .text-danger {
+        color: red;
+    }
+
+    /* Estilos para la fila y el formulario */
+    .row {
+        display: flex;
+        justify-content: center;
+    }
+
+    .col-md-4 {
+        width: 50%;
+    }
+</style>
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
+
             <div class="form-group">
                 <label asp-for="Nombre" class="control-label"></label>
                 <input asp-for="Nombre" class="form-control" />
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Area" class="control-label"></label>
-                <input asp-for="Area" class=" form-control" />
+                <input asp-for="Area" class="form-control" />
                 <span asp-validation-for="Area" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label class="control-label">Latitud Geograifca</label>
+                <label class="control-label">Latitud Geográfica</label>
                 <input name="Latitud" class="form-control" />
                 <span asp-validation-for="UbicacionGeografica" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label class="control-label">Longitud Geografica</label>
+                <label class="control-label">Longitud Geográfica</label>
                 <input name="Longitud" class="form-control" />
                 <span asp-validation-for="UbicacionGeografica" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label class="control-label">Grado de Peligro</label>
                 <input name="GradoPeligro" class="form-control" />
                 <span asp-validation-for="UbicacionGeografica" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label class="control-label">Estado de conservacion</label>
+                <label class="control-label">Estado de Conservación</label>
                 <select name="EstadoConservacion">
                     @foreach (var ec in ViewBag.estados) {
-                        <option value ="@ec.EstadoConservacionId">@ec.Nombre</option>
+                        <option value="@ec.EstadoConservacionId">@ec.Nombre</option>
                     }
                 </select>
-                <span asp-validation-for="UbicacionGeografica" class="text-danger"></span>
+                <span asp-validation-for="EstadoConservacion" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label class="control-label">Pais</label>
+                <label class="control-label">País</label>
                 <select name="Pais" id="Pais">
                     @foreach (var p in ViewBag.paises) {
-                        <option value ="@p.PaisId">@p.Nombre</option>
+                        <option value="@p.PaisId">@p.Nombre</option>
                     }
                 </select>
-                <span asp-validation-for="UbicacionGeografica" class="text-danger"></span>
+                <span asp-validation-for="PaisId" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Imagen" class="control-label"></label>
                 <input asp-for="Imagen" type="file" class="form-control" />
                 <span asp-validation-for="Imagen" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
+
             <div>
                 <p>@ViewBag.Msg</p>
             </div>
@@ -77,5 +134,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
