@@ -10,5 +10,6 @@ namespace Servicios.IServicios
     public interface IServicioEspecie: IServicio<EspecieDTO>
     {
         IEnumerable<EspecieDTO> GetAll();
+        EspecieDTO GetById(int Id);
     }
 }

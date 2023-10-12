@@ -66,5 +66,13 @@ namespace Servicios.Servicios
         {
             throw new NotImplementedException();
         }
+
+        public EspecieDTO GetById(int Id)
+        {
+            Especie eBuscada = _repoEspecie.GetById(Id);
+            EspecieDTO eDTO = new EspecieDTO(eBuscada);
+
+            return eDTO;
+        }
     }
 }

@@ -9,5 +9,7 @@ namespace Servicios.IServicios
 {
     public interface IServicioEcosistemaMarino:IServicio<EcosistemaMarinoDTO>
     {
+        IEnumerable<EcosistemaMarinoDTO> GetAll();
+        EcosistemaMarinoDTO GetById(int Id);
     }
 }

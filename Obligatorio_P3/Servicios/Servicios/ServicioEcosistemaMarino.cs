@@ -56,9 +56,18 @@ namespace Servicios.Servicios
             
         }
 
-        public IEnumerable<EcosistemaMarino> GetAll()
+        public IEnumerable<EcosistemaMarinoDTO> GetAll()
         {
-            return _repoEcosistemaMarino.GetAll();
+            List<EcosistemaMarinoDTO> ecosistemasDTO = new List<EcosistemaMarinoDTO>();
+            IEnumerable<EcosistemaMarino> ecosistemas = _repoEcosistemaMarino.GetAll();
+            foreach (EcosistemaMarino e in ecosistemas)
+            {
+                EcosistemaMarinoDTO ecosistemaDTO = new EcosistemaMarinoDTO(e);
+                ecosistemasDTO.Add(ecosistemaDTO);
+            }
+
+
+            return ecosistemasDTO;
         }
 
         public EcosistemaMarinoDTO FindByName(string nombre) {
@@ -66,6 +75,14 @@ namespace Servicios.Servicios
             EcosistemaMarinoDTO ecoDTO = new EcosistemaMarinoDTO(eco);
 
             return ecoDTO; 
+        }
+
+        public EcosistemaMarinoDTO GetById(int Id)
+        {
+            EcosistemaMarino eBuscada = _repoEcosistemaMarino.GetById(Id);
+            EcosistemaMarinoDTO eDTO = new EcosistemaMarinoDTO(eBuscada);
+
+            return eDTO;
         }
     }
 }

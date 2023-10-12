@@ -11,13 +11,15 @@ namespace WebApp.Controllers
     {
         protected IServicioEspecie _servicioEspecie;
         protected IServicioEstadoConservacion _servicioEstadoConservacion;
+        protected IServicioEcosistemaMarino _servicioEcosistemaMarino;
         // protected IServicioAmenazas _servicioAmenazas;
         IWebHostEnvironment _webHostEnvironment { get; set; }
 
-        public EspecieController(IServicioEspecie servicioEspecie, IServicioEstadoConservacion estadoConservacion, IWebHostEnvironment webHostEnvironment) 
+        public EspecieController(IServicioEspecie servicioEspecie, IServicioEstadoConservacion estadoConservacion, IServicioEcosistemaMarino servicioEcosistemaMarino, IWebHostEnvironment webHostEnvironment) 
         {
             _servicioEspecie = servicioEspecie;
             _servicioEstadoConservacion = estadoConservacion;
+            _servicioEcosistemaMarino = servicioEcosistemaMarino;
             _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
@@ -92,5 +94,28 @@ namespace WebApp.Controllers
 
         }
 
+        [HttpGet]
+        public IActionResult AsignarEcosistemaAEspecie()
+        {
+            ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
+            ViewBag.Especies = _servicioEspecie.GetAll();
+
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AsignarEcosistemaAEspecie(int EspecieId, int EcosistemaId)
+        {
+            EcosistemaMarinoDTO ecosistema = _servicioEcosistemaMarino.GetById(EcosistemaId);
+            EspecieDTO especie = _servicioEspecie.GetById(EspecieId);
+
+            if (ecosistema == null && especie != null)
+            {
+                _servicioEcosistemaMarinoEspecie.Add(ecosistema, especie);
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }

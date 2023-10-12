@@ -9,5 +9,6 @@ namespace Data_Access.IRepositorios
 {
     public interface IRepositorioEspecie: IRepositorio<Especie>
     {
+        Especie GetById(int id);
     }
 }
