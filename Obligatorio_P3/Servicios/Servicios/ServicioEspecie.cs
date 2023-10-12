@@ -13,21 +13,35 @@ namespace Servicios.Servicios
     public class ServicioEspecie: IServicioEspecie
     {
         private IRepositorioEspecie _repoEspecie;
-        public ServicioEspecie(IRepositorioEspecie repoEspecie)
+        private IRepositorioEstadoConservacion _repoEstadoConservacion;
+        public ServicioEspecie(IRepositorioEspecie repoEspecie, IRepositorioEstadoConservacion repoEstadoConservacion)
         {
             _repoEspecie = repoEspecie;
+            _repoEstadoConservacion = repoEstadoConservacion;
         }
 
         public EspecieDTO Add(EspecieDTO especieDTO)
         {
-            Especie especie = new Especie(especieDTO);
-            if(especie != null)
+            especieDTO.Validate();
+
+            if(especieDTO != null)
             {
-                _repoEspecie.Add(especie);
+                int EstadoId = especieDTO.EstadoConservacion.EstadoConservacionId;
+                EstadoConservacion estado = _repoEstadoConservacion.GetEstado(EstadoId);
+
+                Especie newEspecie = new Especie(especieDTO, estado);
+
+                Especie especieAdded = _repoEspecie.Add(newEspecie);
                 _repoEspecie.Save();
+
+                EspecieDTO especieDTO1 = new EspecieDTO(especieAdded);
+                return especieDTO1;
+            }
+            else
+            {
+                throw new Exception("La especie es invalida");
             }
 
-            return especieDTO;
         }
 
         public IEnumerable<EspecieDTO> GetAll()

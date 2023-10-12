@@ -18,14 +18,24 @@ namespace Domain.Entities
         
 
         public Especie() { }
-        public Especie(EspecieDTO especieDTO) {
+        public Especie(EspecieDTO especieDTO, EstadoConservacion EstadoConservacion) {
             this.EspecieId = especieDTO.EspecieId;
             this.NombreCientifico = especieDTO.NombreCientifico;
             this.NombreVulgar = especieDTO.NombreVulgar;
             this.Descripcion = especieDTO.Descripcion;
             this.PesoMin = especieDTO.PesoMin;
             this.PesoMax = especieDTO .PesoMax;
+            this.EstadoConservacion = EstadoConservacion;
             
+        }
+        public Especie(string NombreCientifico, string NombreVulgar, string Descripcion, double PesoMin, double PesoMax, EstadoConservacion EstadoConservacion /**/ )
+        {
+            this.NombreCientifico = NombreCientifico;
+            this.NombreVulgar = NombreVulgar;
+            this.Descripcion = Descripcion;
+            this.PesoMin = PesoMin;
+            this.PesoMax = PesoMax;
+            this.EstadoConservacion = EstadoConservacion;
         }
 
         public void Validate()
@@ -41,11 +51,11 @@ namespace Domain.Entities
 
             if (NombreCientifico.Length < 2 || NombreCientifico.Length > 50)
             {
-                throw new StringException("El nombre cientifico debe contener entre 50 y 500 caracteres");
+                throw new NombreLargoException("El nombre cientifico debe contener entre 50 y 500 caracteres");
             }
             if (NombreCientifico.Length < 2 || NombreCientifico.Length > 50)
             {
-                throw new StringException("El nombre vulgar debe contener entre 50 y 500 caracteres");
+                throw new NombreLargoException("El nombre vulgar debe contener entre 50 y 500 caracteres");
             }
 
             if (Descripcion == "")
@@ -54,7 +64,7 @@ namespace Domain.Entities
             }
             if (Descripcion.Length < 50 || Descripcion.Length > 500)
             {
-                throw new StringException("La descripcion debe contener entre 50 y 500 caracteres");
+                throw new NombreLargoException("La descripcion debe contener entre 50 y 500 caracteres");
             }
 
             if (PesoMin <= 0)

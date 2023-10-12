@@ -6,65 +6,61 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.EspecieId)
+                Especie Id 
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NombreCientifico)
+                Nombre Cientifico
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NombreVulgar)
+                Nombre Vulgar
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PesoMin)
+                Peso Minimo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PesoMax)
+                Peso Maximo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Descripcion)
+                Descripcion
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EstadoConservacion)
+                EstadoConservacion
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EcosistemasHabitados)
+                EcosistemasHabitados
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in ViewBag.Especies)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.EspecieId)
+                    @item.EspecieId
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.NombreCientifico)
+                    @item.NombreCientifico
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.NombreVulgar)
+                    @item.NombreVulgar
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PesoMin)
+                    @item.PesoMin
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PesoMax)
+                    @item.PesoMax
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Descripcion)
+                    @item.Descripcion
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.EstadoConservacion)
+                    @item.EstadoConservacion
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.EcosistemasHabitados)
+                    @item.EcosistemasHabitados
                 </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                </td>
+                
             </tr>
         }
     </tbody>

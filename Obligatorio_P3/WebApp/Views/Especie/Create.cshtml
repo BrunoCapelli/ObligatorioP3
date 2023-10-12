@@ -1,7 +1,7 @@
 ﻿@model Domain.DTO.EspecieDTO
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Agregar nueva especie";
 }
 
 <h1>Create</h1>
@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
             <div class="form-group">
@@ -29,12 +29,12 @@
                 <span asp-validation-for="Descripcion" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PesoMin" class="control-label"></label>
+                <label class="control-label">Peso minimo</label>
                 <input asp-for="PesoMin" class="form-control" />
                 <span asp-validation-for="PesoMin" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PesoMax" class="control-label"></label>
+                <label class="control-label">Peso maximo</label>
                 <input asp-for="PesoMax" class="form-control" />
                 <span asp-validation-for="PesoMax" class="text-danger"></span>
             </div>
@@ -48,7 +48,13 @@
                 </select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <label asp-for="Imagen" class="control-label"></label>
+                <input asp-for="Imagen" type="file" class="form-control" />
+                <span asp-validation-for="Imagen" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Agregar" class="btn btn-primary" />
             </div>
         </form>
     </div>
