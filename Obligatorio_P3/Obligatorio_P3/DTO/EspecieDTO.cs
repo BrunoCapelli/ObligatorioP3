@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities;
+using Domain.Exceptions;
 
 namespace Domain.DTO {
     public class EspecieDTO {
@@ -27,6 +28,50 @@ namespace Domain.DTO {
             this.PesoMax = especie.PesoMax;
 
 
+
+        }
+
+        public void Validate()
+        {
+            if (this.NombreCientifico == "")
+            {
+                throw new StringException("El nombre cientifico no puede ser vacio");
+            }
+            if (this.NombreVulgar == "")
+            {
+                throw new StringException("El nombre vulgar no puede ser vacio");
+            }
+
+            if (NombreCientifico.Length < 2 || NombreCientifico.Length > 50)
+            {
+                throw new StringException("El nombre cientifico debe contener entre 50 y 500 caracteres");
+            }
+            if (NombreCientifico.Length < 2 || NombreCientifico.Length > 50)
+            {
+                throw new StringException("El nombre vulgar debe contener entre 50 y 500 caracteres");
+            }
+
+            if (Descripcion == "")
+            {
+                throw new StringException("La descripcion no puede ser vacio");
+            }
+            if (Descripcion.Length < 50 || Descripcion.Length > 500)
+            {
+                throw new StringException("La descripcion debe contener entre 50 y 500 caracteres");
+            }
+
+            if (PesoMin <= 0)
+            {
+                throw new StringException("El peso debes ser positivo");
+            }
+            if (PesoMax <= 0)
+            {
+                throw new StringException("El peso debes ser positivo");
+            }
+            if (PesoMax < PesoMin)
+            {
+                throw new RangoException("El peso maximo debe ser mayor que el peso minimo");
+            }
 
         }
     }
