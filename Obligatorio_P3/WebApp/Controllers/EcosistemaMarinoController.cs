@@ -54,10 +54,8 @@ namespace WebApp.Controllers {
                 EcosistemaMarinoDTO ecoDTO = new EcosistemaMarinoDTO(Nombre, ubi, Area, EstadoC, Pais);
                 EcosistemaMarinoDTO nuevoEco = _servicioEcosistemaMarino.Add(ecoDTO);
 
-                // Aca hay que asignarle el Ecositema al Pais?
 
                 string ArchivoName = Path.GetFileName(Imagen.FileName);
-                //string fileName = Path.GetFileNameWithoutExtension(Imagen.FileName);
                 string extension = Path.GetExtension(ArchivoName);
 
                 if (extension != ".jpg" && extension !=".jpeg" && extension!= ".png") {
