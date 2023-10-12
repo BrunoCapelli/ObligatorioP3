@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.DTO;
+using Domain.Exceptions;
+using Domain.Interfaces;
 
 namespace Domain.Entities
 {
-    public class UbiGeografica
+    public class UbiGeografica:IValidable
     {
         public double Latitud { get; private set; }
         public double Longitud { get; private set;}
@@ -18,6 +20,11 @@ namespace Domain.Entities
             this.Longitud = longitud;
             this.Latitud = latitud;
         }
-       
+
+        public void Validate() {
+            if (GradoPeligro <= 0 || GradoPeligro > 10) {
+                throw new RangoException("El grado de peligro debe estar entre 1 y 10");
+            }
+        }
     }
 }

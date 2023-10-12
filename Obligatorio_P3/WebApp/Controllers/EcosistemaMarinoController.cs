@@ -41,24 +41,17 @@ namespace WebApp.Controllers {
 
         
         [HttpPost]
-        public ActionResult Create(string Nombre, string Area, string Latitud, string Longitud ,string GradoPeligro,int Pais, int EstadoConservacion,IFormFile Imagen) {
+        public ActionResult Create(string Nombre, int Area, double Latitud, double Longitud ,int GradoPeligro,int Pais, int EstadoConservacion,IFormFile Imagen) {
             try 
             {
-                Double.TryParse(Latitud, out double latitudParsed);
-                Double.TryParse(Longitud, out double longitudParsed);
-                Int32.TryParse(GradoPeligro, out int gradoPeligro);
-                Double.TryParse(Area, out double areaParsed);
-                //Int32.TryParse(EstadoConservacion, out int estConservacionParsed);
                 
-                
-
-                UbiGeografica ubi = new UbiGeografica(latitudParsed,longitudParsed, gradoPeligro);
-                //EstadoConservacionDTO newEstadoC = new EstadoConservacionDTO(estConservacionParsed);
+                UbiGeografica ubi = new UbiGeografica(Latitud, Longitud, GradoPeligro);
+                ubi.Validate();
 
                 EstadoConservacionDTO EstadoC = _servicioEstadoConservacion.GetEstado(EstadoConservacion);
                 
 
-                EcosistemaMarinoDTO ecoDTO = new EcosistemaMarinoDTO(Nombre, ubi, areaParsed, EstadoC, Pais);
+                EcosistemaMarinoDTO ecoDTO = new EcosistemaMarinoDTO(Nombre, ubi, Area, EstadoC, Pais);
                 EcosistemaMarinoDTO nuevoEco = _servicioEcosistemaMarino.Add(ecoDTO);
 
                 // Aca hay que asignarle el Ecositema al Pais?
@@ -91,46 +84,6 @@ namespace WebApp.Controllers {
                 return View();
             }
         }
-        /*
-        // GET: EcosistemaMarinoController/Details/5
-        public ActionResult Details(int id) {
-            return View();
-        }
-
-
-        // GET: EcosistemaMarinoController/Edit/5
-        public ActionResult Edit(int id) {
-            return View();
-        }
-
-        // POST: EcosistemaMarinoController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection) {
-            try {
-                return RedirectToAction(nameof(Index));
-            }
-            catch {
-                return View();
-            }
-        }
-
-        // GET: EcosistemaMarinoController/Delete/5
-        public ActionResult Delete(int id) {
-            return View();
-        }
-
-        // POST: EcosistemaMarinoController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection) {
-            try {
-                return RedirectToAction(nameof(Index));
-            }
-            catch {
-                return View();
-            }
-        }
-        */
+        
     }
 }
