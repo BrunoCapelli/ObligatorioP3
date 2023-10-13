@@ -1,10 +1,11 @@
 ﻿@model IEnumerable<Domain.DTO.EcosistemaMarinoDTO>
 
+
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lista de Ecosistemas";
 }
 
-<h1>Index</h1>
+<h4>Especies</h4>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,34 +14,58 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.EcosistemaMarinoId)
+                ID
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Nombre)
+                Nombre
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Area)
+                Area
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PaisId)
+                Pais
+            </th>
+            <th>
+                Latitud
+            </th>
+            <th>
+                Longitud
+            </th>
+            <th>
+                Grado de Peligro
+            </th>
+            <th>
+                Estado de conservacion
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in ViewBag.Ecosistema) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.EcosistemaMarinoId)
+                @item.EcosistemaMarinoId
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
+                @item.Nombre
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Area)
+                @item.Area
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PaisId)
+                @item.PaisNombre
+            </td>
+            <td>
+                @item.UbicacionGeografica.Latitud
+            </td>
+            <td>
+                @item.UbicacionGeografica.Longitud
+            </td>
+            <td>
+                @item.UbicacionGeografica.GradoPeligro
+            </td>
+            <td>
+                @item.EstadoConservacion.Nombre
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |

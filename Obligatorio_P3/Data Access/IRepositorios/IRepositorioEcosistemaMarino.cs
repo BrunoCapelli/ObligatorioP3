@@ -11,5 +11,7 @@ namespace Data_Access.IRepositorios
     public interface IRepositorioEcosistemaMarino: IRepositorio<EcosistemaMarino>
     {
         EcosistemaMarino GetEcosistemaByName(string nombre);
+
+        IEnumerable<EcosistemaMarino> GetAllEcosistemas();
     }
 }

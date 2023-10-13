@@ -26,8 +26,10 @@ namespace WebApp.Controllers {
 
         
         public ActionResult Index() {
-            return View("Lista");
+            ViewBag.Ecosistema = _servicioEcosistemaMarino.GetAll();
+            return View();
         }
+
 
         // GET: EcosistemaMarinoController/Create
         public ActionResult Create() {
