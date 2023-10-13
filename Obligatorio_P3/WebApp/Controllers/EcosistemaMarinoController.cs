@@ -26,7 +26,12 @@ namespace WebApp.Controllers {
 
         
         public ActionResult Index() {
-            ViewBag.Ecosistema = _servicioEcosistemaMarino.GetAll();
+            IEnumerable<EcosistemaMarinoDTO> ecos = _servicioEcosistemaMarino.GetAll();
+            foreach(EcosistemaMarinoDTO e in ecos) {
+                e.ImagenURL = ObtenerNombreImagen(e.EcosistemaMarinoId);
+            }
+            ViewBag.Ecosistema = ecos;
+
             return View();
         }
 
@@ -72,6 +77,7 @@ namespace WebApp.Controllers {
                 using (FileStream stream = new FileStream(ruta, FileMode.Create)) {
                     Imagen.CopyTo(stream);
                 }
+
                 ViewBag.Msg = "Ecosistema creado!";
                 return RedirectToAction(nameof(Index));
             }
@@ -84,6 +90,26 @@ namespace WebApp.Controllers {
                 return View();
             }
         }
-        
+        public string ObtenerNombreImagen(int id) {
+           
+            // Construye el nombre del archivo de imagen en función del ID.
+            string nombreArchivo = id + "_001";
+
+            // Comprueba las extensiones posibles (jpg, jpeg, png) y obtén la ruta si existe.
+            string[] extensiones = { "jpg", "jpeg", "png" };
+
+            foreach (string extension in extensiones) {
+                //string rutaImagen = Path.Combine(carpetaImagenes, nombreArchivo + "." + extension);
+                //string rutaImagen = carpetaImagenes + "/" + nombreArchivo + "." + extension;
+                string rutaImagen = Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", "img", "ecosistemas", nombreArchivo + "." + extension);
+
+                if (System.IO.File.Exists(rutaImagen)) {
+                    return nombreArchivo + "." + extension;
+                }
+            }
+
+            // Devuelve una cadena vacía si la imagen no se encuentra.
+            return string.Empty;
+        }
     }
 }

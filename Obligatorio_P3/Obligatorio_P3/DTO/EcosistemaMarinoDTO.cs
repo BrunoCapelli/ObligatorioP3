@@ -20,8 +20,10 @@ namespace Domain.DTO {
         public EstadoConservacionDTO EstadoConservacion { get; set; }
         public int PaisId { get; set; }
         public string PaisNombre { get; set; }
+        public string ImagenURL { get; set; }
 
         public IFormFile Imagen { get; set; }
+
 
         public EcosistemaMarinoDTO() { }
 
