@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Domain.DTO.EspecieDTO>
+
+
+<h4>Especies</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Especie Id 
+            </th>
+            <th>
+                Nombre Cientifico
+            </th>
+            <th>
+                Nombre Vulgar
+            </th>
+            <th>
+                Peso Minimo
+            </th>
+            <th>
+                Peso Maximo
+            </th>
+            <th>
+                Descripcion
+            </th>
+            <th>
+                EstadoConservacion
+            </th>
+            <th>
+                EcosistemasHabitados
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.Especies)
+        {
+            <tr>
+                <td>
+                    @item.EspecieId
+                </td>
+                <td>
+                    @item.NombreCientifico
+                </td>
+                <td>
+                    @item.NombreVulgar
+                </td>
+                <td>
+                    @item.PesoMin
+                </td>
+                <td>
+                    @item.PesoMax
+                </td>
+                <td>
+                    @item.Descripcion
+                </td>
+                <td>
+                    @item.EstadoConservacion
+                </td>
+                <td>
+                    @item.EcosistemasHabitados
+                </td>
+                
+            </tr>
+        }
+    </tbody>
+</table>
