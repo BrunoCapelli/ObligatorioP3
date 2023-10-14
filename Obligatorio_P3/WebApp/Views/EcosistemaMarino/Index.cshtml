@@ -84,7 +84,9 @@
                         <img src="~/img/ecosistemas/@item.ImagenURL" />
                     </td>
                     <td>
-                        @Html.ActionLink("Delete", "Delete", new { id = item.EcosistemaMarinoId }, new { @class = "btn-delete" })
+                        <form method="post" asp-action="Delete" asp-route-id="@item.EcosistemaMarinoId">
+                            <button type="submit" class="btn-delete">Delete</button>
+                        </form>
                     </td>
                 </tr>
             }

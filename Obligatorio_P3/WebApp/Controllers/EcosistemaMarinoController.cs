@@ -35,6 +35,21 @@ namespace WebApp.Controllers {
             return View();
         }
 
+        [HttpPost]
+        public IActionResult Delete(int id) {
+            try {
+                _servicioEcosistemaMarino.RemoveById(id);
+
+                
+            }
+            catch (Exception ex) {
+                ViewBag.Msg = ex.Message;
+                
+            }
+
+            return (View("Index"));
+
+        }
 
         // GET: EcosistemaMarinoController/Create
         public ActionResult Create() {
@@ -90,6 +105,10 @@ namespace WebApp.Controllers {
                 return View();
             }
         }
+
+
+
+
         public string ObtenerNombreImagen(int id) {
            
             // Construye el nombre del archivo de imagen en función del ID.

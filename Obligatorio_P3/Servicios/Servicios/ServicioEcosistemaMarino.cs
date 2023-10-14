@@ -81,5 +81,9 @@ namespace Servicios.Servicios
             //Aca traigo nombre del pais
             return ecoDTO; 
         }
+
+        public void RemoveById(int id) {
+            //EcosistemaMarino eco = _repoEcosistemaMarino.
+        }
     }
 }
