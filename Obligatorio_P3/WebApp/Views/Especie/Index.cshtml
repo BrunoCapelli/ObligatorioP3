@@ -3,6 +3,60 @@
 
 <h4>Especies</h4>
 <table class="table">
+    <form asp-action="FiltrarPorNombreCientifico" method="post">
+        <input id="btnFiltrar" type="button" value="Filtrar" class="btn btn-primary" />
+
+
+        <div id="divNombreCientifico" style="display:flex; padding: 2% 0%">
+            <label class="control-label">Buscar por nombre cientifico:</label> <br>
+            <input id="txtBuscar" name="fNombreCientifico" type="text" class="form-control" style="width: 17%;" />
+            <input style="margin-top: 1%" id="btnBuscar" type="submit" value="Buscar" class="btn btn-primary" /> <br>
+
+        </div>
+    </form>
+
+        <div id="divPeligroExt">
+            <label class="control-label">Buscar por peligro de extincion:</label>
+            <select id="slcRangosExtincion" name="Rango" class="form-select" style="width: 17%;">
+                <option value="1">Malo</option>
+                <option value="2">Aceptable</option>
+                <option value="3">Bueno</option>
+                <option value="4">Optimo</option>
+            </select>
+
+        </div>
+        <div id="divRangoPeso">
+            <label class="control-label">Buscar por rango de peso:</label>
+            <select id="slcRangosPeso" name="Rango" class="form-select" style="width: 17%;">
+                <option value="1">Gordibueno</option>
+            </select>
+
+        </div>
+        <div id="divBuscarEcosistema">
+            <label class="control-label">Buscar por ecosistema: </label>
+            <select id="slcEcosistemas" name="Ecosistemas" class="form-select" style="width: 17%;">
+                @foreach (var e in ViewBag.Ecosistemas)
+                {
+                    <option value="@e.EcosistemaMarinoId">@e.Nombre</option>
+                }
+            </select>
+
+        </div>
+        <div id="divNoPuedeHabitar">
+            <label class="control-label">Buscar que ecosistemas no puede habitar la especie: </label>
+            <select id="slcEcosistemas" name="Ecosistemas" class="form-select" style="width: 17%;">
+                @foreach (var e in ViewBag.Ecosistemas)
+                {
+                    <option value="@e.EcosistemaMarinoId">@e.Nombre</option>
+                }
+            </select>
+
+        </div>
+
+
+    <br>
+    <br>
+
     <thead>
         <tr>
             <th>
@@ -65,3 +119,39 @@
         }
     </tbody>
 </table>
+
+
+<script>
+
+    var btn = document.querySelector("#btnFiltrar")
+    var divNombreCientifico = document.querySelector("#divNombreCientifico")
+    var divPeligroExt = document.querySelector("#divPeligroExt")
+    var divRangoPeso = document.querySelector("#divRangoPeso")
+    var divBuscarEcosistema = document.querySelector("#divBuscarEcosistema")
+    var divNoPuedeHabitar = document.querySelector("#divNoPuedeHabitar")
+   
+
+    function OnInit(){
+        divNombreCientifico.style.display = "none"
+        divPeligroExt.style.display = "none"
+        divRangoPeso.style.display = "none"
+        divBuscarEcosistema.style.display = "none"
+        divNoPuedeHabitar.style.display = "none"
+
+    }
+
+
+    btn.addEventListener("click", ()=>{
+        
+        divNombreCientifico.style.display = "block"
+        divPeligroExt.style.display = "block"
+        divRangoPeso.style.display = "block"
+        divBuscarEcosistema.style.display = "block"
+        divNoPuedeHabitar.style.display = "block"
+
+    })
+
+    OnInit()
+
+
+</script>

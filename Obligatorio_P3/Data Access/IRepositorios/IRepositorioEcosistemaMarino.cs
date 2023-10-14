@@ -13,5 +13,6 @@ namespace Data_Access.IRepositorios
         EcosistemaMarino GetEcosistemaByName(string nombre);
 
         IEnumerable<EcosistemaMarino> GetAllEcosistemas();
+        EcosistemaMarino GetById(int id);  
     }
 }

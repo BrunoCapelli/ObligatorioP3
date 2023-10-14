@@ -10,8 +10,7 @@ namespace Servicios.IServicios
     public interface IServicioEcosistemaMarino:IServicio<EcosistemaMarinoDTO>
     {
         IEnumerable<EcosistemaMarinoDTO> GetAll();
-
-        void RemoveById(int id);
-        
+        EcosistemaMarinoDTO GetById(int Id);
+       
     }
 }

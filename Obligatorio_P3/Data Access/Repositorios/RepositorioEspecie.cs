@@ -14,5 +14,10 @@ namespace Data_Access.Repositorios
         { 
             Context = context;
         }
+
+        public Especie GetById(int id)
+        {
+            return Context.Especies.FirstOrDefault(e => e.EspecieId == id);
+        }
     }
 }

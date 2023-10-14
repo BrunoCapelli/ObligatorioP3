@@ -82,8 +82,14 @@ namespace Servicios.Servicios
             return ecoDTO; 
         }
 
-        public void RemoveById(int id) {
-            //EcosistemaMarino eco = _repoEcosistemaMarino.
+        public EcosistemaMarinoDTO GetById(int Id)
+        {
+            EcosistemaMarino eBuscada = _repoEcosistemaMarino.GetById(Id);
+            EcosistemaMarinoDTO eDTO = new EcosistemaMarinoDTO(eBuscada);
+
+            return eDTO;
         }
+
+
     }
 }

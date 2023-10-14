@@ -36,6 +36,16 @@ namespace Domain.DTO {
             this.EstadoConservacion = new EstadoConservacionDTO(eco.EstadoConservacion);
         }
 
+        public EcosistemaMarinoDTO(EcosistemaMarino eco, EstadoConservacionDTO EC)
+        {
+            this.EcosistemaMarinoId = eco.EcosistemaMarinoId;
+            this.Nombre = eco.Nombre;
+            this.Area = eco.Area;
+            this.UbicacionGeografica = eco.UbicacionGeografica;
+            this.PaisId = eco.PaisId;
+            this.EstadoConservacion = EC;
+        }
+
         public EcosistemaMarinoDTO(string Nombre, UbiGeografica UbicacionGeografica, double Area, EstadoConservacionDTO estadoConservacion,int PaisId) {
             //this.EcosistemaMarinoId = EcosistemaMarinoId;
             this.Nombre = Nombre;
