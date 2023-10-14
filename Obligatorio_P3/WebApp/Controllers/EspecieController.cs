@@ -101,7 +101,7 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult AsignarEcosistemaAEspecie()
+        public IActionResult Asignar()
         {
             ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
             ViewBag.Especies = _servicioEspecie.GetAll();
@@ -111,15 +111,25 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult AsignarEcosistemaAEspecie(int EspecieId, int EcosistemaId)
+        public IActionResult Asignar(int EspecieId, int EcosistemaId)
         {
-            
-            if (EcosistemaId != 0 && EspecieId != 0)
+            try
             {
-                _servicioEcosistemaMarinoEspecie.Add(EcosistemaId, EspecieId);
+                if (EcosistemaId != 0 && EspecieId != 0 && _servicioEcosistemaMarino.isApto(EspecieId, EcosistemaId))
+                {
+
+                    _servicioEcosistemaMarinoEspecie.Add(EcosistemaId, EspecieId);
+                }
+                
+                return RedirectToAction("Index");
+
+            }catch(Exception ec)
+            {
+                
+                TempData["msg"] = ec.Message;
+                return RedirectToAction("Asignar");
             }
 
-            return RedirectToAction("Index");
         }
     }
 }

@@ -21,6 +21,15 @@ namespace Data_Access.Repositorios
             return entity;
         }
 
+        public EcosistemaMarino GetByEcosistemaId(int id)
+        {
+           return Context.Ecosistemas.FirstOrDefault(em => em.EcosistemaMarinoId == id);
+        }
+
+        public Especie GetByEspecieId(int id)
+        {
+            return Context.Especies.FirstOrDefault(em => em.EspecieId == id);
+        }
 
         public void Remove(EcosistemaMarinoEspecie entity)
         {

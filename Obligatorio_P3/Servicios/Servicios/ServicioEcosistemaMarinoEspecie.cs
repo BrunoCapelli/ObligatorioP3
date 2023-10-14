@@ -1,6 +1,7 @@
 ﻿using Data_Access.IRepositorios;
 using Domain.DTO;
 using Domain.Entities;
+using Domain.Exceptions;
 using Servicios.IServicios;
 using System;
 using System.Collections.Generic;
@@ -26,13 +27,21 @@ namespace Servicios.Servicios
         {
             if(ecosistemaId > 0 && especieId > 0)
             {
-                EcosistemaMarino ecosistema = _repositorioEcosistemaMarino.GetById(especieId);
+                EcosistemaMarino ecosistema = _repositorioEcosistemaMarino.GetById(ecosistemaId);
                 Especie especie = _repositorioEspecie.GetById(especieId);
+                if (_repositorioEcosistemaMarinoEspecie.GetByEcosistemaId(ecosistemaId).EcosistemaMarinoId!= 0 &&  _repositorioEcosistemaMarinoEspecie.GetByEspecieId(especieId).EspecieId != 0)
+                {
+                    throw new DatabaseException("La asociacion ya existe");
+                }
+                else
+                {
+                    EcosistemaMarinoEspecie newEme = new EcosistemaMarinoEspecie(ecosistema, especie);
+                    _repositorioEcosistemaMarinoEspecie.Add(newEme);
+                    _repositorioEcosistemaMarino.Save();
 
-                EcosistemaMarinoEspecie newEme = new EcosistemaMarinoEspecie(ecosistema, especie);
+                    return newEme;
+                }
 
-                _repositorioEcosistemaMarinoEspecie.Add(newEme);
-                return newEme;
             }
             else
             {
@@ -55,6 +64,22 @@ namespace Servicios.Servicios
         public void Update(EcosistemaMarinoEspecie entity)
         {
             throw new NotImplementedException();
+        }
+
+        public bool isApto(int especieId, int ecosistemaId)
+        {
+            bool resultado = false;
+            EcosistemaMarino eM = _repositorioEcosistemaMarinoEspecie.GetByEcosistemaId(ecosistemaId);
+            Especie e = _repositorioEcosistemaMarinoEspecie.GetByEspecieId(especieId);
+
+            // Chequeo que el estado de conservación del ecosistema no sea peor que el de la especie que se le está asociando
+            if (eM.EstadoConservacion.ValorHasta < e.EstadoConservacion.ValorHasta)
+            {
+                return true;
+            }
+
+            // Falta para la parte de amenazas
+            return resultado;
         }
     }
 }
