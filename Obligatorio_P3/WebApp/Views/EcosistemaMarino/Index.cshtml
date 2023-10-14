@@ -1,53 +1,94 @@
 ﻿@model IEnumerable<Domain.DTO.EcosistemaMarinoDTO>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lista de Ecosistemas";
 }
 
-<h1>Index</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Estilos para la tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.EcosistemaMarinoId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Area)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaisId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.EcosistemaMarinoId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Area)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaisId)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Estilo para el botón "Create" */
+        .btn-create {
+            text-decoration: none;
+            background-color: #007bff;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        /* Estilo para el botón "Delete" */
+        .btn-delete {
+            background-color: red;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        /* Estilo para la imagen */
+        img {
+            max-width: 70px;
+            max-height: 70px;
+        }
+    </style>
+</head>
+<body>
+    <h4>Especies</h4>
+
+    <p>
+        <a asp-action="Create" class="btn-create">Create New</a>
+    </p>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Area</th>
+                <th>Pais</th>
+                <th>Latitud</th>
+                <th>Longitud</th>
+                <th>Grado de Peligro</th>
+                <th>Estado de conservacion</th>
+                <th>Foto</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.Ecosistema) {
+                <tr>
+                    <td>@item.EcosistemaMarinoId</td>
+                    <td>@item.Nombre</td>
+                    <td>@item.Area</td>
+                    <td>@item.PaisNombre</td>
+                    <td>@item.UbicacionGeografica.Latitud</td>
+                    <td>@item.UbicacionGeografica.Longitud</td>
+                    <td>@item.UbicacionGeografica.GradoPeligro</td>
+                    <td>@item.EstadoConservacion.Nombre</td>
+                    <td>
+                        <img src="~/img/ecosistemas/@item.ImagenURL" />
+                    </td>
+                    <td>
+                        @Html.ActionLink("Delete", "Delete", new { id = item.EcosistemaMarinoId }, new { @class = "btn-delete" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

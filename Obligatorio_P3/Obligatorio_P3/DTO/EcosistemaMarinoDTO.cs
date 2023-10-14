@@ -2,6 +2,7 @@
 using Domain.Exceptions;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +19,11 @@ namespace Domain.DTO {
         public List<AmenazaDTO> Amenazas = new List<AmenazaDTO>();
         public EstadoConservacionDTO EstadoConservacion { get; set; }
         public int PaisId { get; set; }
+        public string PaisNombre { get; set; }
+        public string ImagenURL { get; set; }
 
         public IFormFile Imagen { get; set; }
+
 
         public EcosistemaMarinoDTO() { }
 

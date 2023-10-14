@@ -26,8 +26,15 @@ namespace WebApp.Controllers {
 
         
         public ActionResult Index() {
-            return View("Lista");
+            IEnumerable<EcosistemaMarinoDTO> ecos = _servicioEcosistemaMarino.GetAll();
+            foreach(EcosistemaMarinoDTO e in ecos) {
+                e.ImagenURL = ObtenerNombreImagen(e.EcosistemaMarinoId);
+            }
+            ViewBag.Ecosistema = ecos;
+
+            return View();
         }
+
 
         // GET: EcosistemaMarinoController/Create
         public ActionResult Create() {
@@ -41,30 +48,21 @@ namespace WebApp.Controllers {
 
         
         [HttpPost]
-        public ActionResult Create(string Nombre, string Area, string Latitud, string Longitud ,string GradoPeligro,int Pais, int EstadoConservacion,IFormFile Imagen) {
+        public ActionResult Create(string Nombre, int Area, double Latitud, double Longitud ,int GradoPeligro,int Pais, int EstadoConservacion,IFormFile Imagen) {
             try 
             {
-                Double.TryParse(Latitud, out double latitudParsed);
-                Double.TryParse(Longitud, out double longitudParsed);
-                Int32.TryParse(GradoPeligro, out int gradoPeligro);
-                Double.TryParse(Area, out double areaParsed);
-                //Int32.TryParse(EstadoConservacion, out int estConservacionParsed);
                 
-                
-
-                UbiGeografica ubi = new UbiGeografica(latitudParsed,longitudParsed, gradoPeligro);
-                //EstadoConservacionDTO newEstadoC = new EstadoConservacionDTO(estConservacionParsed);
+                UbiGeografica ubi = new UbiGeografica(Latitud, Longitud, GradoPeligro);
+                ubi.Validate();
 
                 EstadoConservacionDTO EstadoC = _servicioEstadoConservacion.GetEstado(EstadoConservacion);
                 
 
-                EcosistemaMarinoDTO ecoDTO = new EcosistemaMarinoDTO(Nombre, ubi, areaParsed, EstadoC, Pais);
+                EcosistemaMarinoDTO ecoDTO = new EcosistemaMarinoDTO(Nombre, ubi, Area, EstadoC, Pais);
                 EcosistemaMarinoDTO nuevoEco = _servicioEcosistemaMarino.Add(ecoDTO);
 
-                // Aca hay que asignarle el Ecositema al Pais?
 
                 string ArchivoName = Path.GetFileName(Imagen.FileName);
-                //string fileName = Path.GetFileNameWithoutExtension(Imagen.FileName);
                 string extension = Path.GetExtension(ArchivoName);
 
                 if (extension != ".jpg" && extension !=".jpeg" && extension!= ".png") {
@@ -79,6 +77,7 @@ namespace WebApp.Controllers {
                 using (FileStream stream = new FileStream(ruta, FileMode.Create)) {
                     Imagen.CopyTo(stream);
                 }
+
                 ViewBag.Msg = "Ecosistema creado!";
                 return RedirectToAction(nameof(Index));
             }
@@ -91,46 +90,26 @@ namespace WebApp.Controllers {
                 return View();
             }
         }
-        /*
-        // GET: EcosistemaMarinoController/Details/5
-        public ActionResult Details(int id) {
-            return View();
-        }
+        public string ObtenerNombreImagen(int id) {
+           
+            // Construye el nombre del archivo de imagen en función del ID.
+            string nombreArchivo = id + "_001";
 
+            // Comprueba las extensiones posibles (jpg, jpeg, png) y obtén la ruta si existe.
+            string[] extensiones = { "jpg", "jpeg", "png" };
 
-        // GET: EcosistemaMarinoController/Edit/5
-        public ActionResult Edit(int id) {
-            return View();
-        }
+            foreach (string extension in extensiones) {
+                //string rutaImagen = Path.Combine(carpetaImagenes, nombreArchivo + "." + extension);
+                //string rutaImagen = carpetaImagenes + "/" + nombreArchivo + "." + extension;
+                string rutaImagen = Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", "img", "ecosistemas", nombreArchivo + "." + extension);
 
-        // POST: EcosistemaMarinoController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection) {
-            try {
-                return RedirectToAction(nameof(Index));
+                if (System.IO.File.Exists(rutaImagen)) {
+                    return nombreArchivo + "." + extension;
+                }
             }
-            catch {
-                return View();
-            }
-        }
 
-        // GET: EcosistemaMarinoController/Delete/5
-        public ActionResult Delete(int id) {
-            return View();
+            // Devuelve una cadena vacía si la imagen no se encuentra.
+            return string.Empty;
         }
-
-        // POST: EcosistemaMarinoController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection) {
-            try {
-                return RedirectToAction(nameof(Index));
-            }
-            catch {
-                return View();
-            }
-        }
-        */
     }
 }

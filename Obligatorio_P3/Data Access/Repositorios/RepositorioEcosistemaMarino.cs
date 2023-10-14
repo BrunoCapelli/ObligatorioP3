@@ -1,5 +1,6 @@
 ﻿using Data_Access.IRepositorios;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,10 @@ namespace Data_Access.Repositorios
             EcosistemaMarino eco = Context.Ecosistemas.FirstOrDefault(e => e.Nombre == nombre);
 
             return eco;
+        }
+
+        public IEnumerable<EcosistemaMarino > GetAllEcosistemas() {
+            return Context.Set<EcosistemaMarino>().Include(em => em.EstadoConservacion).ToList();
         }
     }
 }

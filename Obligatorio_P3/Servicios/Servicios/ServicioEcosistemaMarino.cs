@@ -14,10 +14,12 @@ namespace Servicios.Servicios
 
         private IRepositorioEcosistemaMarino _repoEcosistemaMarino;
         private IRepositorioEstadoConservacion _repoEstadoConservacion;
+        private IRepositorioPais _repoPais;
 
-        public ServicioEcosistemaMarino(IRepositorioEcosistemaMarino repoEcosistemaMarino, IRepositorioEstadoConservacion repoEstadoConservacion) {
+        public ServicioEcosistemaMarino(IRepositorioEcosistemaMarino repoEcosistemaMarino, IRepositorioEstadoConservacion repoEstadoConservacion,IRepositorioPais repoPais) {
             _repoEcosistemaMarino = repoEcosistemaMarino;
             _repoEstadoConservacion = repoEstadoConservacion;
+            _repoPais = repoPais;
         }
         public EcosistemaMarinoDTO Add(EcosistemaMarinoDTO entity) {
             
@@ -58,23 +60,25 @@ namespace Servicios.Servicios
 
         public IEnumerable<EcosistemaMarinoDTO> GetAll()
         {
-            List<EcosistemaMarinoDTO> ecosistemasDTO = new List<EcosistemaMarinoDTO>();
-            IEnumerable<EcosistemaMarino> ecosistemas = _repoEcosistemaMarino.GetAll();
-            foreach (EcosistemaMarino e in ecosistemas)
-            {
-                EstadoConservacionDTO ec = new EstadoConservacionDTO(e.EstadoConservacion);
-                EcosistemaMarinoDTO ecosistemaDTO = new EcosistemaMarinoDTO(e, ec);
-                ecosistemasDTO.Add(ecosistemaDTO);
+            List<EcosistemaMarinoDTO> res = new List<EcosistemaMarinoDTO>();
+            IEnumerable<EcosistemaMarino> Ecosistemas = _repoEcosistemaMarino.GetAllEcosistemas();
+            foreach(EcosistemaMarino e in  Ecosistemas) {
+                EcosistemaMarinoDTO ecosistemaMarinoDTO = new EcosistemaMarinoDTO(e);
+                Pais pais = _repoPais.GetPais(e.PaisId);
+                ecosistemaMarinoDTO.PaisNombre = pais.Nombre;
+                //Aca traigo nombre del pais
+                res.Add(ecosistemaMarinoDTO);
             }
-
-
-            return ecosistemasDTO;
+            
+            return res;
         }
 
         public EcosistemaMarinoDTO FindByName(string nombre) {
             EcosistemaMarino eco = _repoEcosistemaMarino.GetEcosistemaByName(nombre);
             EcosistemaMarinoDTO ecoDTO = new EcosistemaMarinoDTO(eco);
-
+            Pais pais = _repoPais.GetPais(eco.PaisId);
+            ecoDTO.PaisNombre = pais.Nombre;
+            //Aca traigo nombre del pais
             return ecoDTO; 
         }
 
