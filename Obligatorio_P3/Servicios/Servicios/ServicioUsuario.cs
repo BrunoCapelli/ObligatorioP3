@@ -100,9 +100,9 @@ namespace Servicios.Servicios
 
 
 
-        public void Remove(UsuarioDTO user)
+        public void Remove(int id)
         {
-            Usuario auxUser = new Usuario(user);
+            Usuario auxUser = _repoUsuario.GetUsuarioById(id);
             _repoUsuario.Remove(auxUser);
         }
 

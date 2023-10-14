@@ -38,9 +38,15 @@ namespace WebApp.Controllers {
         [HttpPost]
         public IActionResult Delete(int id) {
             try {
-                _servicioEcosistemaMarino.RemoveById(id);
+                _servicioEcosistemaMarino.Remove(id);
+                IEnumerable<EcosistemaMarinoDTO> ecos = _servicioEcosistemaMarino.GetAll();
+                foreach (EcosistemaMarinoDTO e in ecos) {
+                    e.ImagenURL = ObtenerNombreImagen(e.EcosistemaMarinoId);
+                }
+                ViewBag.Ecosistema = ecos;
+                ViewBag.Msg = "El ecosistema ha sido eliminado con exito";
 
-                
+
             }
             catch (Exception ex) {
                 ViewBag.Msg = ex.Message;

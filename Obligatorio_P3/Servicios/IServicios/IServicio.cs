@@ -10,6 +10,6 @@ namespace Servicios.IServicios
     {
         T Add(T entity);
         void Update(T entity);
-        void Remove(T entity);
+        void Remove(int id);
     }
 }

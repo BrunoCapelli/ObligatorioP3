@@ -35,7 +35,7 @@ namespace Servicios.Servicios
             return res;
         }
 
-        public void Remove(AmenazaDTO entity) {
+        public void Remove(int id) {
             throw new NotImplementedException();
         }
 

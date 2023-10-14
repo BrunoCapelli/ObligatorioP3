@@ -29,9 +29,9 @@ namespace Servicios.Servicios
             _repo.Update(entity);
         }
 
-        public void Remove(T entity)
+        public void Remove(int id)
         {
-            _repo.Remove(entity);
+            //_repo.Remove(entity);
         }
 
         public IEnumerable<T> GetAll()

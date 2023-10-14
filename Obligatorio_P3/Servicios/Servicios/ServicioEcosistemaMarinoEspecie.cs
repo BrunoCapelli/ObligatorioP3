@@ -56,7 +56,7 @@ namespace Servicios.Servicios
             throw new NotImplementedException();
         }
 
-        public void Remove(EcosistemaMarinoEspecie entity)
+        public void Remove(int id)
         {
             throw new NotImplementedException();
         }

@@ -88,5 +88,10 @@ namespace Servicios.Servicios
             }
             return especieFiltradas;
         }
+
+        public void Remove(int id) {
+            Especie esp = _repoEspecie.GetById(id);
+            _repoEspecie.Remove(esp);
+        }
     }
 }

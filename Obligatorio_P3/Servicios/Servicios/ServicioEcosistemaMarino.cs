@@ -90,6 +90,10 @@ namespace Servicios.Servicios
             return eDTO;
         }
 
-
+        public void Remove(int id) {
+            EcosistemaMarino eco = _repoEcosistemaMarino.GetById(id);
+            _repoEcosistemaMarino.Remove(eco);
+            _repoEcosistemaMarino.Save();
+        }
     }
 }
