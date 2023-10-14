@@ -11,6 +11,6 @@ namespace Servicios.IServicios
     {
         IEnumerable<EcosistemaMarinoDTO> GetAll();
         EcosistemaMarinoDTO GetById(int Id);
-        bool isApto(int especieId, int ecosistemaId);
+       
     }
 }

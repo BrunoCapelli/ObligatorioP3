@@ -30,7 +30,7 @@ namespace WebApp.Controllers
         }
         public IActionResult Index()
         {
-
+            ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
             ViewBag.Especies = _servicioEspecie.GetAll(); 
             return View();
         }
@@ -115,7 +115,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                if (EcosistemaId != 0 && EspecieId != 0 && _servicioEcosistemaMarino.isApto(EspecieId, EcosistemaId))
+                if (EcosistemaId != 0 && EspecieId != 0 && _servicioEcosistemaMarinoEspecie.isApto(EspecieId, EcosistemaId))
                 {
 
                     _servicioEcosistemaMarinoEspecie.Add(EcosistemaId, EspecieId);
@@ -130,6 +130,13 @@ namespace WebApp.Controllers
                 return RedirectToAction("Asignar");
             }
 
+        }
+
+        [HttpPost]
+        public IActionResult FiltrarPorNombreCientifico(string fNombreCientifico)
+        {
+            ViewBag.Especies = _servicioEspecie.FiltrarPorNombreCientifico(fNombreCientifico);
+            return View("Index");
         }
     }
 }

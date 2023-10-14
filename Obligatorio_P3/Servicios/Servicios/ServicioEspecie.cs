@@ -74,5 +74,19 @@ namespace Servicios.Servicios
 
             return eDTO;
         }
+
+        public IEnumerable<EspecieDTO> FiltrarPorNombreCientifico(string nombre)
+        {
+            IEnumerable<EspecieDTO> especies = GetAll();
+            List<EspecieDTO> especieFiltradas = new List<EspecieDTO>();
+            foreach (EspecieDTO especie in especies)
+            {
+                if (especie.NombreCientifico == nombre)
+                {
+                    especieFiltradas.Add(especie);
+                }
+            }
+            return especieFiltradas;
+        }
     }
 }

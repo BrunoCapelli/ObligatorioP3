@@ -11,6 +11,6 @@ namespace Servicios.IServicios
     {
         EcosistemaMarinoEspecie Add(int idEcosistema, int idEspecie);
 
-
+        bool isApto(int especieId, int ecosistemaId);
     }
 }
