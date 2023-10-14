@@ -62,7 +62,8 @@ namespace Servicios.Servicios
             IEnumerable<EcosistemaMarino> ecosistemas = _repoEcosistemaMarino.GetAll();
             foreach (EcosistemaMarino e in ecosistemas)
             {
-                EcosistemaMarinoDTO ecosistemaDTO = new EcosistemaMarinoDTO(e);
+                EstadoConservacionDTO ec = new EstadoConservacionDTO(e.EstadoConservacion);
+                EcosistemaMarinoDTO ecosistemaDTO = new EcosistemaMarinoDTO(e, ec);
                 ecosistemasDTO.Add(ecosistemaDTO);
             }
 

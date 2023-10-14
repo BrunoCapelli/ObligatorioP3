@@ -33,6 +33,7 @@ namespace WebApp
             builder.Services.AddScoped(typeof(IServicioEstadoConservacion), typeof(ServicioEstadoConservacion));
             builder.Services.AddScoped(typeof(IServicioPais), typeof(ServicioPais));  
             builder.Services.AddScoped(typeof(IServicioEcosistemaMarino), typeof(ServicioEcosistemaMarino));
+            builder.Services.AddScoped(typeof(IServicioEcosistemaMarinoEspecie), typeof(ServicioEcosistemaMarinoEspecie));
             builder.Services.AddScoped(typeof(IServicioUsuario), typeof(ServicioUsuario));
 
             //builder.Services.AddScoped(typeof(IRepositorio), typeof(Repositorio));
@@ -42,6 +43,7 @@ namespace WebApp
             builder.Services.AddScoped(typeof(IRepositorioEstadoConservacion), typeof(RepositorioEstadoConservacion));
             builder.Services.AddScoped(typeof(IRepositorioPais), typeof(RepositorioPais));
             builder.Services.AddScoped(typeof(IRepositorioEcosistemaMarino), typeof(RepositorioEcosistemaMarino));
+            builder.Services.AddScoped(typeof(IRepositorioEcosistemaMarinoEspecie), typeof(RepositorioEcosistemaMarinoEspecie));
             builder.Services.AddScoped(typeof(IRepositorioUsuario), typeof(RepositorioUsuario));
 
 
