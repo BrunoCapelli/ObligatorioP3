@@ -58,8 +58,9 @@ namespace Servicios.Servicios
             throw new NotImplementedException();
         }
 
-        public void Remove(EcosistemaAmenaza entity)
-        {
+       
+
+        public void Remove(int id) {
             throw new NotImplementedException();
         }
 
