@@ -48,11 +48,6 @@ namespace Servicios.Servicios
 
         }
 
-         public void Remove(EcosistemaMarinoDTO entity) {
-            //EcosistemaMarino ecoToRemove = new EcosistemaMarino(entity);
-           // _repoEcosistemaMarino.Remove(ecoToRemove);
-        }
-
         public void Update(EcosistemaMarinoDTO entity) {
             
         }

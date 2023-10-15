@@ -48,8 +48,16 @@
         }
     </style>
 </head>
+
+
+
 <body>
     <h4>Especies</h4>
+
+    @if (ViewBag.Msg != "") {
+        <h5 style="color:red">@ViewBag.Msg</h5>
+    }
+
 
     <p>
         <a asp-action="Create" class="btn-create">Crear</a>

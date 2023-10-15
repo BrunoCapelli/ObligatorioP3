@@ -43,8 +43,31 @@ namespace WebApp.Controllers
 
 
         [HttpPost]
-        public IActionResult Delete() {
-            return View("Index");
+        public IActionResult Delete(int id) {
+            if (HttpContext.Session.Get("email") != null) {
+                try {
+                    _servicioEspecie.Remove(id);
+                    ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
+                    IEnumerable<EspecieDTO> especies = _servicioEspecie.GetAll();
+                    foreach (EspecieDTO e in especies) {
+                        e.ImagenURL = ObtenerNombreImagen(e.EspecieId);
+                    }
+
+                    ViewBag.Especies = especies;
+                    ViewBag.Msg = "La especie ha sido eliminada con exito";
+                    BorrarImagen(id);
+                }
+                catch (Exception ex) {
+                    ViewBag.Msg = ex.Message;
+
+                }
+
+
+                return View("Index");
+            }else {
+                TempData["msg"] = "Debe iniciar sesion para realizar esa accion";
+                return RedirectToAction("Login", "Usuario");
+            }
         }
 
         [HttpGet]
@@ -147,6 +170,25 @@ namespace WebApp.Controllers
             return string.Empty;
         }
 
+        public void BorrarImagen(int id) {
+            // Construye el nombre del archivo de imagen en función del ID.
+            string nombreArchivo = id + "_001";
+
+            // Comprueba las extensiones posibles (jpg, jpeg, png) y obtén la ruta si existe.
+            string[] extensiones = { "jpg", "jpeg", "png" };
+
+            foreach (string extension in extensiones) {
+                //string rutaImagen = Path.Combine(carpetaImagenes, nombreArchivo + "." + extension);
+                //string rutaImagen = carpetaImagenes + "/" + nombreArchivo + "." + extension;
+                string rutaImagen = Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", "img", "especies", nombreArchivo + "." + extension);
+
+                if (System.IO.File.Exists(rutaImagen)) {
+                    System.IO.File.Delete(rutaImagen);
+                }
+            }
+
+
+        }
 
         [HttpGet]
         public IActionResult Asignar()

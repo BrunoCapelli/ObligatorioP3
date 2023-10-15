@@ -57,11 +57,6 @@ namespace Servicios.Servicios
 
         }
 
-        public void Remove(EspecieDTO entity)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Update(EspecieDTO entity)
         {
             throw new NotImplementedException();
@@ -92,6 +87,7 @@ namespace Servicios.Servicios
         public void Remove(int id) {
             Especie esp = _repoEspecie.GetById(id);
             _repoEspecie.Remove(esp);
+            _repoEspecie.Save();
         }
     }
 }
