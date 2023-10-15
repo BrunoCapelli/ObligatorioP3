@@ -87,7 +87,7 @@ namespace Servicios.Servicios
             // Chequeo que el estado de conservación del ecosistema no sea peor que el de la especie que se le está asociando
             if (eM.EstadoConservacion.ValorDesde <= e.EstadoConservacion.ValorDesde)
             {
-                return true;
+                resultado = true;
             }
 
             // Chequeo que la especie y el ecosistema no sufran la misma amenaza
