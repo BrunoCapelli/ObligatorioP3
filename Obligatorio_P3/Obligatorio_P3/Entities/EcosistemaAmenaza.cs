@@ -12,6 +12,14 @@ namespace Domain.Entities {
         public Amenaza amenaza { get; set; }
 
         public EcosistemaAmenaza() { }
+        public EcosistemaAmenaza(EcosistemaMarino Ecosistema, Amenaza Amenaza) 
+        {
+            this.EcosistemaMarinoId = Ecosistema.EcosistemaMarinoId;
+            this.ecosistemaMarino = Ecosistema;
+
+            this.AmenazaId = Amenaza.AmenazaId;
+            this.amenaza = Amenaza;
+        }
 
     }
 }
