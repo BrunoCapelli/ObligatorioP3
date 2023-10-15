@@ -115,9 +115,13 @@ namespace WebApp.Controllers
             catch(Exception ex)
             {
                 ViewBag.Msg = ex.Message;
+                IEnumerable<EstadoConservacionDTO> estados = _servicioEstadoConservacion.GetAll();
+                ViewBag.estados = estados;
+
+                return View();
             }
 
-            return View("Index");
+            
 
         }
 
