@@ -1,4 +1,5 @@
 ﻿using Data_Access.IRepositorios;
+using Data_Access.Repositorios;
 using Domain.DTO;
 using Domain.Entities;
 using Domain.Exceptions;
@@ -25,22 +26,33 @@ namespace Servicios.Servicios
 
         public EcosistemaMarinoEspecie Add(int ecosistemaId, int especieId)
         {
+            
             if(ecosistemaId > 0 && especieId > 0)
             {
                 EcosistemaMarino ecosistema = _repositorioEcosistemaMarino.GetById(ecosistemaId);
                 Especie especie = _repositorioEspecie.GetById(especieId);
-                if (_repositorioEcosistemaMarinoEspecie.GetByEcosistemaId(ecosistemaId).EcosistemaMarinoId!= 0 &&  _repositorioEcosistemaMarinoEspecie.GetByEspecieId(especieId).EspecieId != 0)
+
+                IEnumerable<EcosistemaMarinoEspecie> ecosistemaEspecies = _repositorioEcosistemaMarinoEspecie.GetAll();
+                foreach (EcosistemaMarinoEspecie ee in ecosistemaEspecies)
                 {
-                    throw new DatabaseException("La asociacion ya existe");
+                    if (ee.EcosistemaMarinoId == ecosistema.EcosistemaMarinoId && ee.EspecieId == especie.EspecieId)
+                    {
+                        throw new DatabaseException("La asociacion ya existe");
+                    }
                 }
-                else
+
+                EcosistemaMarinoEspecie newEme = new EcosistemaMarinoEspecie();
+
+                if (isApto(especie.EspecieId, ecosistema.EcosistemaMarinoId))
                 {
-                    EcosistemaMarinoEspecie newEme = new EcosistemaMarinoEspecie(ecosistema, especie);
+                    newEme = new EcosistemaMarinoEspecie(ecosistema, especie);
                     _repositorioEcosistemaMarinoEspecie.Add(newEme);
                     _repositorioEcosistemaMarino.Save();
 
-                    return newEme;
                 }
+
+                return newEme;
+                
 
             }
             else
@@ -69,17 +81,59 @@ namespace Servicios.Servicios
         public bool isApto(int especieId, int ecosistemaId)
         {
             bool resultado = false;
-            EcosistemaMarino eM = _repositorioEcosistemaMarinoEspecie.GetByEcosistemaId(ecosistemaId);
-            Especie e = _repositorioEcosistemaMarinoEspecie.GetByEspecieId(especieId);
+            EcosistemaMarino eM = GetEcosistemasById(ecosistemaId);
+            Especie e = GetEspecieById(especieId);
 
             // Chequeo que el estado de conservación del ecosistema no sea peor que el de la especie que se le está asociando
-            if (eM.EstadoConservacion.ValorHasta < e.EstadoConservacion.ValorHasta)
+            if (eM.EstadoConservacion.ValorDesde <= e.EstadoConservacion.ValorDesde)
             {
                 return true;
             }
 
-            // Falta para la parte de amenazas
+            // Chequeo que la especie y el ecosistema no sufran la misma amenaza
+            foreach(EcosistemaAmenaza ecoAm in eM.EcosistemaAmenazas)
+            {
+                foreach(EspecieAmenaza espAm in e.EspecieAmenazas)
+                {
+                    if(ecoAm.AmenazaId == espAm.AmenazaId)
+                    {
+                        resultado = false;
+                    }
+                }
+
+            }
+
             return resultado;
+        }
+
+        public EcosistemaMarino GetEcosistemasById(int Id)
+        {
+            EcosistemaMarino ecoBuscado = new EcosistemaMarino();
+            IEnumerable<EcosistemaMarino> ecos = _repositorioEcosistemaMarino.GetAllEcosistemas();
+            foreach(EcosistemaMarino eco in ecos)
+            {
+                if(eco.EcosistemaMarinoId == Id)
+                {
+                    ecoBuscado = eco;
+                }
+            }
+
+            return ecoBuscado;
+        }
+
+        public Especie GetEspecieById(int Id)
+        {
+            Especie ecoBuscado = new Especie();
+            IEnumerable<Especie> especies = _repositorioEspecie.GetAllEspecies();
+            foreach (Especie e in especies)
+            {
+                if (e.EspecieId == Id)
+                {
+                    ecoBuscado = e;
+                }
+            }
+
+            return ecoBuscado;
         }
     }
 }

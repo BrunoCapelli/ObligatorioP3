@@ -11,5 +11,13 @@ namespace Domain.Entities {
         public int AmenazaId { get; set; }
         public Amenaza Amenaza { get; set; }
         public EspecieAmenaza() { }
+        public EspecieAmenaza(Amenaza amenaza, Especie especie) 
+        {
+            this.AmenazaId = amenaza.AmenazaId;
+            this.Amenaza = amenaza;
+
+            this.EspecieId = especie.EspecieId;
+            this.Especie = especie;
+        }
     }
 }

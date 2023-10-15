@@ -1,5 +1,6 @@
 ﻿using Data_Access.IRepositorios;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,7 @@ namespace Data_Access.Repositorios
 
         IEnumerable<EcosistemaMarinoEspecie> IRepositorio<EcosistemaMarinoEspecie>.GetAll()
         {
-            throw new NotImplementedException();
+            return Context.Set<EcosistemaMarinoEspecie>().ToList();
         }
     }
 }

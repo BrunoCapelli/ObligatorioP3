@@ -10,6 +10,8 @@ namespace WebApp.Controllers
     public class EspecieController : Controller
     {
         protected IServicioEspecie _servicioEspecie;
+        protected IServicioAmenaza _servicioAmenaza;
+        protected IServicioEspecieAmenaza _servicioEspecieAmenaza;
         protected IServicioEstadoConservacion _servicioEstadoConservacion;
         protected IServicioEcosistemaMarino _servicioEcosistemaMarino;
 
@@ -20,11 +22,15 @@ namespace WebApp.Controllers
         public EspecieController(IServicioEspecie servicioEspecie,
             IServicioEstadoConservacion estadoConservacion, 
             IServicioEcosistemaMarino servicioEcosistemaMarino,
+            IServicioEspecieAmenaza servicioEspecieAmenaza,
+            IServicioAmenaza servicioAmenaza,
             IWebHostEnvironment webHostEnvironment, 
             IServicioEcosistemaMarinoEspecie servicioEcosistemaMarinoEspecie) 
         {
             _servicioEspecie = servicioEspecie;
+            _servicioAmenaza = servicioAmenaza;
             _servicioEstadoConservacion = estadoConservacion;
+            _servicioEspecieAmenaza = servicioEspecieAmenaza;
             _servicioEcosistemaMarino = servicioEcosistemaMarino;
             _servicioEcosistemaMarinoEspecie = servicioEcosistemaMarinoEspecie;
             _webHostEnvironment = webHostEnvironment;
@@ -102,7 +108,7 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Asignar()
+        public IActionResult AsignarEcosistema()
         {
             ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
             ViewBag.Especies = _servicioEspecie.GetAll();
@@ -112,7 +118,7 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Asignar(int EspecieId, int EcosistemaId)
+        public IActionResult AsignarEcosistema(int EspecieId, int EcosistemaId)
         {
             try
             {
@@ -140,6 +146,39 @@ namespace WebApp.Controllers
             return View("Index");
         }
 
-        
+        [HttpGet]
+        public IActionResult AsignarAmenaza()
+        {
+            ViewBag.Especies = _servicioEspecie.GetAll();
+            ViewBag.Amenazas = _servicioAmenaza.GetAll();
+
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AsignarAmenaza(int AmenazaId, int EspecieId)
+        {
+            try
+            {
+                if (EspecieId > 0 && AmenazaId > 0)
+                {
+                    _servicioEspecieAmenaza.Add(AmenazaId, EspecieId);
+                }
+
+                TempData["msg"] = "La asociacion ha sido realizada";
+                return RedirectToAction("AsignarAmenaza");
+
+            }
+            catch (Exception ec)
+            {
+
+                TempData["msg"] = ec.Message;
+                return RedirectToAction("AsignarAmenaza");
+            }
+
+        }
+
+
     }
 }

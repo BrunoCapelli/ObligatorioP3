@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace Data_Access.IRepositorios
 {
-    public interface IRepositorioEcosistemaAmenaza: IRepositorio<EcosistemaAmenaza>
-    { 
+    public interface IRepositorioEspecieAmenaza: IRepositorio<EspecieAmenaza>
+    {
+
     }
 }

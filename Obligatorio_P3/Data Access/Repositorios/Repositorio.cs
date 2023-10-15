@@ -33,7 +33,7 @@ namespace Data_Access.Repositorios
 
         public IEnumerable<T> GetAll()
         {
-            return Context.Set<T>().ToList();
+            return Context.Set<T>().ToList() ?? new List<T>();
         }
 
 
