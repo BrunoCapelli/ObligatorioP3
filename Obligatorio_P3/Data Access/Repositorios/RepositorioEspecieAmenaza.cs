@@ -14,5 +14,11 @@ namespace Data_Access.Repositorios
         {
             Context = context;
         }
+
+        public List<EspecieAmenaza> GetByEspecieId(int id)
+        {
+            List<EspecieAmenaza> entity = Context.Set<EspecieAmenaza>().Where(e => e.EspecieId == id).ToList();
+            return entity;
+        }
     }
 }

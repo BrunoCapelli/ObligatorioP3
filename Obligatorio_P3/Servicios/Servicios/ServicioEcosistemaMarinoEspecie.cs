@@ -17,11 +17,21 @@ namespace Servicios.Servicios
         private IRepositorioEcosistemaMarinoEspecie _repositorioEcosistemaMarinoEspecie;
         private IRepositorioEcosistemaMarino _repositorioEcosistemaMarino;
         private IRepositorioEspecie _repositorioEspecie;
-        public ServicioEcosistemaMarinoEspecie(IRepositorioEcosistemaMarinoEspecie repositorioEcosistemaMarinoEspecie, IRepositorioEcosistemaMarino repositorioEcosistemaMarino, IRepositorioEspecie repositorioEspecie)
+        IRepositorioEspecieAmenaza _repositorioEspecieAmenaza;
+        private IRepositorioEcosistemaAmenaza _repositorioEcosistemaAmenaza;
+        public ServicioEcosistemaMarinoEspecie(IRepositorioEcosistemaMarinoEspecie repositorioEcosistemaMarinoEspecie,
+            IRepositorioEcosistemaMarino repositorioEcosistemaMarino, 
+            IRepositorioEspecie repositorioEspecie,
+            IRepositorioEcosistemaAmenaza repositorioEcosistemaAmenaza,
+            IRepositorioEspecieAmenaza repositorioEspecieAmenaza
+            )
         {
             _repositorioEcosistemaMarinoEspecie = repositorioEcosistemaMarinoEspecie;
             _repositorioEcosistemaMarino = repositorioEcosistemaMarino;
+            _repositorioEcosistemaMarino = repositorioEcosistemaMarino;
             _repositorioEspecie = repositorioEspecie;
+            _repositorioEcosistemaAmenaza = repositorioEcosistemaAmenaza;
+            _repositorioEspecieAmenaza = repositorioEspecieAmenaza;
         }
 
         public EcosistemaMarinoEspecie Add(int ecosistemaId, int especieId)
@@ -46,6 +56,9 @@ namespace Servicios.Servicios
                 if (isApto(especie.EspecieId, ecosistema.EcosistemaMarinoId))
                 {
                     newEme = new EcosistemaMarinoEspecie(ecosistema, especie);
+                    especie.EcosistemasHabitados.Add(ecosistema);
+                    _repositorioEspecie.Update(especie);
+
                     _repositorioEcosistemaMarinoEspecie.Add(newEme);
                     _repositorioEcosistemaMarino.Save();
 
@@ -81,22 +94,33 @@ namespace Servicios.Servicios
         public bool isApto(int especieId, int ecosistemaId)
         {
             bool resultado = false;
-            EcosistemaMarino eM = GetEcosistemasById(ecosistemaId);
-            Especie e = GetEspecieById(especieId);
+            //EcosistemaMarino eM = GetEcosistemasById(ecosistemaId);
+            //Especie e = GetEspecieById(especieId);
+
+            EcosistemaMarino eM = _repositorioEcosistemaMarino.GetById(ecosistemaId);
+            List<EcosistemaAmenaza> amenazasEco = _repositorioEcosistemaAmenaza.GetByEcosistemaId(ecosistemaId);
+
+            Especie e = _repositorioEspecie.GetById(especieId);
+            List<EspecieAmenaza> amenazasE = _repositorioEspecieAmenaza.GetByEspecieId(especieId);
 
             // Chequeo que el estado de conservación del ecosistema no sea peor que el de la especie que se le está asociando
             if (eM.EstadoConservacion.ValorDesde <= e.EstadoConservacion.ValorDesde)
             {
                 resultado = true;
             }
+            else
+            {
+                throw new Exception("El nivel de estado de conservacion no es suficiente para esta asociacion");
+            }
 
             // Chequeo que la especie y el ecosistema no sufran la misma amenaza
-            foreach(EcosistemaAmenaza ecoAm in eM.EcosistemaAmenazas)
+            foreach (EcosistemaAmenaza ecoAm in amenazasEco)
             {
-                foreach(EspecieAmenaza espAm in e.EspecieAmenazas)
+                foreach(EspecieAmenaza espAm in amenazasE)
                 {
                     if(ecoAm.AmenazaId == espAm.AmenazaId)
                     {
+                        throw new AmenazaException("No se pueden asociar por las amenazas que enfrentan.");
                         resultado = false;
                     }
                 }

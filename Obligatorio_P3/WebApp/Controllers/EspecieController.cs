@@ -122,7 +122,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                if (EcosistemaId != 0 && EspecieId != 0 && _servicioEcosistemaMarinoEspecie.isApto(EspecieId, EcosistemaId))
+                if (EcosistemaId != 0 && EspecieId != 0)
                 {
 
                     _servicioEcosistemaMarinoEspecie.Add(EcosistemaId, EspecieId);
@@ -134,7 +134,7 @@ namespace WebApp.Controllers
             {
                 
                 TempData["msg"] = ec.Message;
-                return RedirectToAction("Asignar");
+                return RedirectToAction("AsignarEcosistema");
             }
 
         }

@@ -27,7 +27,10 @@ namespace Data_Access.Repositorios
         }
 
         public IEnumerable<EcosistemaMarino > GetAllEcosistemas() {
-            return Context.Set<EcosistemaMarino>().Include(em => em.EstadoConservacion).ToList();
+            return Context.Set<EcosistemaMarino>()
+                .Include(em => em.EstadoConservacion)
+                //.Include(em => em.EcosistemaAmenazas)
+                .ToList();
         }
     }
 }
