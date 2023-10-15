@@ -32,21 +32,35 @@ namespace WebApp.Controllers
         public IActionResult Index()
         {
             ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
-            ViewBag.Especies = _servicioEspecie.GetAll(); 
+            IEnumerable<EspecieDTO> especies = _servicioEspecie.GetAll();
+            foreach (EspecieDTO e in especies) {
+                e.ImagenURL = ObtenerNombreImagen(e.EspecieId);
+            }
+
+            ViewBag.Especies = especies;
             return View();
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            IEnumerable<EstadoConservacionDTO> estados = _servicioEstadoConservacion.GetAll();
-            ViewBag.estados = estados;
-            return View();
+            if (HttpContext.Session.Get("email") != null) {
+                IEnumerable<EstadoConservacionDTO> estados = _servicioEstadoConservacion.GetAll();
+                ViewBag.estados = estados;
+                return View();
+            }
+            else {
+                TempData["msg"] = "Debe iniciar sesion para realizar esa accion";
+                return RedirectToAction("Login", "Usuario");
+            }
+            
         }
 
         [HttpPost]
         public IActionResult Create(string NombreCientifico, string NombreVulgar, string Descripcion, string PesoMin, string PesoMax, int EstadoConservacion, IFormFile Imagen)
         {
+            ViewBag.Especies = _servicioEspecie.GetAll();
+            ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
             try
             {
                 Double.TryParse(PesoMin, out double pesoMinParsed);
@@ -58,7 +72,7 @@ namespace WebApp.Controllers
 
                 if(newEspecie != null)
                 {
-                    _servicioEspecie.Add(newEspecie);
+                    EspecieDTO especieCreada = _servicioEspecie.Add(newEspecie);
 
                     string ArchivoName = Path.GetFileName(Imagen.FileName);
                     //string fileName = Path.GetFileNameWithoutExtension(Imagen.FileName);
@@ -73,8 +87,8 @@ namespace WebApp.Controllers
                         }
 
                         string rutaRaiz = _webHostEnvironment.WebRootPath;
-                        rutaRaiz = Path.Combine(rutaRaiz, "img", "ecosistemas");
-                        string nuevoNombre = newEspecie.EspecieId.ToString() + "_001" + extension;
+                        rutaRaiz = Path.Combine(rutaRaiz, "img", "especies");
+                        string nuevoNombre = especieCreada.EspecieId.ToString() + "_001" + extension;
                         string ruta = Path.Combine(rutaRaiz, nuevoNombre);
                         using (FileStream stream = new FileStream(ruta, FileMode.Create))
                         {
@@ -88,7 +102,7 @@ namespace WebApp.Controllers
                         throw new Exception("La imagen ingresada no es valida");
                     }
                 }
-
+                
 
                 return RedirectToAction("Index");
             }
@@ -100,6 +114,29 @@ namespace WebApp.Controllers
             return View("Index");
 
         }
+
+        public string ObtenerNombreImagen(int id) {
+
+            // Construye el nombre del archivo de imagen en función del ID.
+            string nombreArchivo = id + "_001";
+
+            // Comprueba las extensiones posibles (jpg, jpeg, png) y obtén la ruta si existe.
+            string[] extensiones = { "jpg", "jpeg", "png" };
+
+            foreach (string extension in extensiones) {
+                //string rutaImagen = Path.Combine(carpetaImagenes, nombreArchivo + "." + extension);
+                //string rutaImagen = carpetaImagenes + "/" + nombreArchivo + "." + extension;
+                string rutaImagen = Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", "img", "especies", nombreArchivo + "." + extension);
+
+                if (System.IO.File.Exists(rutaImagen)) {
+                    return nombreArchivo + "." + extension;
+                }
+            }
+
+            // Devuelve una cadena vacía si la imagen no se encuentra.
+            return string.Empty;
+        }
+
 
         [HttpGet]
         public IActionResult Asignar()

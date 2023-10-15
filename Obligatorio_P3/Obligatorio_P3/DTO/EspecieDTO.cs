@@ -16,6 +16,7 @@ namespace Domain.DTO {
         public double PesoMin { get; set; }
         public double PesoMax { get; set; }
         public IFormFile Imagen { get; set; }
+        public string ImagenURL { get; set; }
         public List<AmenazaDTO> Amenazas { get; set; }
         public EstadoConservacionDTO EstadoConservacion { get; set; }
         public List<EcosistemaMarinoDTO> EcosistemasHabitados { get; set; }

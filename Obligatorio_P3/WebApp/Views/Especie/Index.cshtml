@@ -1,7 +1,57 @@
 ﻿@model IEnumerable<Domain.DTO.EspecieDTO>
+<head>
+    <style>
+        /* Estilos para la tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Estilo para el botón "Create" */
+        .btn-create {
+            text-decoration: none;
+            background-color: #007bff;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        /* Estilo para el botón "Delete" */
+        .btn-delete {
+            background-color: red;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        /* Estilo para la imagen */
+        img {
+            max-width: 70px;
+            max-height: 70px;
+        }
+    </style>
+</head>
+
+<body>
+
+
 
 
 <h4>Especies</h4>
+<p>
+    <a asp-action="Create" class="btn btn-primary">Crear</a>
+</p>
+
 <table class="table">
     <form asp-action="FiltrarPorNombreCientifico" method="post">
         <input id="btnFiltrar" type="button" value="Filtrar" class="btn btn-primary" />
@@ -83,7 +133,13 @@
             <th>
                 EcosistemasHabitados
             </th>
-            <th></th>
+            <th>
+                Foto
+            </th>
+            <th>
+                
+            </th>
+            
         </tr>
     </thead>
     <tbody>
@@ -114,12 +170,21 @@
                 <td>
                     @item.EcosistemasHabitados
                 </td>
+                <td>
+                    <img src="~/img/especies/@item.ImagenURL" />
+                </td>
+                <td>
+                    <form method="post" asp-action="Delete" asp-route-id="@item.EspecieId">
+                        <button type="submit" class="btn-delete">Delete</button>
+                    </form>
+                </td>
                 
             </tr>
         }
     </tbody>
 </table>
 
+</body>
 
 <script>
 

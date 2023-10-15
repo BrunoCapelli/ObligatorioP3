@@ -3,8 +3,14 @@
 @{
     ViewData["Title"] = "LogIn";
 }
+@if (TempData["msg"] != "") {
+    <h3  class="d-flex align-items-center justify-content-center" style="color:red">@TempData["msg"]</h3>
+
+}
+
 <div class="d-flex align-items-center justify-content-center" style="margin-top: 5%;">
     <div style="padding:20px; background-color:#D3D3D3;border-radius:5px">
+        
         <h1>Login</h1>
 
         <h4>Ingrese su usuario y contraseña</h4>

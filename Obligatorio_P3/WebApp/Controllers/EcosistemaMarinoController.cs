@@ -47,34 +47,47 @@ namespace WebApp.Controllers {
 
         [HttpPost]
         public IActionResult Delete(int id) {
-            try {
-                _servicioEcosistemaMarino.Remove(id);
-                IEnumerable<EcosistemaMarinoDTO> ecos = _servicioEcosistemaMarino.GetAll();
-                foreach (EcosistemaMarinoDTO e in ecos) {
-                    e.ImagenURL = ObtenerNombreImagen(e.EcosistemaMarinoId);
+            if (HttpContext.Session.Get("email") != null) {
+                try {
+                    _servicioEcosistemaMarino.Remove(id);
+                    IEnumerable<EcosistemaMarinoDTO> ecos = _servicioEcosistemaMarino.GetAll();
+                    foreach (EcosistemaMarinoDTO e in ecos) {
+                        e.ImagenURL = ObtenerNombreImagen(e.EcosistemaMarinoId);
+                    }
+                    ViewBag.Ecosistema = ecos;
+                    ViewBag.Msg = "El ecosistema ha sido eliminado con exito";
+
+
                 }
-                ViewBag.Ecosistema = ecos;
-                ViewBag.Msg = "El ecosistema ha sido eliminado con exito";
+                catch (Exception ex) {
+                    ViewBag.Msg = ex.Message;
 
+                }
 
+                return (View("Index"));
             }
-            catch (Exception ex) {
-                ViewBag.Msg = ex.Message;
-                
+            else {
+                TempData["msg"] = "Debe iniciar sesion para realizar esa accion";
+                return RedirectToAction("Login", "Usuario");
             }
-
-            return (View("Index"));
-
         }
 
         // GET: EcosistemaMarinoController/Create
         public ActionResult Create() {
-            IEnumerable <EstadoConservacionDTO> estados= _servicioEstadoConservacion.GetAll();
-            IEnumerable <PaisDTO> paises = _servicioPais.GetAll();
+            if(HttpContext.Session.Get("email") != null) {
+                IEnumerable<EstadoConservacionDTO> estados = _servicioEstadoConservacion.GetAll();
+                IEnumerable<PaisDTO> paises = _servicioPais.GetAll();
 
-            ViewBag.estados = estados;
-            ViewBag.paises = paises;
-            return View();
+                ViewBag.estados = estados;
+                ViewBag.paises = paises;
+                return View();
+            }
+            else {
+                TempData["msg"] = "Debe iniciar sesion para realizar esa accion";
+                return RedirectToAction("Login", "Usuario");
+            }
+            
+            
         }
 
         
