@@ -41,6 +41,12 @@ namespace WebApp.Controllers
             return View();
         }
 
+
+        [HttpPost]
+        public IActionResult Delete() {
+            return View("Index");
+        }
+
         [HttpGet]
         public IActionResult Create()
         {

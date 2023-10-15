@@ -47,7 +47,7 @@ namespace Servicios.Servicios
         public IEnumerable<EspecieDTO> GetAll()
         {
             List<EspecieDTO> especiesDTO = new List<EspecieDTO>();
-            IEnumerable<Especie> especies = _repoEspecie.GetAll();
+            IEnumerable<Especie> especies = _repoEspecie.GetAllEspecies();
             foreach (Especie e in especies)
             {
                 EspecieDTO especieDTO = new EspecieDTO(e);

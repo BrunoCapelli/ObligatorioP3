@@ -29,6 +29,7 @@ namespace Domain.DTO {
             this.Descripcion = especie.Descripcion;
             this.PesoMin = especie.PesoMin;
             this.PesoMax = especie.PesoMax;
+            this.EstadoConservacion = new EstadoConservacionDTO(especie.EstadoConservacion);
 
 
 

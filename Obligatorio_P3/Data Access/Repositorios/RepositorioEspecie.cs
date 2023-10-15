@@ -1,5 +1,6 @@
 ﻿using Data_Access.IRepositorios;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,11 @@ namespace Data_Access.Repositorios
             Context = context;
         }
 
-        public Especie GetById(int id)
+        public IEnumerable<Especie> GetAllEspecies() { 
+            return Context.Set<Especie>().Include(es => es.EstadoConservacion).ToList();
+        }
+
+            public Especie GetById(int id)
         {
             return Context.Especies.FirstOrDefault(e => e.EspecieId == id);
         }
