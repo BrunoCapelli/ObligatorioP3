@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Domain.DTO.EspecieDTO>
+
 <head>
     <style>
         /* Estilos para la tabla */
@@ -17,21 +18,36 @@
             background-color: #f2f2f2;
         }
 
-        /* Estilo para el botón "Create" */
-        .btn-create {
+        /* Estilo para los botones */
+        .btn-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn {
             text-decoration: none;
-            background-color: #007bff;
-            color: #fff;
             padding: 5px 10px;
             border-radius: 5px;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        /* Estilo para el botón "Create" */
+        .btn-create {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        /* Estilo para el botón "Asignar" */
+        .btn-asignar {
+            background-color: #ff600e;
+            color: #fff;
         }
 
         /* Estilo para el botón "Delete" */
         .btn-delete {
             background-color: red;
             color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
         }
 
         /* Estilo para la imagen */
@@ -181,7 +197,7 @@
                 </td>
                 <td>
                     <form method="post" asp-action="Delete" asp-route-id="@item.EspecieId">
-                        <button type="submit" class="btn-delete">Delete</button>
+                        <button type="submit" class="btn btn-delete">Borrar</button>
                     </form>
                 </td>
                 

@@ -183,11 +183,17 @@ namespace WebApp.Controllers {
         [HttpGet]
         public IActionResult AsignarAmenaza()
         {
-            ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
-            ViewBag.Amenazas = _servicioAmenaza.GetAll();
+            if (HttpContext.Session.Get("email") != null) {
+                ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
+                ViewBag.Amenazas = _servicioAmenaza.GetAll();
 
-
-            return View();
+                return View();
+            }
+            else {
+                TempData["msg"] = "Debe iniciar sesion para realizar esa accion";
+                return RedirectToAction("Login", "Usuario");
+            }
+            
         }
 
         [HttpPost]
