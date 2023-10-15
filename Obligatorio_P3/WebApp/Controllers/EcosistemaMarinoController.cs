@@ -12,14 +12,24 @@ namespace WebApp.Controllers {
         IServicioEcosistemaMarino _servicioEcosistemaMarino;
         IServicioPais _servicioPais;
         IServicioEstadoConservacion _servicioEstadoConservacion;
+        IServicioEcosistemaAmenaza _servicioEcosistemaAmenaza;
+        IServicioAmenaza _servicioAmenaza;
         IWebHostEnvironment _webHostEnvironment { get; set; }
 
 
 
 
-        public EcosistemaMarinoController(IServicioEcosistemaMarino servicioEcosistemaMarino,IServicioPais servicioPais, IServicioEstadoConservacion servicioEstadoConservacion, IWebHostEnvironment webHostEnvironment) {
+        public EcosistemaMarinoController(IServicioEcosistemaMarino servicioEcosistemaMarino,
+            IServicioPais servicioPais,
+            IServicioAmenaza servicioAmenaza,
+            IServicioEcosistemaAmenaza servicioEcosistemaAmenaza,
+            IServicioEstadoConservacion servicioEstadoConservacion, 
+            IWebHostEnvironment webHostEnvironment) 
+        {
             _servicioEcosistemaMarino = servicioEcosistemaMarino;
             _servicioPais = servicioPais;
+            _servicioAmenaza = servicioAmenaza;
+            _servicioEcosistemaAmenaza = servicioEcosistemaAmenaza;
             _servicioEstadoConservacion = servicioEstadoConservacion;
             _webHostEnvironment = webHostEnvironment;
         }
@@ -110,6 +120,38 @@ namespace WebApp.Controllers {
 
             // Devuelve una cadena vacía si la imagen no se encuentra.
             return string.Empty;
+        }
+
+        [HttpGet]
+        public IActionResult AsignarAmenaza()
+        {
+            ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
+            ViewBag.Amenazas = _servicioAmenaza.GetAll();
+
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AsignarAmenaza(int AmenazaId, int EcosistemaId)
+        {
+            try
+            {
+                if (EcosistemaId > 0 && AmenazaId > 0 )
+                {
+                    _servicioEcosistemaAmenaza.Add(AmenazaId, EcosistemaId);
+                }
+
+                return RedirectToAction("Index");
+
+            }
+            catch (Exception ec)
+            {
+
+                TempData["msg"] = ec.Message;
+                return RedirectToAction("AsignarAmenaza");
+            }
+
         }
     }
 }
