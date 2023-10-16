@@ -24,10 +24,5 @@ namespace Domain.Entities
             this.Codigo = paisDTO.Codigo;
         }
 
-        public void Copy(PaisDTO paisDTO) {
-            this.Nombre = paisDTO.Nombre;
-            this.Codigo = paisDTO.Codigo;
-        }
-
     }
 }

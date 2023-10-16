@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities;
 using Domain.Exceptions;
+using Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
 
 namespace Domain.DTO {
-    public class EspecieDTO {
+    public class EspecieDTO:IValidable {
         public int EspecieId { get; set; }
         public string NombreCientifico { get; set; }
         public string NombreVulgar { get; set; }

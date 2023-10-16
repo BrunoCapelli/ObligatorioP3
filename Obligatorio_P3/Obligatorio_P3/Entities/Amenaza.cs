@@ -24,26 +24,8 @@ namespace Domain.Entities
             this.AmenazaId = amenazaDTO.AmenazaId;
             this.Nombre = amenazaDTO.Nombre;
             this.GradoPeligrosidad = amenazaDTO.GradoPeligrosidad;
+            this.Descripcion = amenazaDTO.Descripcion;
         }
-        public void Copy(AmenazaDTO amenazaDTO) {
-            this.Nombre = amenazaDTO.Nombre;
-            this.GradoPeligrosidad = amenazaDTO .GradoPeligrosidad;
-        }
-
-        public void Validate()
-        {
-            if(GradoPeligrosidad<1 || GradoPeligrosidad > 10)
-            {
-                throw new RangoException("El grado de peligrosidad debe ser entre 1 y 10.");
-            }
-            if (Descripcion == "")
-            {
-                throw new StringException("La descripcion no puede ser vacio");
-            }
-            if (Descripcion.Length < 50 || Descripcion.Length > 500)
-            {
-                throw new NombreLargoException("La descripcion debe contener entre 50 y 500 caracteres");
-            }
-        }
+        
     }
 }
