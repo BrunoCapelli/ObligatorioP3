@@ -17,11 +17,16 @@ namespace Domain.DTO {
         public double PesoMax { get; set; }
         public IFormFile Imagen { get; set; }
         public string ImagenURL { get; set; }
+        public int NombreMin { get; set; }
+        public int NombreMax { get; set; }
+        public int DescripcionMin { get; set; }
+        public int DescripcionMax { get; set; }
         public List<AmenazaDTO> Amenazas { get; set; }
         public EstadoConservacionDTO EstadoConservacion { get; set; }
         public List<EcosistemaMarinoDTO> EcosistemasHabitados { get; set; }
         public EspecieDTO() { }
         public EspecieDTO(Especie especie) {
+
             
             this.EspecieId = especie.EspecieId;
             this.NombreCientifico = especie.NombreCientifico;
@@ -35,7 +40,7 @@ namespace Domain.DTO {
 
         }
 
-        public EspecieDTO(string NombreCientifico, string NombreVulgar, string Descripcion, double PesoMin, double PesoMax, EstadoConservacionDTO EstadoConservacion /**/ )
+        public EspecieDTO(string NombreCientifico, string NombreVulgar, string Descripcion, double PesoMin, double PesoMax, EstadoConservacionDTO EstadoConservacion )
         {
             this.NombreCientifico = NombreCientifico;
             this.NombreVulgar= NombreVulgar;
@@ -56,11 +61,11 @@ namespace Domain.DTO {
                 throw new StringException("El nombre vulgar no puede ser vacio");
             }
 
-            if (NombreCientifico.Length < 2 || NombreCientifico.Length > 50)
+            if (NombreCientifico.Length < NombreMin || NombreCientifico.Length > NombreMax)
             {
                 throw new NombreLargoException("El nombre cientifico debe contener entre 50 y 500 caracteres");
             }
-            if (NombreCientifico.Length < 2 || NombreCientifico.Length > 50)
+            if (NombreCientifico.Length < NombreMin || NombreCientifico.Length > NombreMax)
             {
                 throw new NombreLargoException("El nombre vulgar debe contener entre 50 y 500 caracteres");
             }
@@ -69,7 +74,7 @@ namespace Domain.DTO {
             {
                 throw new StringException("La descripcion no puede ser vacio");
             }
-            if (Descripcion.Length < 50 || Descripcion.Length > 500)
+            if (Descripcion.Length < DescripcionMin || Descripcion.Length > DescripcionMax)
             {
                 throw new NombreLargoException("La descripcion debe contener entre 50 y 500 caracteres");
             }

@@ -21,6 +21,8 @@ namespace Domain.DTO {
         public int PaisId { get; set; }
         public string PaisNombre { get; set; }
         public string ImagenURL { get; set; }
+        public int NombreMin { get; set; }
+        public int NombreMax { get; set; }
 
         public IFormFile Imagen { get; set; }
 
@@ -56,7 +58,7 @@ namespace Domain.DTO {
         }
 
         public void Validate() {
-            if (this.Nombre.Length < 2 || this.Nombre.Length> 50) {
+            if (this.Nombre.Length < NombreMin || this.Nombre.Length> NombreMax) {
                 throw new NombreLargoException("El largo del nombre debe estar entre 2 y 50 caracteres");
             }
             if (Area <= 0) {

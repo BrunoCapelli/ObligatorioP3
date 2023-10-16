@@ -12,6 +12,7 @@ namespace WebApp.Controllers
         protected IServicioEspecie _servicioEspecie;
         protected IServicioEstadoConservacion _servicioEstadoConservacion;
         protected IServicioEcosistemaMarino _servicioEcosistemaMarino;
+        protected IConfiguration _configuration;
 
         protected IServicioEcosistemaMarinoEspecie _servicioEcosistemaMarinoEspecie;
 
@@ -21,12 +22,14 @@ namespace WebApp.Controllers
             IServicioEstadoConservacion estadoConservacion, 
             IServicioEcosistemaMarino servicioEcosistemaMarino,
             IWebHostEnvironment webHostEnvironment, 
+            IConfiguration configuration,
             IServicioEcosistemaMarinoEspecie servicioEcosistemaMarinoEspecie) 
         {
             _servicioEspecie = servicioEspecie;
             _servicioEstadoConservacion = estadoConservacion;
             _servicioEcosistemaMarino = servicioEcosistemaMarino;
             _servicioEcosistemaMarinoEspecie = servicioEcosistemaMarinoEspecie;
+            _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
@@ -98,39 +101,42 @@ namespace WebApp.Controllers
                 EstadoConservacionDTO EstadoC = _servicioEstadoConservacion.GetEstado(EstadoConservacion);
 
                 EspecieDTO newEspecie = new EspecieDTO(NombreCientifico, NombreVulgar, Descripcion, pesoMinParsed, pesoMaxParsed, EstadoC);
+                newEspecie.NombreMin = extraerValor("ParametersTopes:NombreMin");
+                newEspecie.NombreMax = extraerValor("ParametersTopes:NombreMax");
+                newEspecie.DescripcionMin = extraerValor("ParametersTopes:DescripcionMin");
+                newEspecie.DescripcionMax = extraerValor("ParametersTopes:DescripcionMax");
 
-                if(newEspecie != null)
+                
+                EspecieDTO especieCreada = _servicioEspecie.Add(newEspecie);
+
+                string ArchivoName = Path.GetFileName(Imagen.FileName);
+                //string fileName = Path.GetFileNameWithoutExtension(Imagen.FileName);
+                string extension = Path.GetExtension(ArchivoName);
+
+                if(Imagen != null)
                 {
-                    EspecieDTO especieCreada = _servicioEspecie.Add(newEspecie);
-
-                    string ArchivoName = Path.GetFileName(Imagen.FileName);
-                    //string fileName = Path.GetFileNameWithoutExtension(Imagen.FileName);
-                    string extension = Path.GetExtension(ArchivoName);
-
-                    if(Imagen != null)
+                    if (extension != ".jpg" && extension != ".jpeg" && extension != ".png")
                     {
-                        if (extension != ".jpg" && extension != ".jpeg" && extension != ".png")
-                        {
-                            ViewBag.Msg = "Formatos de imagen admitidos: jpeg,jpg o png";
-                            return View();
-                        }
-
-                        string rutaRaiz = _webHostEnvironment.WebRootPath;
-                        rutaRaiz = Path.Combine(rutaRaiz, "img", "especies");
-                        string nuevoNombre = especieCreada.EspecieId.ToString() + "_001" + extension;
-                        string ruta = Path.Combine(rutaRaiz, nuevoNombre);
-                        using (FileStream stream = new FileStream(ruta, FileMode.Create))
-                        {
-                            Imagen.CopyTo(stream);
-                        }
-
-                        ViewBag.Msg = "Especie creada!";
+                        ViewBag.Msg = "Formatos de imagen admitidos: jpeg,jpg o png";
+                        return View();
                     }
-                    else
+
+                    string rutaRaiz = _webHostEnvironment.WebRootPath;
+                    rutaRaiz = Path.Combine(rutaRaiz, "img", "especies");
+                    string nuevoNombre = especieCreada.EspecieId.ToString() + "_001" + extension;
+                    string ruta = Path.Combine(rutaRaiz, nuevoNombre);
+                    using (FileStream stream = new FileStream(ruta, FileMode.Create))
                     {
-                        throw new Exception("La imagen ingresada no es valida");
+                        Imagen.CopyTo(stream);
                     }
+
+                    ViewBag.Msg = "Especie creada!";
                 }
+                else
+                {
+                    throw new Exception("La imagen ingresada no es valida");
+                }
+                
                 
 
                 return RedirectToAction("Index");
@@ -168,6 +174,13 @@ namespace WebApp.Controllers
 
             // Devuelve una cadena vacía si la imagen no se encuentra.
             return string.Empty;
+        }
+
+        private int extraerValor(string clave) {
+            int valor = 0;
+            string strValor = _configuration[clave];
+            Int32.TryParse(strValor, out valor);
+            return valor;
         }
 
         public void BorrarImagen(int id) {

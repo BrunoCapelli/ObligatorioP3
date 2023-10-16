@@ -9,12 +9,13 @@ using System.Collections.Generic;
 namespace WebApp.Controllers {
     public class EcosistemaMarinoController : Controller {
 
-        IServicioEcosistemaMarino _servicioEcosistemaMarino;
-        IServicioPais _servicioPais;
-        IServicioEstadoConservacion _servicioEstadoConservacion;
-        IServicioEcosistemaAmenaza _servicioEcosistemaAmenaza;
-        IServicioAmenaza _servicioAmenaza;
-        IWebHostEnvironment _webHostEnvironment { get; set; }
+        protected IServicioEcosistemaMarino _servicioEcosistemaMarino;
+        protected IServicioPais _servicioPais;
+        protected IServicioEstadoConservacion _servicioEstadoConservacion;
+        protected IServicioEcosistemaAmenaza _servicioEcosistemaAmenaza;
+        protected IServicioAmenaza _servicioAmenaza;
+        protected IConfiguration _configuration;
+        protected IWebHostEnvironment _webHostEnvironment { get; set; }
 
 
 
@@ -23,7 +24,8 @@ namespace WebApp.Controllers {
             IServicioPais servicioPais,
             IServicioAmenaza servicioAmenaza,
             IServicioEcosistemaAmenaza servicioEcosistemaAmenaza,
-            IServicioEstadoConservacion servicioEstadoConservacion, 
+            IServicioEstadoConservacion servicioEstadoConservacion,
+            IConfiguration configuration,
             IWebHostEnvironment webHostEnvironment) 
         {
             _servicioEcosistemaMarino = servicioEcosistemaMarino;
@@ -32,6 +34,7 @@ namespace WebApp.Controllers {
             _servicioEcosistemaAmenaza = servicioEcosistemaAmenaza;
             _servicioEstadoConservacion = servicioEstadoConservacion;
             _webHostEnvironment = webHostEnvironment;
+            _configuration = configuration;
         }
 
         
@@ -103,6 +106,9 @@ namespace WebApp.Controllers {
                 
 
                 EcosistemaMarinoDTO ecoDTO = new EcosistemaMarinoDTO(Nombre, ubi, Area, EstadoC, Pais);
+                ecoDTO.NombreMin = extraerValor("ParametersTopes:NombreMin");
+                ecoDTO.NombreMax = extraerValor("ParametersTopes:NombreMax");
+
                 EcosistemaMarinoDTO nuevoEco = _servicioEcosistemaMarino.Add(ecoDTO);
 
 
@@ -135,8 +141,12 @@ namespace WebApp.Controllers {
             }
         }
 
-
-
+        private int extraerValor(string clave) {
+            int valor = 0;
+            string strValor = _configuration[clave];
+            Int32.TryParse(strValor, out valor);
+            return valor;
+        }
 
         public string ObtenerNombreImagen(int id) {
            
