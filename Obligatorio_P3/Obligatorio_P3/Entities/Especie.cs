@@ -18,7 +18,7 @@ namespace Domain.Entities
         
 
         public Especie() { }
-        public Especie(EspecieDTO especieDTO, EstadoConservacion EstadoConservacion) {
+        public Especie(EspecieDTO especieDTO, EstadoConservacion estado) {
             this.EspecieId = especieDTO.EspecieId;
             this.NombreCientifico = especieDTO.NombreCientifico;
             this.NombreVulgar = especieDTO.NombreVulgar;
@@ -28,17 +28,8 @@ namespace Domain.Entities
             this.EstadoConservacion = EstadoConservacion;
             
         }
-        public Especie(string NombreCientifico, string NombreVulgar, string Descripcion, double PesoMin, double PesoMax, EstadoConservacion EstadoConservacion /**/ )
-        {
-            this.NombreCientifico = NombreCientifico;
-            this.NombreVulgar = NombreVulgar;
-            this.Descripcion = Descripcion;
-            this.PesoMin = PesoMin;
-            this.PesoMax = PesoMax;
-            this.EstadoConservacion = EstadoConservacion;
-        }
 
-        public void Validate()
+        /*public void Validate()
         {
             if(this.NombreCientifico == "")
             {
@@ -80,6 +71,6 @@ namespace Domain.Entities
                 throw new RangoException("El peso maximo debe ser mayor que el peso minimo");
             }
 
-        }
+        }*/
     }
 }
