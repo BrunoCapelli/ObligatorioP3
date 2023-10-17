@@ -61,7 +61,7 @@ namespace Servicios.Servicios
             
         }
 
-        public void Remove(EspecieAmenaza entity)
+        public void Remove(int id)
         {
             throw new NotImplementedException();
         }
