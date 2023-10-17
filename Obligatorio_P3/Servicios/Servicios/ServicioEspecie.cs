@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Servicios.Servicios
 {
@@ -14,10 +15,15 @@ namespace Servicios.Servicios
     {
         private IRepositorioEspecie _repoEspecie;
         private IRepositorioEstadoConservacion _repoEstadoConservacion;
-        public ServicioEspecie(IRepositorioEspecie repoEspecie, IRepositorioEstadoConservacion repoEstadoConservacion)
+        private IRepositorioEcosistemaMarinoEspecie _repoEcosistemaMarinoEspecie;
+        private IRepositorioEcosistemaMarino _repoEcosistemaMarino;
+        public ServicioEspecie(IRepositorioEspecie repoEspecie, IRepositorioEstadoConservacion repoEstadoConservacion, IRepositorioEcosistemaMarinoEspecie repoEcosistemaMarinoEspecie,
+            IRepositorioEcosistemaMarino repositorioEcosistemaMarino)
         {
             _repoEspecie = repoEspecie;
             _repoEstadoConservacion = repoEstadoConservacion;
+            _repoEcosistemaMarinoEspecie = repoEcosistemaMarinoEspecie;
+            _repoEcosistemaMarino = repositorioEcosistemaMarino;
         }
 
         public EspecieDTO Add(EspecieDTO especieDTO)
@@ -81,11 +87,109 @@ namespace Servicios.Servicios
             List<EspecieDTO> especieFiltradas = new List<EspecieDTO>();
             foreach (EspecieDTO especie in especies)
             {
-                if (especie.NombreCientifico == nombre)
+                if (nombre != "" && especie.NombreCientifico.Contains(nombre) )
                 {
                     especieFiltradas.Add(especie);
                 }
             }
+            return especieFiltradas;
+        }
+
+        
+        public IEnumerable<EspecieDTO> FiltrarPorGradoDeConservacion(int estadoId)
+        {
+            IEnumerable<Especie> especies = _repoEspecie.GetAllEspecies();
+            List<Especie> especieFiltradas = new List<Especie>();
+
+            foreach (Especie especie in especies)
+            {
+                if (estadoId!=0 && especie.EstadoConservacion.EstadoConservacionId == estadoId)
+                {
+                    especieFiltradas.Add(especie);
+                }
+            }
+
+            List<EspecieDTO> especiesDTO = new List<EspecieDTO>();
+            foreach (Especie e in especieFiltradas)
+            {
+                EspecieDTO especieDTO = new EspecieDTO(e);
+                especiesDTO.Add(especieDTO);
+            }
+
+            return especiesDTO;
+        }
+
+        public IEnumerable<EspecieDTO> FiltrarPorPeso(int pesoDesde, int pesoHasta)
+        {
+            IEnumerable<Especie> especies = _repoEspecie.GetAll();
+            List<Especie> especieFiltradas = new List<Especie>();
+
+            foreach (Especie especie in especies)
+            {
+                if (especie.PesoMin >= pesoDesde && especie.PesoMax <= pesoHasta)
+                {
+                    especieFiltradas.Add(especie);
+                }
+            }
+
+            List<EspecieDTO> especiesDTO = new List<EspecieDTO>();
+            foreach (Especie e in especieFiltradas)
+            {
+                EspecieDTO especieDTO = new EspecieDTO(e);
+                especiesDTO.Add(especieDTO);
+            }
+
+            return especiesDTO;
+        }
+
+        public IEnumerable<EspecieDTO> FiltrarPorEcosistema(int EcosistemaId)
+        {
+
+            IEnumerable<EcosistemaMarinoEspecie> Ecosistemas = _repoEcosistemaMarinoEspecie.GetAll();
+             List<EspecieDTO> especieFiltradas = new List<EspecieDTO>();
+             foreach (EcosistemaMarinoEspecie eco in Ecosistemas)
+             {
+                if(eco.EcosistemaMarinoId == EcosistemaId)
+                {
+                    EspecieDTO especieDto = new EspecieDTO(eco.Especie);
+                    especieFiltradas.Add(especieDto);
+                }
+
+             }
+             return especieFiltradas;
+        }
+        public IEnumerable<EspecieDTO> FiltrarPorEspecieQueNoHabita(int EspecieId)
+        {
+
+            IEnumerable<EcosistemaMarinoEspecie> EcosistemaEspecie = _repoEcosistemaMarinoEspecie.GetAll();
+            IEnumerable<EcosistemaMarino> Ecosistemas = _repoEcosistemaMarino.GetAll();
+            List<EspecieDTO> especieFiltradas = new List<EspecieDTO>();
+            List<Especie> especieHabitaEcosistema = new List<Especie>();
+
+
+            foreach (EcosistemaMarinoEspecie eco in EcosistemaEspecie)
+            {
+                if (eco.EspecieId == EspecieId)
+                {
+                    especieHabitaEcosistema.Add(eco.Especie);
+                }
+
+            }
+
+            foreach(EcosistemaMarinoEspecie em in EcosistemaEspecie)
+            {
+                foreach(Especie especie in especieHabitaEcosistema)
+                {
+                    if(especie.EspecieId != em.EspecieId)
+                    {
+                        EspecieDTO especieDto = new EspecieDTO(especie);
+                        especieFiltradas.Add(especieDto);
+                    }
+
+                }
+            }
+
+
             return especieFiltradas;
         }
     }

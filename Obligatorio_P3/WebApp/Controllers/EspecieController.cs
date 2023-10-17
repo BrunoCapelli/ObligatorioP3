@@ -1,6 +1,7 @@
 ﻿using Domain.DTO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Servicios.IServicios;
 using Servicios.Servicios;
 using System.Collections.Generic;
@@ -142,8 +143,76 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult FiltrarPorNombreCientifico(string fNombreCientifico)
         {
-            ViewBag.Especies = _servicioEspecie.FiltrarPorNombreCientifico(fNombreCientifico);
+            if (!String.IsNullOrEmpty(fNombreCientifico))
+            {
+                ViewBag.Especies = _servicioEspecie.FiltrarPorNombreCientifico(fNombreCientifico);
+
+            }
+            else
+            {
+                ViewBag.Especies = _servicioEspecie.GetAll();
+            }
+            ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
+
             return View("Index");
+        }
+        [HttpPost]
+        public IActionResult FiltrarPorGradoDeConservacion(int RangosExtincion)
+        {
+            if (RangosExtincion > 0)
+            {
+                ViewBag.Especies = _servicioEspecie.FiltrarPorGradoDeConservacion(RangosExtincion);
+            }
+            else
+            {
+                ViewBag.Especies = _servicioEspecie.GetAll();
+            }
+            ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
+
+            return View("Index");
+        }
+
+        
+        [HttpPost]
+        public IActionResult FiltrarPorPeso(int pesoDesde, int pesoHasta)
+        {
+            if (pesoDesde > 0 && pesoHasta >0)
+            {
+                ViewBag.Especies = _servicioEspecie.FiltrarPorPeso(pesoDesde, pesoHasta);
+            }
+            else
+            {
+                ViewBag.Especies = _servicioEspecie.GetAll();
+            }
+            ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
+
+            return View("Index");
+        }
+
+        [HttpPost]
+        public IActionResult FiltrarPorEcosistema(int EcosistemaID)
+        {
+            if(EcosistemaID > 0)
+            {
+                ViewBag.Especies= _servicioEspecie.FiltrarPorEcosistema(EcosistemaID);
+            }
+            ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();    
+
+            return View("Index");
+        }
+
+        // FiltrarPorEspecieQueNoHabita
+        [HttpPost]
+        public IActionResult FiltrarPorEspecieQueNoHabita(int EspecieId)
+        {
+            if (EspecieId > 0)
+            {
+                ViewBag.Especies = _servicioEspecie.FiltrarPorEspecieQueNoHabita(EspecieId);
+            }
+            ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
+
+            return View();
+            // Falta hacer la vista y ver que el filtro funciona efectivamente
         }
 
         [HttpGet]

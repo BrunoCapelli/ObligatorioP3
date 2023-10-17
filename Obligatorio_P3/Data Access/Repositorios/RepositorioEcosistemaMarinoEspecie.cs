@@ -44,7 +44,7 @@ namespace Data_Access.Repositorios
 
         IEnumerable<EcosistemaMarinoEspecie> IRepositorio<EcosistemaMarinoEspecie>.GetAll()
         {
-            return Context.Set<EcosistemaMarinoEspecie>().ToList();
+            return Context.Set<EcosistemaMarinoEspecie>().Include(eme => eme.Especie).ToList();
         }
     }
 }

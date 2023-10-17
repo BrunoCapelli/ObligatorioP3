@@ -104,7 +104,7 @@ namespace Servicios.Servicios
             List<EspecieAmenaza> amenazasE = _repositorioEspecieAmenaza.GetByEspecieId(especieId);
 
             // Chequeo que el estado de conservación del ecosistema no sea peor que el de la especie que se le está asociando
-            if (eM.EstadoConservacion.ValorDesde <= e.EstadoConservacion.ValorDesde)
+            if (eM.EstadoConservacion.ValorDesde >= e.EstadoConservacion.ValorDesde)
             {
                 resultado = true;
             }
