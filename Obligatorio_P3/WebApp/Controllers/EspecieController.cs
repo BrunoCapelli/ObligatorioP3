@@ -1,4 +1,5 @@
 ﻿using Domain.DTO;
+using Domain.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -15,6 +16,7 @@ namespace WebApp.Controllers
         protected IServicioEspecieAmenaza _servicioEspecieAmenaza;
         protected IServicioEstadoConservacion _servicioEstadoConservacion;
         protected IServicioEcosistemaMarino _servicioEcosistemaMarino;
+        protected IServicioAudit _servicioAudit;
         protected IConfiguration _configuration;
 
         protected IServicioEcosistemaMarinoEspecie _servicioEcosistemaMarinoEspecie;
@@ -26,12 +28,14 @@ namespace WebApp.Controllers
             IServicioEcosistemaMarino servicioEcosistemaMarino,
             IServicioEspecieAmenaza servicioEspecieAmenaza,
             IServicioAmenaza servicioAmenaza,
+            IServicioAudit servicioAudit,
             IWebHostEnvironment webHostEnvironment, 
             IConfiguration configuration,
             IServicioEcosistemaMarinoEspecie servicioEcosistemaMarinoEspecie) 
         {
             _servicioEspecie = servicioEspecie;
             _servicioAmenaza = servicioAmenaza;
+            _servicioAudit = servicioAudit;
             _servicioEstadoConservacion = estadoConservacion;
             _servicioEspecieAmenaza = servicioEspecieAmenaza;
             _servicioEcosistemaMarino = servicioEcosistemaMarino;
@@ -64,6 +68,7 @@ namespace WebApp.Controllers
                     }
 
                     ViewBag.Especies = especies;
+                   // _servicioAudit.Log(HttpContext.Session.GetString("email") ?? "", usuario.UsuarioDTOId, "Usuario");
                     ViewBag.Msg = "La especie ha sido eliminada con exito";
                     BorrarImagen(id);
                 }

@@ -17,8 +17,9 @@ namespace Servicios.Servicios
             _repoAudit = repoAudit;
         }
 
-        public void Log(string user, DateTime fecha, int idEntidadModificada, string TipoEntidad)
+        public void Log(string user, int idEntidadModificada, string TipoEntidad)
         {
+            DateTime fecha = DateTime.Now;
             Audit audit = new Audit(user,fecha, idEntidadModificada, TipoEntidad);
             _repoAudit.Add(audit);
             _repoAudit.Save();
