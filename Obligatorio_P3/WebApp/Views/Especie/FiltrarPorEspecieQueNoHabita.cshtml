@@ -3,18 +3,27 @@
     ViewData["Title"] = "Inicio";
 }
 
+<style>
+    /* Estilos para la tabla */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+</style>
+
 <h4>Especies</h4>
 
-@if (ViewBag.Msg != "") {
-    <h5 style="color:red">@ViewBag.Msg</h5>
-}
-
-
-<p>
-    <a asp-action="Create" class="btn btn-primary">Crear</a>
-</p>
-
-<table class="table">
     <form asp-action="FiltrarPorNombreCientifico" method="post">
         <input id="btnFiltrar" type="button" value="Filtrar" class="btn btn-primary" />
 
@@ -40,7 +49,7 @@
         </div>
     </form>
 
-     
+
 
     <form asp-action="FiltrarPorPeso" method="post">
         <div id="divRangoPeso">
@@ -48,7 +57,7 @@
             <input name="pesoDesde" type="text" class="form-control" style="width: 17%;" />
             <input name="pesoHasta" type="text" class="form-control" style="width: 17%;" />
             <input type="submit" value="Buscar" class="btn btn-primary" style="margin-top: 1%" /> <br>
-            
+
 
         </div>
     </form>
@@ -85,84 +94,38 @@
     <br>
     <br>
 
-    <thead>
-        <tr>
-            <th>
-                Especie Id 
-            </th>
-            <th>
-                Nombre Cientifico
-            </th>
-            <th>
-                Nombre Vulgar
-            </th>
-            <th>
-                Peso Minimo
-            </th>
-            <th>
-                Peso Maximo
-            </th>
-            <th>
-                Descripcion
-            </th>
-            <th>
-                Estado Conservacion
-            </th>
-            <th>
-                Ecosistemas Habitados
-            </th>
-            <th>
-                Foto
-            </th>
-            <th>
-                
-            </th>
-            
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in ViewBag.Especies)
-        {
+    <table>
+        <thead>
             <tr>
-                <td>
-                    @item.EspecieId
-                </td>
-                <td>
-                    @item.NombreCientifico
-                </td>
-                <td>
-                    @item.NombreVulgar
-                </td>
-                <td>
-                    @item.PesoMin
-                </td>
-                <td>
-                    @item.PesoMax
-                </td>
-                <td>
-                    @item.Descripcion
-                </td>
-                <td>
-                    @item.EstadoConservacion.Nombre
-                </td>
-                <td>
-                    @item.EcosistemasHabitados
-                </td>
-                <td>
-                    <img src="~/img/especies/@item.ImagenURL" />
-                </td>
-                <td>
-                    <form method="post" asp-action="Delete" asp-route-id="@item.EspecieId">
-                        <button type="submit" class="btn btn-delete">Borrar</button>
-                    </form>
-                </td>
-                
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Area</th>
+                <th>Pais</th>
+                <th>Latitud</th>
+                <th>Longitud</th>
+                <th>Grado de Peligro</th>
+                <th>Estado de conservacion</th>
+                <th>Foto</th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        @foreach (var item in ViewBag.Ecosistemas)
+            {
+                <tr>
+                    <td>@item.EcosistemaMarinoId</td>
+                    <td>@item.Nombre</td>
+                    <td>@item.Area</td>
+                    <td>@item.PaisNombre</td>
+                    <td>@item.UbicacionGeografica.Latitud</td>
+                    <td>@item.UbicacionGeografica.Longitud</td>
+                    <td>@item.UbicacionGeografica.GradoPeligro</td>
+                    <td>@item.EstadoConservacion.Nombre</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-</body>
 
 <script>
 
@@ -172,9 +135,9 @@
     var divRangoPeso = document.querySelector("#divRangoPeso")
     var divBuscarEcosistema = document.querySelector("#divBuscarEcosistema")
     var divNoPuedeHabitar = document.querySelector("#divNoPuedeHabitar")
-   
 
-    function OnInit(){
+
+    function OnInit() {
         divNombreCientifico.style.display = "none"
         divPeligroExt.style.display = "none"
         divRangoPeso.style.display = "none"
@@ -184,8 +147,8 @@
     }
 
 
-    btn.addEventListener("click", ()=>{
-        
+    btn.addEventListener("click", () => {
+
         divNombreCientifico.style.display = "block"
         divPeligroExt.style.display = "block"
         divRangoPeso.style.display = "block"

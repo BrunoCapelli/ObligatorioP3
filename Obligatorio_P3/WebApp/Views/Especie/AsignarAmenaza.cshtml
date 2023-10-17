@@ -1,8 +1,10 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Asignar Amenaza";
+}
 
-<h4>Asignar Especie a Ecosistema</h4>
+<h4>Asignar Amenaza a Especie </h4>
 
-<form asp-action="Asignar" method="post">
+<form asp-action="AsignarAmenaza" method="post">
 
     <h6>Especie:</h6>
     <select name="EspecieId">
@@ -14,13 +16,14 @@
 
     </select>
     <br />
-    <br />
-    <h6>Ecosistema:</h6>
-    <select name="EcosistemaId">
 
-        @foreach (var ec in ViewBag.Ecosistemas)
+    <br />
+    <h6>Amenaza:</h6>
+    <select name="AmenazaId">
+
+        @foreach (var a in ViewBag.Amenazas)
         {
-            <option value="@ec.EcosistemaMarinoId">@ec.Nombre</option>
+            <option value="@a.AmenazaId">@a.Nombre</option>
         }
 
     </select>
@@ -33,9 +36,5 @@
     <div>
         <p>@TempData["msg"]</p>
     </div>
-   
+
 </form>
-
-
-
-

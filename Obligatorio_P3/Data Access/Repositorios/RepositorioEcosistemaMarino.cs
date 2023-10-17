@@ -17,7 +17,7 @@ namespace Data_Access.Repositorios
 
         public EcosistemaMarino GetById(int id)
         {
-            return Context.Ecosistemas.FirstOrDefault(ec => ec.EcosistemaMarinoId == id);
+            return Context.Ecosistemas.Include(em => em.EstadoConservacion).FirstOrDefault(ec => ec.EcosistemaMarinoId == id);
         }
 
         public EcosistemaMarino GetEcosistemaByName(string nombre) {
@@ -27,7 +27,10 @@ namespace Data_Access.Repositorios
         }
 
         public IEnumerable<EcosistemaMarino > GetAllEcosistemas() {
-            return Context.Set<EcosistemaMarino>().Include(em => em.EstadoConservacion).ToList();
+            return Context.Set<EcosistemaMarino>()
+                .Include(em => em.EstadoConservacion)
+                //.Include(em => em.EcosistemaAmenazas)
+                .ToList();
         }
     }
 }

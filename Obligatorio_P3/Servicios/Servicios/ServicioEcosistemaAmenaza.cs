@@ -32,19 +32,18 @@ namespace Servicios.Servicios
                 EcosistemaMarino ecosistema = _repositorioEcosistemaMarino.GetById(EcosistemaId);
                 Amenaza amenaza = _repoAmenaza.GetAmenazaById(AmenazaId);
 
-                //if (_repositorioEcosistemaMarino.GetById(EcosistemaId).EcosistemaMarinoId == 0 && 
-                //    _repoAmenaza.GetAmenazaById(AmenazaId).AmenazaId != 0)
-                //{
-                //    throw new DatabaseException("La asociacion ya existe");
-                //}
-                //else
-                //{
-                    EcosistemaAmenaza newEme = new EcosistemaAmenaza(ecosistema, amenaza);
-                    _repositorioEAmenaza.Add(newEme);
-                    _repositorioEcosistemaMarino.Save();
+                IEnumerable<EcosistemaAmenaza> ecosistemaAmenazas =  _repositorioEAmenaza.GetAll();
+                foreach(EcosistemaAmenaza ea in ecosistemaAmenazas)
+                {
+                    if(ea.AmenazaId == AmenazaId && ea.EcosistemaMarinoId == EcosistemaId)
+                    {
+                        throw new DatabaseException("La asociacion ya existe");
+                    }
+                }
 
-                //}
-
+                EcosistemaAmenaza newEme = new EcosistemaAmenaza(ecosistema, amenaza);
+                _repositorioEAmenaza.Add(newEme);
+                _repositorioEcosistemaMarino.Save();
             }
             else
             {

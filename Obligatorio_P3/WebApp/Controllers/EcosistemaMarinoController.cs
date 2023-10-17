@@ -216,7 +216,8 @@ namespace WebApp.Controllers {
                     _servicioEcosistemaAmenaza.Add(AmenazaId, EcosistemaId);
                 }
 
-                return RedirectToAction("Index");
+                TempData["msg"] = "La asociacion ha sido realizada";
+                return RedirectToAction("AsignarAmenaza");
 
             }
             catch (Exception ec)

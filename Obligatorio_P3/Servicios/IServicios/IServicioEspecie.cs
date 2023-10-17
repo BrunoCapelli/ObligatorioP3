@@ -12,5 +12,9 @@ namespace Servicios.IServicios
         IEnumerable<EspecieDTO> GetAll();
         EspecieDTO GetById(int Id);
         IEnumerable<EspecieDTO> FiltrarPorNombreCientifico(string nombre);
+        IEnumerable<EspecieDTO> FiltrarPorGradoDeConservacion(int estadoId);
+        IEnumerable<EspecieDTO> FiltrarPorPeso(int pesoDesde, int pesoHasta);
+        IEnumerable<EspecieDTO> FiltrarPorEcosistema(int EcosistemaId);
+        IEnumerable<EcosistemaMarinoDTO> FiltrarPorEspecieQueNoHabita(int EspecieId);
     }
 }

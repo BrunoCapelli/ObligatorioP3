@@ -11,5 +11,6 @@ namespace Data_Access.IRepositorios
     {
         IEnumerable<Especie> GetAllEspecies();
         Especie GetById(int id);
+        IEnumerable<Especie> GetAllEspecies();
     }
 }

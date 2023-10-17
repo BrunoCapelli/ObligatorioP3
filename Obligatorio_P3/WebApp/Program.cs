@@ -36,10 +36,12 @@ namespace WebApp
             builder.Services.AddScoped(typeof(IServicioEcosistemaMarinoEspecie), typeof(ServicioEcosistemaMarinoEspecie));
             builder.Services.AddScoped(typeof(IServicioEcosistemaAmenaza), typeof(ServicioEcosistemaAmenaza));
             builder.Services.AddScoped(typeof(IServicioUsuario), typeof(ServicioUsuario));
+            builder.Services.AddScoped(typeof(IServicioEspecieAmenaza), typeof(ServicioEspecieAmenaza));
 
             /*
               builder.Services.AddScoped(typeof(IRepositorioAudit), typeof(RepositorioAudit));*/
             builder.Services.AddScoped(typeof(IRepositorioAmenaza), typeof(RepositorioAmenaza));
+            builder.Services.AddScoped(typeof(IRepositorioEspecieAmenaza), typeof(RepositorioEspecieAmenaza));
             builder.Services.AddScoped(typeof(IRepositorioEspecie), typeof(RepositorioEspecie));
             builder.Services.AddScoped(typeof(IRepositorioEstadoConservacion), typeof(RepositorioEstadoConservacion));
             builder.Services.AddScoped(typeof(IRepositorioPais), typeof(RepositorioPais));

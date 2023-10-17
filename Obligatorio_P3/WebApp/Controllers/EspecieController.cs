@@ -1,6 +1,7 @@
 ﻿using Domain.DTO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Servicios.IServicios;
 using Servicios.Servicios;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ namespace WebApp.Controllers
     public class EspecieController : Controller
     {
         protected IServicioEspecie _servicioEspecie;
+        protected IServicioAmenaza _servicioAmenaza;
+        protected IServicioEspecieAmenaza _servicioEspecieAmenaza;
         protected IServicioEstadoConservacion _servicioEstadoConservacion;
         protected IServicioEcosistemaMarino _servicioEcosistemaMarino;
         protected IConfiguration _configuration;
@@ -21,12 +24,16 @@ namespace WebApp.Controllers
         public EspecieController(IServicioEspecie servicioEspecie,
             IServicioEstadoConservacion estadoConservacion, 
             IServicioEcosistemaMarino servicioEcosistemaMarino,
+            IServicioEspecieAmenaza servicioEspecieAmenaza,
+            IServicioAmenaza servicioAmenaza,
             IWebHostEnvironment webHostEnvironment, 
             IConfiguration configuration,
             IServicioEcosistemaMarinoEspecie servicioEcosistemaMarinoEspecie) 
         {
             _servicioEspecie = servicioEspecie;
+            _servicioAmenaza = servicioAmenaza;
             _servicioEstadoConservacion = estadoConservacion;
+            _servicioEspecieAmenaza = servicioEspecieAmenaza;
             _servicioEcosistemaMarino = servicioEcosistemaMarino;
             _servicioEcosistemaMarinoEspecie = servicioEcosistemaMarinoEspecie;
             _configuration = configuration;
@@ -204,7 +211,7 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Asignar()
+        public IActionResult AsignarEcosistema()
         {
             ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
             ViewBag.Especies = _servicioEspecie.GetAll();
@@ -214,11 +221,11 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Asignar(int EspecieId, int EcosistemaId)
+        public IActionResult AsignarEcosistema(int EspecieId, int EcosistemaId)
         {
             try
             {
-                if (EcosistemaId != 0 && EspecieId != 0 && _servicioEcosistemaMarinoEspecie.isApto(EspecieId, EcosistemaId))
+                if (EcosistemaId != 0 && EspecieId != 0)
                 {
 
                     _servicioEcosistemaMarinoEspecie.Add(EcosistemaId, EspecieId);
@@ -230,7 +237,7 @@ namespace WebApp.Controllers
             {
                 
                 TempData["msg"] = ec.Message;
-                return RedirectToAction("Asignar");
+                return RedirectToAction("AsignarEcosistema");
             }
 
         }
@@ -238,10 +245,115 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult FiltrarPorNombreCientifico(string fNombreCientifico)
         {
-            ViewBag.Especies = _servicioEspecie.FiltrarPorNombreCientifico(fNombreCientifico);
+            if (!String.IsNullOrEmpty(fNombreCientifico))
+            {
+                ViewBag.Especies = _servicioEspecie.FiltrarPorNombreCientifico(fNombreCientifico);
+
+            }
+            else
+            {
+                ViewBag.Especies = _servicioEspecie.GetAll();
+            }
+            ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
+
+            return View("Index");
+        }
+        [HttpPost]
+        public IActionResult FiltrarPorGradoDeConservacion(int RangosExtincion)
+        {
+            if (RangosExtincion > 0)
+            {
+                ViewBag.Especies = _servicioEspecie.FiltrarPorGradoDeConservacion(RangosExtincion);
+            }
+            else
+            {
+                ViewBag.Especies = _servicioEspecie.GetAll();
+            }
+            ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
+
             return View("Index");
         }
 
         
+        [HttpPost]
+        public IActionResult FiltrarPorPeso(int pesoDesde, int pesoHasta)
+        {
+            if (pesoDesde > 0 && pesoHasta >0)
+            {
+                ViewBag.Especies = _servicioEspecie.FiltrarPorPeso(pesoDesde, pesoHasta);
+            }
+            else
+            {
+                ViewBag.Especies = _servicioEspecie.GetAll();
+            }
+            ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
+
+            return View("Index");
+        }
+
+        [HttpPost]
+        public IActionResult FiltrarPorEcosistema(int EcosistemaID)
+        {
+            if(EcosistemaID > 0)
+            {
+                ViewBag.Especies= _servicioEspecie.FiltrarPorEcosistema(EcosistemaID);
+            }
+            ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();    
+
+            return View("Index");
+        }
+
+        // FiltrarPorEspecieQueNoHabita
+        [HttpPost]
+        public IActionResult FiltrarPorEspecieQueNoHabita(int EspecieId)
+        {
+            ViewBag.Especies = _servicioEspecie.GetAll();
+            if (EspecieId > 0)
+            {
+                ViewBag.Ecosistemas = _servicioEspecie.FiltrarPorEspecieQueNoHabita(EspecieId);
+            }
+            else
+            {
+                ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
+            }
+
+            return View();
+           
+        }
+
+        [HttpGet]
+        public IActionResult AsignarAmenaza()
+        {
+            ViewBag.Especies = _servicioEspecie.GetAll();
+            ViewBag.Amenazas = _servicioAmenaza.GetAll();
+
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AsignarAmenaza(int AmenazaId, int EspecieId)
+        {
+            try
+            {
+                if (EspecieId > 0 && AmenazaId > 0)
+                {
+                    _servicioEspecieAmenaza.Add(AmenazaId, EspecieId);
+                }
+
+                TempData["msg"] = "La asociacion ha sido realizada";
+                return RedirectToAction("AsignarAmenaza");
+
+            }
+            catch (Exception ec)
+            {
+
+                TempData["msg"] = ec.Message;
+                return RedirectToAction("AsignarAmenaza");
+            }
+
+        }
+
+
     }
 }

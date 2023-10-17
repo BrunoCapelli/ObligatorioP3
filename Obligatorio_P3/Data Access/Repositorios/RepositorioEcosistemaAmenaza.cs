@@ -19,6 +19,11 @@ namespace Data_Access.Repositorios
             Context.Set<EcosistemaAmenaza>().Add(entity);
             return entity;
         }
+        public List<EcosistemaAmenaza> GetByEcosistemaId(int id)
+        {
+            List<EcosistemaAmenaza> entity = Context.Set<EcosistemaAmenaza>().Where(ea => ea.EcosistemaMarinoId == id).ToList();
+            return entity;
+        }
 
     }
 }

@@ -14,7 +14,7 @@ namespace Servicios.Servicios
     {
         private IRepositorio<T> _repo { get; set; }
 
-        public Servicio(IRepositorio<T> repo)
+        public Servicio(IRepositorio<T> repo) // Creo que esto no corresponde. Posible Issue
         {
             _repo = repo;
         }

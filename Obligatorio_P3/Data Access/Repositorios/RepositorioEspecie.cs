@@ -22,7 +22,12 @@ namespace Data_Access.Repositorios
 
             public Especie GetById(int id)
         {
-            return Context.Especies.FirstOrDefault(e => e.EspecieId == id);
+            return Context.Especies.Include(e => e.EstadoConservacion).FirstOrDefault(e => e.EspecieId == id);
+        }
+
+        public IEnumerable<Especie> GetAllEspecies()
+        {
+            return Context.Set<Especie>().Include(e => e.EstadoConservacion).ToList();
         }
     }
 }
