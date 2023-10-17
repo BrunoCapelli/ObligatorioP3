@@ -68,7 +68,7 @@ namespace WebApp.Controllers
                     }
 
                     ViewBag.Especies = especies;
-                   // _servicioAudit.Log(HttpContext.Session.GetString("email") ?? "", usuario.UsuarioDTOId, "Usuario");
+                    _servicioAudit.Log(HttpContext.Session.GetString("email") ?? "", id, "Especie");
                     ViewBag.Msg = "La especie ha sido eliminada con exito";
                     BorrarImagen(id);
                 }
