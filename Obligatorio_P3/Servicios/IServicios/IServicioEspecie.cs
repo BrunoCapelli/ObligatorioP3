@@ -15,6 +15,6 @@ namespace Servicios.IServicios
         IEnumerable<EspecieDTO> FiltrarPorGradoDeConservacion(int estadoId);
         IEnumerable<EspecieDTO> FiltrarPorPeso(int pesoDesde, int pesoHasta);
         IEnumerable<EspecieDTO> FiltrarPorEcosistema(int EcosistemaId);
-        IEnumerable<EspecieDTO> FiltrarPorEspecieQueNoHabita(int EspecieId);
+        IEnumerable<EcosistemaMarinoDTO> FiltrarPorEspecieQueNoHabita(int EspecieId);
     }
 }

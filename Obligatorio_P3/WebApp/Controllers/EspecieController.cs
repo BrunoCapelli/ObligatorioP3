@@ -205,14 +205,18 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult FiltrarPorEspecieQueNoHabita(int EspecieId)
         {
+            ViewBag.Especies = _servicioEspecie.GetAll();
             if (EspecieId > 0)
             {
-                ViewBag.Especies = _servicioEspecie.FiltrarPorEspecieQueNoHabita(EspecieId);
+                ViewBag.Ecosistemas = _servicioEspecie.FiltrarPorEspecieQueNoHabita(EspecieId);
             }
-            ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
+            else
+            {
+                ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
+            }
 
             return View();
-            // Falta hacer la vista y ver que el filtro funciona efectivamente
+           
         }
 
         [HttpGet]

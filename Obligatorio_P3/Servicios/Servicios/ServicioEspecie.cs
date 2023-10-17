@@ -158,39 +158,40 @@ namespace Servicios.Servicios
              }
              return especieFiltradas;
         }
-        public IEnumerable<EspecieDTO> FiltrarPorEspecieQueNoHabita(int EspecieId)
+        public IEnumerable<EcosistemaMarinoDTO> FiltrarPorEspecieQueNoHabita(int EspecieId)
         {
 
             IEnumerable<EcosistemaMarinoEspecie> EcosistemaEspecie = _repoEcosistemaMarinoEspecie.GetAll();
-            IEnumerable<EcosistemaMarino> Ecosistemas = _repoEcosistemaMarino.GetAll();
-            List<EspecieDTO> especieFiltradas = new List<EspecieDTO>();
-            List<Especie> especieHabitaEcosistema = new List<Especie>();
+            IEnumerable<EcosistemaMarino> Ecosistemas = _repoEcosistemaMarino.GetAllEcosistemas();
+            List<EcosistemaMarino> EcosistemasNoHabitados = new List<EcosistemaMarino>();
+            //List<EspecieDTO> especieFiltradas = new List<EspecieDTO>();
+            List<EcosistemaMarinoDTO> EcosistemasFiltrados = new List<EcosistemaMarinoDTO>();
 
 
             foreach (EcosistemaMarinoEspecie eco in EcosistemaEspecie)
             {
-                if (eco.EspecieId == EspecieId)
+                if (eco.EspecieId != EspecieId)
                 {
-                    especieHabitaEcosistema.Add(eco.Especie);
+                    EcosistemasNoHabitados.Add(eco.EcosistemaMarino);
                 }
 
             }
 
-            foreach(EcosistemaMarinoEspecie em in EcosistemaEspecie)
+            foreach(EcosistemaMarino eco in EcosistemasNoHabitados)
             {
-                foreach(Especie especie in especieHabitaEcosistema)
+                foreach(EcosistemaMarino ecosistema in Ecosistemas)
                 {
-                    if(especie.EspecieId != em.EspecieId)
+                    if(eco.EcosistemaMarinoId == ecosistema.EcosistemaMarinoId)
                     {
-                        EspecieDTO especieDto = new EspecieDTO(especie);
-                        especieFiltradas.Add(especieDto);
+                        EcosistemaMarinoDTO ecoDTO = new EcosistemaMarinoDTO(eco);
+                        EcosistemasFiltrados.Add(ecoDTO);
                     }
 
                 }
             }
 
 
-            return especieFiltradas;
+            return EcosistemasFiltrados;
         }
     }
 }
