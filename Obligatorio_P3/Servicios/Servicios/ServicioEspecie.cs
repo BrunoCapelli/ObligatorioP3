@@ -53,10 +53,19 @@ namespace Servicios.Servicios
         public IEnumerable<EspecieDTO> GetAll()
         {
             List<EspecieDTO> especiesDTO = new List<EspecieDTO>();
+            IEnumerable<EcosistemaMarinoEspecie> EcosistemaEspecies = _repoEcosistemaMarinoEspecie.GetAll();
+
             IEnumerable<Especie> especies = _repoEspecie.GetAllEspecies();
             foreach (Especie e in especies)
             {
                 EspecieDTO especieDTO = new EspecieDTO(e);
+                especieDTO.EcosistemasHabitados = new List<EcosistemaMarinoDTO>();
+                foreach (EcosistemaMarinoEspecie ecoesp in EcosistemaEspecies) { 
+                    if(ecoesp.EspecieId == especieDTO.EspecieId) {
+                        EcosistemaMarinoDTO ecoDTO = new EcosistemaMarinoDTO(ecoesp.EcosistemaMarino);
+                        especieDTO.EcosistemasHabitados.Add(ecoDTO);
+                    }
+                }
                 especiesDTO.Add(especieDTO);
             }
             return especiesDTO;

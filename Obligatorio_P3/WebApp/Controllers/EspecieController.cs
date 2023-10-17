@@ -211,15 +211,19 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult AsignarEcosistema()
-        {
-            ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
-            ViewBag.Especies = _servicioEspecie.GetAll();
+        public IActionResult AsignarEcosistema() {
+            if (HttpContext.Session.Get("email") != null) {
+                ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
+                ViewBag.Especies = _servicioEspecie.GetAll();
 
 
-            return View();
+                return View();
+
+            } else {
+                TempData["msg"] = "Debe iniciar sesion para realizar esa accion";
+                return RedirectToAction("Login", "Usuario");
+            }
         }
-
         [HttpPost]
         public IActionResult AsignarEcosistema(int EspecieId, int EcosistemaId)
         {

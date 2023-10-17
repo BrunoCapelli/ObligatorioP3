@@ -25,7 +25,12 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult LogIn()
         {
-            return View();
+            if (HttpContext.Session.Get("email") == null) {
+                return View();
+            } else { 
+                return RedirectToAction("Index","Home"); 
+            }
+
         }
 
         [HttpPost]
@@ -62,30 +67,29 @@ namespace WebApp.Controllers
 
 
         [HttpGet]
-        public IActionResult Home()
-        {
-            return View();
-        }
-
-        [HttpGet]
         public IActionResult Logout()
         {
-            HttpContext.Session.Clear();
-            return RedirectToAction("Login", "Usuario");
+            if (HttpContext.Session.Get("email") != null) {
+                HttpContext.Session.Clear();
+                return RedirectToAction("Login", "Usuario");
+            }
+            else {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpGet]
         public IActionResult Register()
         {
-            if (HttpContext.Session.GetString("email") == null)
+            if (HttpContext.Session.GetString("email") == "admin1")
             {
-                //  Acá hay que cambiar el email por el usuario admin12
+                //  Acá hay que cambiar el email por el usuario admin1
                 return View();
 
             }
             else
             {
-                return RedirectToAction("Index", "Usuario");
+                return RedirectToAction("Index", "Home");
 
             }
         }
