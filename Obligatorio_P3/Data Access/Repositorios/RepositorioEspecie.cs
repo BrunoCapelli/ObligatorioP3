@@ -25,6 +25,5 @@ namespace Data_Access.Repositorios
             return Context.Especies.Include(e => e.EstadoConservacion).FirstOrDefault(e => e.EspecieId == id);
         }
 
-        
     }
 }
