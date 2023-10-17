@@ -35,11 +35,6 @@ namespace Servicios.Servicios
             return res;
         }
 
-        public void Remove(EstadoConservacionDTO entity)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Update(EstadoConservacionDTO entity)
         {
             throw new NotImplementedException();
@@ -51,6 +46,10 @@ namespace Servicios.Servicios
             estadoBuscado = _repoEstadoConservacion.GetEstado(estado);
             EstadoConservacionDTO  estadoResultado = new EstadoConservacionDTO(estadoBuscado);
             return estadoResultado;
+        }
+
+        public void Remove(int id) {
+            throw new NotImplementedException();
         }
     }
 }

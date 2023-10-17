@@ -106,8 +106,9 @@ namespace Servicios.Servicios
 
 
 
-        public void Remove(UsuarioDTO user)
+        public void Remove(int id)
         {
+            Usuario auxUser = _repoUsuario.GetUsuarioById(id);
             Usuario auxUser = new Usuario(user);
 
             // Audit Remove

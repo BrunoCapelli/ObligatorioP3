@@ -21,7 +21,7 @@ namespace Servicios.Servicios
             throw new NotImplementedException();
         }
 
-        public void Remove(PaisDTO entity) {
+        public void Remove(int id) {
             throw new NotImplementedException();
         }
 

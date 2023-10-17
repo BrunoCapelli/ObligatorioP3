@@ -20,10 +20,6 @@ namespace Domain.Entities
             this.ValorDesde = estadoConservacionDTO.ValorDesde;
             this.ValorHasta = estadoConservacionDTO.ValorHasta;
         }
-        public void Copy(EstadoConservacionDTO estadoConservacionDTO) {
-            this.Nombre = estadoConservacionDTO.Nombre;
-            this.ValorDesde = estadoConservacionDTO.ValorDesde;
-            this.ValorHasta = estadoConservacionDTO.ValorHasta;
-        }
+       
     }
 }

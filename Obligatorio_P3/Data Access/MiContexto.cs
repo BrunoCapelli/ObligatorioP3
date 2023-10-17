@@ -49,7 +49,9 @@ namespace Data_Access {
             modelBuilder.Entity<Usuario>().HasKey(u => u.UsuarioId);
 
             // relaciones
-            modelBuilder.Entity<EcosistemaMarino>().HasMany(em => em.Amenazas).WithOne().HasForeignKey(a => a.EcosistemaMarinoId);
+            //modelBuilder.Entity<EcosistemaMarino>().HasMany(em => em.Amenazas).WithOne().HasForeignKey(a => a.EcosistemaMarinoId);
+            modelBuilder.Entity<EcosistemaAmenaza>().HasKey(ea => new { ea.AmenazaId, ea.EcosistemaMarinoId });
+            modelBuilder.Entity<EspecieAmenaza>().HasKey(ea => new {ea.EspecieId, ea.AmenazaId });
             modelBuilder.Entity<EcosistemaMarino>().OwnsOne(em => em.UbicacionGeografica);
             modelBuilder.Entity<Pais>().HasMany(p => p.ecosistemaMarinos).WithOne().HasForeignKey(ec => ec.PaisId);
 
@@ -58,6 +60,11 @@ namespace Data_Access {
             modelBuilder.Entity<EcosistemaMarino>().HasMany(eC => eC.Especies).WithOne().HasForeignKey(e => e.EcosistemaMarinoId).OnDelete(DeleteBehavior.Restrict);
                 
             modelBuilder.Entity<Especie>().HasMany(e=>e.EcosistemasHabitados).WithOne().HasForeignKey(eC => eC.EspecieId).OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<EcosistemaMarinoEspecie>().HasKey(eme => new { eme.EcosistemaMarinoId, eme.EspecieId });
+            modelBuilder.Entity<EcosistemaMarinoEspecie>().HasOne(em => em.EcosistemaMarino).WithMany().HasForeignKey(em => em.EcosistemaMarinoId).OnDelete(DeleteBehavior.Restrict); ;
+            modelBuilder.Entity<EcosistemaMarinoEspecie>().HasOne(e => e.Especie).WithMany().HasForeignKey(e => e.EspecieId).OnDelete(DeleteBehavior.Restrict); 
+
         }
     }
 }

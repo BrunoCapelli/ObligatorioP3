@@ -9,102 +9,224 @@ using System.Collections.Generic;
 namespace WebApp.Controllers {
     public class EcosistemaMarinoController : Controller {
 
-        IServicioEcosistemaMarino _servicioEcosistemaMarino;
-        IServicioPais _servicioPais;
-        IServicioEstadoConservacion _servicioEstadoConservacion;
+        protected IServicioEcosistemaMarino _servicioEcosistemaMarino;
+        protected IServicioPais _servicioPais;
+        protected IServicioEstadoConservacion _servicioEstadoConservacion;
+        protected IServicioEcosistemaAmenaza _servicioEcosistemaAmenaza;
+        protected IServicioAmenaza _servicioAmenaza;
+        protected IConfiguration _configuration;
+        protected IWebHostEnvironment _webHostEnvironment { get; set; }
 
 
 
-        public EcosistemaMarinoController(IServicioEcosistemaMarino servicioEcosistemaMarino,IServicioPais servicioPais, IServicioEstadoConservacion servicioEstadoConservacion) {
+
+        public EcosistemaMarinoController(IServicioEcosistemaMarino servicioEcosistemaMarino,
+            IServicioPais servicioPais,
+            IServicioAmenaza servicioAmenaza,
+            IServicioEcosistemaAmenaza servicioEcosistemaAmenaza,
+            IServicioEstadoConservacion servicioEstadoConservacion,
+            IConfiguration configuration,
+            IWebHostEnvironment webHostEnvironment) 
+        {
             _servicioEcosistemaMarino = servicioEcosistemaMarino;
             _servicioPais = servicioPais;
+            _servicioAmenaza = servicioAmenaza;
+            _servicioEcosistemaAmenaza = servicioEcosistemaAmenaza;
             _servicioEstadoConservacion = servicioEstadoConservacion;
+            _webHostEnvironment = webHostEnvironment;
+            _configuration = configuration;
         }
 
         
         public ActionResult Index() {
-            return View("Lista");
+            IEnumerable<EcosistemaMarinoDTO> ecos = _servicioEcosistemaMarino.GetAll();
+            foreach(EcosistemaMarinoDTO e in ecos) {
+                e.ImagenURL = ObtenerNombreImagen(e.EcosistemaMarinoId);
+            }
+            ViewBag.Ecosistema = ecos;
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int id) {
+            if (HttpContext.Session.Get("email") != null) {
+                try {
+                    _servicioEcosistemaMarino.Remove(id);
+                    IEnumerable<EcosistemaMarinoDTO> ecos = _servicioEcosistemaMarino.GetAll();
+                    foreach (EcosistemaMarinoDTO e in ecos) {
+                        e.ImagenURL = ObtenerNombreImagen(e.EcosistemaMarinoId);
+                    }
+                    ViewBag.Ecosistema = ecos;
+                    ViewBag.Msg = "El ecosistema ha sido eliminado con exito";
+                    BorrarImagen(id);
+
+                }
+                catch (Exception ex) {
+                    ViewBag.Msg = ex.Message;
+
+                }
+
+                return (View("Index"));
+            }
+            else {
+                TempData["msg"] = "Debe iniciar sesion para realizar esa accion";
+                return RedirectToAction("Login", "Usuario");
+            }
         }
 
         // GET: EcosistemaMarinoController/Create
         public ActionResult Create() {
-            IEnumerable <EstadoConservacionDTO> estados= _servicioEstadoConservacion.GetAll();
-            IEnumerable <PaisDTO> paises = _servicioPais.GetAll();
+            if(HttpContext.Session.Get("email") != null) {
+                IEnumerable<EstadoConservacionDTO> estados = _servicioEstadoConservacion.GetAll();
+                IEnumerable<PaisDTO> paises = _servicioPais.GetAll();
 
-            ViewBag.estados = estados;
-            ViewBag.paises = paises;
-            return View();
+                ViewBag.estados = estados;
+                ViewBag.paises = paises;
+                return View();
+            }
+            else {
+                TempData["msg"] = "Debe iniciar sesion para realizar esa accion";
+                return RedirectToAction("Login", "Usuario");
+            }
+            
+            
         }
 
         
         [HttpPost]
-        public ActionResult Create(string Nombre, string Area, string Latitud, string Longitud ,string GradoPeligro,int Pais, int EstadoConservacion) {
+        public ActionResult Create(string Nombre, int Area, double Latitud, double Longitud ,int GradoPeligro,int Pais, int EstadoConservacion,IFormFile Imagen) {
             try 
             {
-                Double.TryParse(Latitud, out double latitudParsed);
-                Double.TryParse(Longitud, out double longitudParsed);
-                Int32.TryParse(GradoPeligro, out int gradoPeligro);
-                Double.TryParse(Area, out double areaParsed);
-                //Int32.TryParse(EstadoConservacion, out int estConservacionParsed);
-
-                UbiGeografica ubi = new UbiGeografica(latitudParsed,longitudParsed, gradoPeligro);
-                //EstadoConservacionDTO newEstadoC = new EstadoConservacionDTO(estConservacionParsed);
+                
+                UbiGeografica ubi = new UbiGeografica(Latitud, Longitud, GradoPeligro);
+                ubi.Validate();
 
                 EstadoConservacionDTO EstadoC = _servicioEstadoConservacion.GetEstado(EstadoConservacion);
                 
 
-                EcosistemaMarinoDTO ecoDTO = new EcosistemaMarinoDTO(Nombre, ubi, areaParsed, EstadoC, Pais);
-                _servicioEcosistemaMarino.Add(ecoDTO);
-                // Aca hay que asignarle el Ecositema al Pais?
+                EcosistemaMarinoDTO ecoDTO = new EcosistemaMarinoDTO(Nombre, ubi, Area, EstadoC, Pais);
+                ecoDTO.NombreMin = extraerValor("ParametersTopes:NombreMin");
+                ecoDTO.NombreMax = extraerValor("ParametersTopes:NombreMax");
+
+                EcosistemaMarinoDTO nuevoEco = _servicioEcosistemaMarino.Add(ecoDTO);
+
+
+                string ArchivoName = Path.GetFileName(Imagen.FileName);
+                string extension = Path.GetExtension(ArchivoName);
+
+                if (extension != ".jpg" && extension !=".jpeg" && extension!= ".png") {
+                    ViewBag.Msg = "Formatos de imagen admitidos: jpeg,jpg o png";
+                    return View();
+                }
+
+                string rutaRaiz = _webHostEnvironment.WebRootPath;
+                rutaRaiz = Path.Combine(rutaRaiz, "img","ecosistemas");
+                string nuevoNombre = nuevoEco.EcosistemaMarinoId.ToString() + "_001" + extension;
+                string ruta = Path.Combine(rutaRaiz, nuevoNombre);
+                using (FileStream stream = new FileStream(ruta, FileMode.Create)) {
+                    Imagen.CopyTo(stream);
+                }
 
                 ViewBag.Msg = "Ecosistema creado!";
                 return RedirectToAction(nameof(Index));
             }
             catch(Exception ex) {
+                IEnumerable<EstadoConservacionDTO> estados = _servicioEstadoConservacion.GetAll();
+                IEnumerable<PaisDTO> paises = _servicioPais.GetAll();
+                ViewBag.estados = estados;
+                ViewBag.paises = paises;
                 ViewBag.Msg = ex.Message;
                 return View();
             }
         }
-        /*
-        // GET: EcosistemaMarinoController/Details/5
-        public ActionResult Details(int id) {
-            return View();
+
+        private int extraerValor(string clave) {
+            int valor = 0;
+            string strValor = _configuration[clave];
+            Int32.TryParse(strValor, out valor);
+            return valor;
         }
 
+        public string ObtenerNombreImagen(int id) {
+           
+            // Construye el nombre del archivo de imagen en función del ID.
+            string nombreArchivo = id + "_001";
 
-        // GET: EcosistemaMarinoController/Edit/5
-        public ActionResult Edit(int id) {
-            return View();
-        }
+            // Comprueba las extensiones posibles (jpg, jpeg, png) y obtén la ruta si existe.
+            string[] extensiones = { "jpg", "jpeg", "png" };
 
-        // POST: EcosistemaMarinoController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection) {
-            try {
-                return RedirectToAction(nameof(Index));
+            foreach (string extension in extensiones) {
+                //string rutaImagen = Path.Combine(carpetaImagenes, nombreArchivo + "." + extension);
+                //string rutaImagen = carpetaImagenes + "/" + nombreArchivo + "." + extension;
+                string rutaImagen = Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", "img", "ecosistemas", nombreArchivo + "." + extension);
+
+                if (System.IO.File.Exists(rutaImagen)) {
+                    return nombreArchivo + "." + extension;
+                }
             }
-            catch {
+
+            // Devuelve una cadena vacía si la imagen no se encuentra.
+            return string.Empty;
+        }
+
+        public void BorrarImagen(int id) {
+            // Construye el nombre del archivo de imagen en función del ID.
+            string nombreArchivo = id + "_001";
+
+            // Comprueba las extensiones posibles (jpg, jpeg, png) y obtén la ruta si existe.
+            string[] extensiones = { "jpg", "jpeg", "png" };
+
+            foreach (string extension in extensiones) {
+                //string rutaImagen = Path.Combine(carpetaImagenes, nombreArchivo + "." + extension);
+                //string rutaImagen = carpetaImagenes + "/" + nombreArchivo + "." + extension;
+                string rutaImagen = Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", "img", "ecosistemas", nombreArchivo + "." + extension);
+
+                if (System.IO.File.Exists(rutaImagen)) {
+                    System.IO.File.Delete(rutaImagen);
+                }
+            }
+
+
+        }
+
+        [HttpGet]
+        public IActionResult AsignarAmenaza()
+        {
+            if (HttpContext.Session.Get("email") != null) {
+                ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
+                ViewBag.Amenazas = _servicioAmenaza.GetAll();
+
                 return View();
             }
+            else {
+                TempData["msg"] = "Debe iniciar sesion para realizar esa accion";
+                return RedirectToAction("Login", "Usuario");
+            }
+            
         }
 
-        // GET: EcosistemaMarinoController/Delete/5
-        public ActionResult Delete(int id) {
-            return View();
-        }
-
-        // POST: EcosistemaMarinoController/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection) {
-            try {
-                return RedirectToAction(nameof(Index));
+        public IActionResult AsignarAmenaza(int AmenazaId, int EcosistemaId)
+        {
+            try
+            {
+                if (EcosistemaId > 0 && AmenazaId > 0 )
+                {
+                    _servicioEcosistemaAmenaza.Add(AmenazaId, EcosistemaId);
+                }
+
+                TempData["msg"] = "La asociacion ha sido realizada";
+                return RedirectToAction("AsignarAmenaza");
+
             }
-            catch {
-                return View();
+            catch (Exception ec)
+            {
+
+                TempData["msg"] = ec.Message;
+                return RedirectToAction("AsignarAmenaza");
             }
+
         }
-        */
     }
 }

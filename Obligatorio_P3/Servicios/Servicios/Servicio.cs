@@ -14,7 +14,7 @@ namespace Servicios.Servicios
     {
         private IRepositorio<T> _repo { get; set; }
 
-        public Servicio(IRepositorio<T> repo)
+        public Servicio(IRepositorio<T> repo) // Creo que esto no corresponde. Posible Issue
         {
             _repo = repo;
         }
@@ -29,9 +29,9 @@ namespace Servicios.Servicios
             _repo.Update(entity);
         }
 
-        public void Remove(T entity)
+        public void Remove(int id)
         {
-            _repo.Remove(entity);
+            //_repo.Remove(entity);
         }
 
         public IEnumerable<T> GetAll()

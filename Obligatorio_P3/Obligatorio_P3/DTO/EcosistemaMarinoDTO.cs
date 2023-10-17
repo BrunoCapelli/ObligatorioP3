@@ -1,6 +1,8 @@
 ﻿using Domain.Entities;
 using Domain.Exceptions;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Http;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,18 +19,33 @@ namespace Domain.DTO {
         public List<AmenazaDTO> Amenazas = new List<AmenazaDTO>();
         public EstadoConservacionDTO EstadoConservacion { get; set; }
         public int PaisId { get; set; }
+        public string PaisNombre { get; set; }
+        public string ImagenURL { get; set; }
+        public int NombreMin { get; set; }
+        public int NombreMax { get; set; }
+
+        public IFormFile Imagen { get; set; }
+
 
         public EcosistemaMarinoDTO() { }
 
         public EcosistemaMarinoDTO(EcosistemaMarino eco) {
-            //this.EcosistemaMarinoId = eco.EcosistemaMarinoId;
+            this.EcosistemaMarinoId = eco.EcosistemaMarinoId;
             this.Nombre = eco.Nombre;
             this.Area = eco.Area;
             this.UbicacionGeografica = eco.UbicacionGeografica;
-            //llamar al validate de UbiGeograficaDTO
             this.PaisId = eco.PaisId;
             this.EstadoConservacion = new EstadoConservacionDTO(eco.EstadoConservacion);
-            //llamar al validate de EstadoConservacionDTO
+        }
+
+        public EcosistemaMarinoDTO(EcosistemaMarino eco, EstadoConservacionDTO EC)
+        {
+            this.EcosistemaMarinoId = eco.EcosistemaMarinoId;
+            this.Nombre = eco.Nombre;
+            this.Area = eco.Area;
+            this.UbicacionGeografica = eco.UbicacionGeografica;
+            this.PaisId = eco.PaisId;
+            this.EstadoConservacion = EC;
         }
 
         public EcosistemaMarinoDTO(string Nombre, UbiGeografica UbicacionGeografica, double Area, EstadoConservacionDTO estadoConservacion,int PaisId) {
@@ -41,7 +58,7 @@ namespace Domain.DTO {
         }
 
         public void Validate() {
-            if (this.Nombre.Length < 2 || this.Nombre.Length> 50) {
+            if (this.Nombre.Length < NombreMin || this.Nombre.Length> NombreMax) {
                 throw new NombreLargoException("El largo del nombre debe estar entre 2 y 50 caracteres");
             }
             if (Area <= 0) {

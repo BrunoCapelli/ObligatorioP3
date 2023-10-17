@@ -30,6 +30,10 @@ namespace Data_Access.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AmenazaId"));
 
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("EcosistemaMarinoId")
                         .HasColumnType("int");
 
@@ -41,8 +45,6 @@ namespace Data_Access.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AmenazaId");
-
-                    b.HasIndex("EcosistemaMarinoId");
 
                     b.ToTable("Amenazas");
                 });
@@ -72,6 +74,21 @@ namespace Data_Access.Migrations
                     b.HasKey("AuditId");
 
                     b.ToTable("Audits");
+                });
+
+            modelBuilder.Entity("Domain.Entities.EcosistemaAmenaza", b =>
+                {
+                    b.Property<int>("AmenazaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EcosistemaMarinoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AmenazaId", "EcosistemaMarinoId");
+
+                    b.HasIndex("EcosistemaMarinoId");
+
+                    b.ToTable("EcosistemaAmenaza");
                 });
 
             modelBuilder.Entity("Domain.Entities.EcosistemaMarino", b =>
@@ -107,6 +124,21 @@ namespace Data_Access.Migrations
                     b.HasIndex("PaisId");
 
                     b.ToTable("Ecosistemas");
+                });
+
+            modelBuilder.Entity("Domain.Entities.EcosistemaMarinoEspecie", b =>
+                {
+                    b.Property<int>("EcosistemaMarinoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EspecieId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EcosistemaMarinoId", "EspecieId");
+
+                    b.HasIndex("EspecieId");
+
+                    b.ToTable("EcosistemaMarinoEspecie");
                 });
 
             modelBuilder.Entity("Domain.Entities.Especie", b =>
@@ -148,6 +180,21 @@ namespace Data_Access.Migrations
                     b.HasIndex("EstadoConservacionId");
 
                     b.ToTable("Especies");
+                });
+
+            modelBuilder.Entity("Domain.Entities.EspecieAmenaza", b =>
+                {
+                    b.Property<int>("EspecieId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AmenazaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EspecieId", "AmenazaId");
+
+                    b.HasIndex("AmenazaId");
+
+                    b.ToTable("EspecieAmenaza");
                 });
 
             modelBuilder.Entity("Domain.Entities.EstadoConservacion", b =>
@@ -220,13 +267,23 @@ namespace Data_Access.Migrations
                     b.ToTable("Usuarios");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Amenaza", b =>
+            modelBuilder.Entity("Domain.Entities.EcosistemaAmenaza", b =>
                 {
-                    b.HasOne("Domain.Entities.EcosistemaMarino", null)
-                        .WithMany("Amenazas")
+                    b.HasOne("Domain.Entities.Amenaza", "amenaza")
+                        .WithMany()
+                        .HasForeignKey("AmenazaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.EcosistemaMarino", "ecosistemaMarino")
+                        .WithMany()
                         .HasForeignKey("EcosistemaMarinoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("amenaza");
+
+                    b.Navigation("ecosistemaMarino");
                 });
 
             modelBuilder.Entity("Domain.Entities.EcosistemaMarino", b =>
@@ -276,6 +333,25 @@ namespace Data_Access.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Domain.Entities.EcosistemaMarinoEspecie", b =>
+                {
+                    b.HasOne("Domain.Entities.EcosistemaMarino", "EcosistemaMarino")
+                        .WithMany()
+                        .HasForeignKey("EcosistemaMarinoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Especie", "Especie")
+                        .WithMany()
+                        .HasForeignKey("EspecieId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("EcosistemaMarino");
+
+                    b.Navigation("Especie");
+                });
+
             modelBuilder.Entity("Domain.Entities.Especie", b =>
                 {
                     b.HasOne("Domain.Entities.EcosistemaMarino", null)
@@ -292,10 +368,27 @@ namespace Data_Access.Migrations
                     b.Navigation("EstadoConservacion");
                 });
 
+            modelBuilder.Entity("Domain.Entities.EspecieAmenaza", b =>
+                {
+                    b.HasOne("Domain.Entities.Amenaza", "Amenaza")
+                        .WithMany()
+                        .HasForeignKey("AmenazaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Especie", "Especie")
+                        .WithMany()
+                        .HasForeignKey("EspecieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Amenaza");
+
+                    b.Navigation("Especie");
+                });
+
             modelBuilder.Entity("Domain.Entities.EcosistemaMarino", b =>
                 {
-                    b.Navigation("Amenazas");
-
                     b.Navigation("Especies");
                 });
 

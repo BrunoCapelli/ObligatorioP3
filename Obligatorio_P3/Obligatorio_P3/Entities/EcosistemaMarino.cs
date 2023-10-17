@@ -8,13 +8,13 @@ using Domain.Interfaces;
 
 namespace Domain.Entities
 {
-    public class EcosistemaMarino//:IValidate
+    public class EcosistemaMarino
     {
         public int EcosistemaMarinoId { get; set; }
         public string Nombre { get; set; }
         public UbiGeografica UbicacionGeografica { get; set; }
         public double Area { get; set; }
-        public List<Amenaza> Amenazas = new List<Amenaza>();
+        public List<EcosistemaAmenaza> EcosistemaAmenazas = new List<EcosistemaAmenaza>();
         public EstadoConservacion EstadoConservacion { get; set; }
         public int PaisId { get; set; }
         public int? EspecieId { get; set; }
@@ -22,18 +22,13 @@ namespace Domain.Entities
 
         public EcosistemaMarino() { }
         
-        public EcosistemaMarino(EcosistemaMarinoDTO ecosistemaMarinoDTO) {
+        public EcosistemaMarino(EcosistemaMarinoDTO ecosistemaMarinoDTO,EstadoConservacion estado) {
             this.EcosistemaMarinoId = ecosistemaMarinoDTO.EcosistemaMarinoId;
             this.Nombre = ecosistemaMarinoDTO.Nombre;
             this.Area = ecosistemaMarinoDTO.Area;
             this.UbicacionGeografica = ecosistemaMarinoDTO.UbicacionGeografica;
             this.PaisId = ecosistemaMarinoDTO.PaisId;
-
-            EstadoConservacion newEstado = new EstadoConservacion(ecosistemaMarinoDTO.EstadoConservacion);
-
-            this.EstadoConservacion = newEstado;
-
-
+            this.EstadoConservacion = estado;
         }
 
 
