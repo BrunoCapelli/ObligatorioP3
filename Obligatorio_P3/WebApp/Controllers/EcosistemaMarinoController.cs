@@ -106,7 +106,7 @@ namespace WebApp.Controllers {
             {
                 UbiGeografica ubi = new UbiGeografica();
 
-                Regex regex = new Regex(@"^[0-9,]+$");
+                Regex regex = new Regex(@"^[0-9,-]+$");
                 if(regex.IsMatch(Latitud) && regex.IsMatch(Longitud))
                 {
                     Double.TryParse(Latitud, out double latitudParsed);
