@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Domain.DTO;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace Servicios.IServicios
 {
     public interface IServicioEspecieAmenaza: IServicio<EspecieAmenaza>
     {
-        EspecieAmenaza Add(int AmenazaId, int EspecieId);
+        EspecieAmenazaDTO Add(int AmenazaId, int EspecieId);
     }
 }

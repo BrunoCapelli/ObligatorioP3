@@ -9,19 +9,19 @@ namespace WebApp.Controllers
     public class UsuarioController : Controller
     {
         protected IServicioUsuario _servicioUsuario;
-        public UsuarioController(IServicioUsuario servicioUsuario)
+        protected IServicioAudit _servicioAudit;
+        public UsuarioController(IServicioUsuario servicioUsuario, IServicioAudit servicioAudit)
         {
             _servicioUsuario = servicioUsuario;
+            _servicioAudit = servicioAudit;
         }
-        // GET: UsuarioController
+       
         public ActionResult Index()
         {
             return View();
         }
 
-       
-
-        // Register y Login al sistema
+       // Register y Login al sistema
         [HttpGet]
         public IActionResult LogIn()
         {
@@ -83,7 +83,7 @@ namespace WebApp.Controllers
         {
             if (HttpContext.Session.GetString("email") == "admin1")
             {
-                //  Acá hay que cambiar el email por el usuario admin1
+                
                 return View();
 
             }
@@ -106,7 +106,8 @@ namespace WebApp.Controllers
                         UsuarioDTO usuario = new UsuarioDTO { Alias = Alias, Password = Password };
                         try
                         {
-                            _servicioUsuario.Add(usuario);
+                            usuario = _servicioUsuario.Add(usuario);
+                            _servicioAudit.Log(HttpContext.Session.GetString("email") ?? "NULL", usuario.UsuarioDTOId, "Usuario (Add)");
                             ViewBag.Msg = "El usuario se creó correctamente!";
 
                         }

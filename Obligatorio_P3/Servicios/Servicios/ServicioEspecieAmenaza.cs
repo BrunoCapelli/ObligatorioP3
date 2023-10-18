@@ -1,5 +1,6 @@
 ﻿using Data_Access.IRepositorios;
 using Data_Access.Repositorios;
+using Domain.DTO;
 using Domain.Entities;
 using Domain.Exceptions;
 using Servicios.IServicios;
@@ -28,7 +29,7 @@ namespace Servicios.Servicios
             throw new NotImplementedException();
         }
 
-        public EspecieAmenaza Add(int AmenazaId, int EspecieId)
+        public EspecieAmenazaDTO Add(int AmenazaId, int EspecieId)
         {
             if (AmenazaId > 0 && EspecieId > 0)
             {
@@ -47,8 +48,8 @@ namespace Servicios.Servicios
                 EspecieAmenaza especieAmenaza = new EspecieAmenaza(amenaza, especie);
                 _repositorioEspecieAmenaza.Add(especieAmenaza);
                 _repositorioEspecieAmenaza.Save();
-
-                return especieAmenaza;
+                EspecieAmenazaDTO eaDTO = new EspecieAmenazaDTO(especieAmenaza);
+                return eaDTO;
 
 
             }

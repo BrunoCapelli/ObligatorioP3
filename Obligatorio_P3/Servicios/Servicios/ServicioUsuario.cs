@@ -15,9 +15,11 @@ namespace Servicios.Servicios
     public class ServicioUsuario: IServicioUsuario
     {
         private IRepositorioUsuario _repoUsuario;
-        public ServicioUsuario(IRepositorioUsuario repoUsuario)
+        private IServicioAudit _servicioAudit;
+        public ServicioUsuario(IRepositorioUsuario repoUsuario, IServicioAudit servicioAudit)
         {
             _repoUsuario = repoUsuario;
+            _servicioAudit = servicioAudit;
         }
 
         public UsuarioDTO Add(UsuarioDTO userDTO)
@@ -32,7 +34,10 @@ namespace Servicios.Servicios
                 {
                     usuario.Password = HashPassword(usuario.Password); // Guardo la contraseña hasheada. Si quiero ver si es correcta, hasheo la que entra y la comparo con la guardada en la base
                     Usuario newUser = _repoUsuario.Add(usuario);
+                    DateTime fecha = DateTime.Now;
                     _repoUsuario.Save();
+
+                    
 
                 }
 
@@ -103,6 +108,11 @@ namespace Servicios.Servicios
         public void Remove(int id)
         {
             Usuario auxUser = _repoUsuario.GetUsuarioById(id);
+            //Usuario auxUser = new Usuario(user);
+
+            // Audit Remove
+            // _servicioAudit.Log(auxUser.Alias, auxUser.UsuarioId, "Usuario (Remove)");
+
             _repoUsuario.Remove(auxUser);
         }
 
@@ -110,6 +120,9 @@ namespace Servicios.Servicios
         {
             Usuario auxUser = new Usuario(user);
             _repoUsuario.Update(auxUser);
+
+            // Audit Update
+            // _servicioAudit.Log(auxUser.Alias, auxUser.UsuarioId, "Usuario (Update)");
         }
 
         public string HashPassword(string password)

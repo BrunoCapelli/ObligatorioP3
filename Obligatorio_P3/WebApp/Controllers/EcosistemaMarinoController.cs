@@ -1,10 +1,12 @@
 ﻿using Domain.DTO;
 using Domain.Entities;
+using Domain.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Servicios.IServicios;
 using Servicios.Servicios;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace WebApp.Controllers {
     public class EcosistemaMarinoController : Controller {
@@ -14,6 +16,7 @@ namespace WebApp.Controllers {
         protected IServicioEstadoConservacion _servicioEstadoConservacion;
         protected IServicioEcosistemaAmenaza _servicioEcosistemaAmenaza;
         protected IServicioAmenaza _servicioAmenaza;
+        protected IServicioAudit _servicioAudit;
         protected IConfiguration _configuration;
         protected IWebHostEnvironment _webHostEnvironment { get; set; }
 
@@ -23,6 +26,7 @@ namespace WebApp.Controllers {
         public EcosistemaMarinoController(IServicioEcosistemaMarino servicioEcosistemaMarino,
             IServicioPais servicioPais,
             IServicioAmenaza servicioAmenaza,
+            IServicioAudit servicioAudit,
             IServicioEcosistemaAmenaza servicioEcosistemaAmenaza,
             IServicioEstadoConservacion servicioEstadoConservacion,
             IConfiguration configuration,
@@ -31,6 +35,7 @@ namespace WebApp.Controllers {
             _servicioEcosistemaMarino = servicioEcosistemaMarino;
             _servicioPais = servicioPais;
             _servicioAmenaza = servicioAmenaza;
+            _servicioAudit = servicioAudit;
             _servicioEcosistemaAmenaza = servicioEcosistemaAmenaza;
             _servicioEstadoConservacion = servicioEstadoConservacion;
             _webHostEnvironment = webHostEnvironment;
@@ -59,15 +64,16 @@ namespace WebApp.Controllers {
                     }
                     ViewBag.Ecosistema = ecos;
                     ViewBag.Msg = "El ecosistema ha sido eliminado con exito";
+                    _servicioAudit.Log(HttpContext.Session.GetString("email") ?? "NULL", id, "Ecosistema (Delete)");
                     BorrarImagen(id);
 
                 }
                 catch (Exception ex) {
-                    ViewBag.Msg = ex.Message;
+                    TempData["msg"] = ex.Message;
 
                 }
 
-                return (View("Index"));
+                return RedirectToAction("Index");
             }
             else {
                 TempData["msg"] = "Debe iniciar sesion para realizar esa accion";
@@ -95,12 +101,26 @@ namespace WebApp.Controllers {
 
         
         [HttpPost]
-        public ActionResult Create(string Nombre, int Area, double Latitud, double Longitud ,int GradoPeligro,int Pais, int EstadoConservacion,IFormFile Imagen) {
+        public ActionResult Create(string Nombre, int Area, string Latitud, string Longitud ,int GradoPeligro,int Pais, int EstadoConservacion,IFormFile Imagen) {
             try 
             {
-                
-                UbiGeografica ubi = new UbiGeografica(Latitud, Longitud, GradoPeligro);
-                ubi.Validate();
+                UbiGeografica ubi = new UbiGeografica();
+
+                Regex regex = new Regex(@"^[0-9,-]+$");
+                if(regex.IsMatch(Latitud) && regex.IsMatch(Longitud))
+                {
+                    Double.TryParse(Latitud, out double latitudParsed);
+                    Double.TryParse(Longitud, out double longitudParsed);
+
+                    ubi = new UbiGeografica(latitudParsed, longitudParsed, GradoPeligro);
+                    ubi.Validate();
+                }
+                else
+                {
+                    throw new StringException("La longitud y latitud solo pueden llevar numeros y coma");
+                }
+
+
 
                 EstadoConservacionDTO EstadoC = _servicioEstadoConservacion.GetEstado(EstadoConservacion);
                 
@@ -128,6 +148,7 @@ namespace WebApp.Controllers {
                     Imagen.CopyTo(stream);
                 }
 
+                _servicioAudit.Log(HttpContext.Session.GetString("email") ?? "NULL", nuevoEco.EcosistemaMarinoId, "Ecosistema (Add)");
                 ViewBag.Msg = "Ecosistema creado!";
                 return RedirectToAction(nameof(Index));
             }
@@ -214,6 +235,7 @@ namespace WebApp.Controllers {
                 if (EcosistemaId > 0 && AmenazaId > 0 )
                 {
                     _servicioEcosistemaAmenaza.Add(AmenazaId, EcosistemaId);
+                    _servicioAudit.Log(HttpContext.Session.GetString("email") ?? "NULL", EcosistemaId, "Ecosistema (Asig. Ame)");
                 }
 
                 TempData["msg"] = "La asociacion ha sido realizada";

@@ -26,8 +26,8 @@ namespace WebApp
 
             // Scopes Servicios
 
-            /*  
-            builder.Services.AddScoped(typeof(IServicioAudit), typeof(ServicioAudit));*/
+            
+            builder.Services.AddScoped(typeof(IServicioAudit), typeof(ServicioAudit));
             builder.Services.AddScoped(typeof(IServicioAmenaza), typeof(ServicioAmenaza));
             builder.Services.AddScoped(typeof(IServicioEspecie), typeof(ServicioEspecie));
             builder.Services.AddScoped(typeof(IServicioEstadoConservacion), typeof(ServicioEstadoConservacion));
@@ -38,8 +38,8 @@ namespace WebApp
             builder.Services.AddScoped(typeof(IServicioUsuario), typeof(ServicioUsuario));
             builder.Services.AddScoped(typeof(IServicioEspecieAmenaza), typeof(ServicioEspecieAmenaza));
 
-            /*
-              builder.Services.AddScoped(typeof(IRepositorioAudit), typeof(RepositorioAudit));*/
+            
+            builder.Services.AddScoped(typeof(IRepositorioAudit), typeof(RepositorioAudit));
             builder.Services.AddScoped(typeof(IRepositorioAmenaza), typeof(RepositorioAmenaza));
             builder.Services.AddScoped(typeof(IRepositorioEspecieAmenaza), typeof(RepositorioEspecieAmenaza));
             builder.Services.AddScoped(typeof(IRepositorioEspecie), typeof(RepositorioEspecie));
