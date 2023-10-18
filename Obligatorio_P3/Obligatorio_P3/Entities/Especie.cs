@@ -25,7 +25,7 @@ namespace Domain.Entities
             this.Descripcion = especieDTO.Descripcion;
             this.PesoMin = especieDTO.PesoMin;
             this.PesoMax = especieDTO .PesoMax;
-            this.EstadoConservacion = EstadoConservacion;
+            this.EstadoConservacion = estado;
             
         }
 

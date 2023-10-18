@@ -37,8 +37,7 @@ namespace Servicios.Servicios
                     DateTime fecha = DateTime.Now;
                     _repoUsuario.Save();
 
-                    // Audit Add
-                    _servicioAudit.Log(newUser.Alias, fecha, newUser.UsuarioId, "Usuario");
+                    
 
                 }
 
@@ -109,11 +108,10 @@ namespace Servicios.Servicios
         public void Remove(int id)
         {
             Usuario auxUser = _repoUsuario.GetUsuarioById(id);
-            Usuario auxUser = new Usuario(user);
+            //Usuario auxUser = new Usuario(user);
 
             // Audit Remove
-            DateTime fecha = DateTime.Now;
-            _servicioAudit.Log(auxUser.Alias, fecha, auxUser.UsuarioId, "Usuario");
+            // _servicioAudit.Log(auxUser.Alias, auxUser.UsuarioId, "Usuario (Remove)");
 
             _repoUsuario.Remove(auxUser);
         }
@@ -124,8 +122,7 @@ namespace Servicios.Servicios
             _repoUsuario.Update(auxUser);
 
             // Audit Update
-            DateTime fecha = DateTime.Now;
-            _servicioAudit.Log(auxUser.Alias, fecha, auxUser.UsuarioId, "Usuario");
+            // _servicioAudit.Log(auxUser.Alias, auxUser.UsuarioId, "Usuario (Update)");
         }
 
         public string HashPassword(string password)

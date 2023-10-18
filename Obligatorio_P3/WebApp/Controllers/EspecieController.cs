@@ -68,7 +68,7 @@ namespace WebApp.Controllers
                     }
 
                     ViewBag.Especies = especies;
-                    _servicioAudit.Log(HttpContext.Session.GetString("email") ?? "", id, "Especie");
+                    _servicioAudit.Log(HttpContext.Session.GetString("email") ?? "NULL", id, "Especie (Delete)");
                     ViewBag.Msg = "La especie ha sido eliminada con exito";
                     BorrarImagen(id);
                 }
@@ -141,7 +141,7 @@ namespace WebApp.Controllers
                     {
                         Imagen.CopyTo(stream);
                     }
-
+                    _servicioAudit.Log(HttpContext.Session.GetString("email") ?? "NULL", especieCreada.EspecieId, "Especie (Add)");
                     ViewBag.Msg = "Especie creada!";
                 }
                 else
@@ -233,7 +233,8 @@ namespace WebApp.Controllers
                 if (EcosistemaId != 0 && EspecieId != 0)
                 {
 
-                    _servicioEcosistemaMarinoEspecie.Add(EcosistemaId, EspecieId);
+                    EcosistemaMarinoEspecieDTO emeDTO =  _servicioEcosistemaMarinoEspecie.Add(EcosistemaId, EspecieId);
+                    _servicioAudit.Log(HttpContext.Session.GetString("email") ?? "NULL", emeDTO.EcosistemaMarinoId, "Especie (Asig. Eco)");
                 }
                 
                 return RedirectToAction("Index");
@@ -344,6 +345,7 @@ namespace WebApp.Controllers
                 if (EspecieId > 0 && AmenazaId > 0)
                 {
                     _servicioEspecieAmenaza.Add(AmenazaId, EspecieId);
+                    _servicioAudit.Log(HttpContext.Session.GetString("email") ?? "NULL", EspecieId, "Especie (Asig. Ame)");
                 }
 
                 TempData["msg"] = "La asociacion ha sido realizada";

@@ -14,6 +14,7 @@ namespace WebApp.Controllers {
         protected IServicioEstadoConservacion _servicioEstadoConservacion;
         protected IServicioEcosistemaAmenaza _servicioEcosistemaAmenaza;
         protected IServicioAmenaza _servicioAmenaza;
+        protected IServicioAudit _servicioAudit;
         protected IConfiguration _configuration;
         protected IWebHostEnvironment _webHostEnvironment { get; set; }
 
@@ -23,6 +24,7 @@ namespace WebApp.Controllers {
         public EcosistemaMarinoController(IServicioEcosistemaMarino servicioEcosistemaMarino,
             IServicioPais servicioPais,
             IServicioAmenaza servicioAmenaza,
+            IServicioAudit servicioAudit,
             IServicioEcosistemaAmenaza servicioEcosistemaAmenaza,
             IServicioEstadoConservacion servicioEstadoConservacion,
             IConfiguration configuration,
@@ -31,6 +33,7 @@ namespace WebApp.Controllers {
             _servicioEcosistemaMarino = servicioEcosistemaMarino;
             _servicioPais = servicioPais;
             _servicioAmenaza = servicioAmenaza;
+            _servicioAudit = servicioAudit;
             _servicioEcosistemaAmenaza = servicioEcosistemaAmenaza;
             _servicioEstadoConservacion = servicioEstadoConservacion;
             _webHostEnvironment = webHostEnvironment;
@@ -59,6 +62,7 @@ namespace WebApp.Controllers {
                     }
                     ViewBag.Ecosistema = ecos;
                     ViewBag.Msg = "El ecosistema ha sido eliminado con exito";
+                    _servicioAudit.Log(HttpContext.Session.GetString("email") ?? "NULL", id, "Ecosistema (Delete)");
                     BorrarImagen(id);
 
                 }
@@ -128,6 +132,7 @@ namespace WebApp.Controllers {
                     Imagen.CopyTo(stream);
                 }
 
+                _servicioAudit.Log(HttpContext.Session.GetString("email") ?? "NULL", nuevoEco.EcosistemaMarinoId, "Ecosistema (Add)");
                 ViewBag.Msg = "Ecosistema creado!";
                 return RedirectToAction(nameof(Index));
             }
@@ -214,6 +219,7 @@ namespace WebApp.Controllers {
                 if (EcosistemaId > 0 && AmenazaId > 0 )
                 {
                     _servicioEcosistemaAmenaza.Add(AmenazaId, EcosistemaId);
+                    _servicioAudit.Log(HttpContext.Session.GetString("email") ?? "NULL", EcosistemaId, "Ecosistema (Asig. Ame)");
                 }
 
                 TempData["msg"] = "La asociacion ha sido realizada";
