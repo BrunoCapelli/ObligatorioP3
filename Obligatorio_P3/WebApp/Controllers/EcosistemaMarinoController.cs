@@ -1,10 +1,12 @@
 ﻿using Domain.DTO;
 using Domain.Entities;
+using Domain.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Servicios.IServicios;
 using Servicios.Servicios;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace WebApp.Controllers {
     public class EcosistemaMarinoController : Controller {
@@ -99,12 +101,26 @@ namespace WebApp.Controllers {
 
         
         [HttpPost]
-        public ActionResult Create(string Nombre, int Area, double Latitud, double Longitud ,int GradoPeligro,int Pais, int EstadoConservacion,IFormFile Imagen) {
+        public ActionResult Create(string Nombre, int Area, string Latitud, string Longitud ,int GradoPeligro,int Pais, int EstadoConservacion,IFormFile Imagen) {
             try 
             {
-                
-                UbiGeografica ubi = new UbiGeografica(Latitud, Longitud, GradoPeligro);
-                ubi.Validate();
+                UbiGeografica ubi = new UbiGeografica();
+
+                Regex regex = new Regex(@"^[0-9,]+$");
+                if(regex.IsMatch(Latitud) && regex.IsMatch(Longitud))
+                {
+                    Double.TryParse(Latitud, out double latitudParsed);
+                    Double.TryParse(Longitud, out double longitudParsed);
+
+                    ubi = new UbiGeografica(latitudParsed, longitudParsed, GradoPeligro);
+                    ubi.Validate();
+                }
+                else
+                {
+                    throw new StringException("La longitud y latitud solo pueden llevar numeros y coma");
+                }
+
+
 
                 EstadoConservacionDTO EstadoC = _servicioEstadoConservacion.GetEstado(EstadoConservacion);
                 
