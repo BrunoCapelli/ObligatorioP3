@@ -34,7 +34,7 @@ namespace Data_Access.Repositorios
 
         public void Remove(EcosistemaMarinoEspecie entity)
         {
-            throw new NotImplementedException();
+            Context.Set<EcosistemaMarinoEspecie>().Remove(entity);
         }
 
         public void Update(EcosistemaMarinoEspecie entity)

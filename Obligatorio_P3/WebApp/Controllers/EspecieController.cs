@@ -60,24 +60,27 @@ namespace WebApp.Controllers
         public IActionResult Delete(int id) {
             if (HttpContext.Session.Get("email") != null) {
                 try {
+
                     _servicioEspecie.Remove(id);
-                    ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
                     IEnumerable<EspecieDTO> especies = _servicioEspecie.GetAll();
+                    ViewBag.Especies = especies;
                     foreach (EspecieDTO e in especies) {
                         e.ImagenURL = ObtenerNombreImagen(e.EspecieId);
                     }
 
-                    ViewBag.Especies = especies;
                     _servicioAudit.Log(HttpContext.Session.GetString("email") ?? "NULL", id, "Especie (Delete)");
                     ViewBag.Msg = "La especie ha sido eliminada con exito";
                     BorrarImagen(id);
                 }
                 catch (Exception ex) {
+                    IEnumerable<EspecieDTO> especies = _servicioEspecie.GetAll();
+                    ViewBag.Especies = especies;
                     ViewBag.Msg = ex.Message;
 
                 }
 
 
+                    ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
                 return View("Index");
             }else {
                 TempData["msg"] = "Debe iniciar sesion para realizar esa accion";

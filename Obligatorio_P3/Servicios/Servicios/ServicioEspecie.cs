@@ -1,6 +1,7 @@
 ﻿using Data_Access.IRepositorios;
 using Domain.DTO;
 using Domain.Entities;
+using Domain.Exceptions;
 using Servicios.IServicios;
 using System;
 using System.Collections.Generic;
@@ -198,10 +199,23 @@ namespace Servicios.Servicios
             return EcosistemasFiltrados;
         }
 
-        public void Remove(int id) {
+        public void Remove(int id) 
+        {
+
             Especie esp = _repoEspecie.GetById(id);
+            IEnumerable<EcosistemaMarinoEspecie> EmEs = _repoEcosistemaMarinoEspecie.GetAll();
+            
+            foreach (EcosistemaMarinoEspecie emEspecie in EmEs)
+            {
+                if(emEspecie.EspecieId == id)
+                {
+                    _repoEcosistemaMarinoEspecie.Remove(emEspecie);
+                }
+            }
+
             _repoEspecie.Remove(esp);
             _repoEspecie.Save();
+  
         }
     }
 }
