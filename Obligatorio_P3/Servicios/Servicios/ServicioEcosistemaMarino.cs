@@ -1,6 +1,7 @@
 ﻿using Data_Access.IRepositorios;
 using Domain.DTO;
 using Domain.Entities;
+using Domain.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Servicios.IServicios;
 using System;
@@ -14,11 +15,13 @@ namespace Servicios.Servicios
     public class ServicioEcosistemaMarino : IServicioEcosistemaMarino {
 
         private IRepositorioEcosistemaMarino _repoEcosistemaMarino;
+        private IRepositorioEcosistemaMarinoEspecie _repoEcosistemaMarinoEspecie;
         private IRepositorioEstadoConservacion _repoEstadoConservacion;
         private IRepositorioPais _repoPais;
 
-        public ServicioEcosistemaMarino(IRepositorioEcosistemaMarino repoEcosistemaMarino, IRepositorioEstadoConservacion repoEstadoConservacion,IRepositorioPais repoPais) {
+        public ServicioEcosistemaMarino(IRepositorioEcosistemaMarino repoEcosistemaMarino, IRepositorioEstadoConservacion repoEstadoConservacion,IRepositorioPais repoPais, IRepositorioEcosistemaMarinoEspecie repoEcosistemaMarinoEspecie) {
             _repoEcosistemaMarino = repoEcosistemaMarino;
+            _repoEcosistemaMarinoEspecie = repoEcosistemaMarinoEspecie;
             _repoEstadoConservacion = repoEstadoConservacion;
             _repoPais = repoPais;
         }
@@ -90,8 +93,24 @@ namespace Servicios.Servicios
 
         public void Remove(int id) {
             EcosistemaMarino eco = _repoEcosistemaMarino.GetById(id);
-            _repoEcosistemaMarino.Remove(eco);
-            _repoEcosistemaMarino.Save();
+            IEnumerable<EcosistemaMarinoEspecie> EmEs = _repoEcosistemaMarinoEspecie.GetAll();
+            int contador = 0;
+            foreach(EcosistemaMarinoEspecie emEspecie in EmEs)
+            {
+                if(emEspecie.EcosistemaMarinoId == id && emEspecie.EspecieId != 0) contador++;
+            }
+
+            if(contador == 0)
+            {
+                _repoEcosistemaMarino.Remove(eco);
+                _repoEcosistemaMarino.Save();
+
+            }
+            else
+            {
+                throw new DatabaseException("No se puede eliminar un ecosistema que tenga una especie asociada");
+            }
+
         }
     }
 }

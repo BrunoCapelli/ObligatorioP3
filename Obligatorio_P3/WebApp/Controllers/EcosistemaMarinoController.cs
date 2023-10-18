@@ -67,11 +67,11 @@ namespace WebApp.Controllers {
 
                 }
                 catch (Exception ex) {
-                    ViewBag.Msg = ex.Message;
+                    TempData["msg"] = ex.Message;
 
                 }
 
-                return (View("Index"));
+                return RedirectToAction("Index");
             }
             else {
                 TempData["msg"] = "Debe iniciar sesion para realizar esa accion";
