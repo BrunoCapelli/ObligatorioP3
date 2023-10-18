@@ -107,9 +107,9 @@
                         <img src="~/img/ecosistemas/@item.ImagenURL" />
                     </td>
                     <td>
-                        <p>
+                        <div>
                             <a asp-action="AsignarAmenaza" class="btn btn-asignar">Asignar</a>
-                        </p>
+                        </div>
                     </td>
                     <td>
                         <form method="post" asp-action="Delete" asp-route-id="@item.EcosistemaMarinoId" id="deleteForm">
@@ -127,11 +127,12 @@
 
 <script>
     $(document).ready(function () {
-        $('#confirmDelete').click(function () {
+        $('.btn-delete').click(function () {
+            var form = $(this).closest('form');
+            var id = form.find('input[name="id"]').val();
             if (confirm("¿Estás seguro de que deseas eliminar este elemento?")) {
-                // Si el usuario confirma, envía el formulario para eliminar el elemento
-                $('#deleteForm').submit();
-            }else{
+                form.submit();
+            } else {
                 return false;
             }
         });

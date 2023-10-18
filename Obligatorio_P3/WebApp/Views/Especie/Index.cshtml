@@ -56,6 +56,7 @@
             max-height: 70px;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -203,12 +204,12 @@
                     <img src="~/img/especies/@item.ImagenURL" />
                 </td>
                 <td>
-                    <p>
+                    <div>
                         <a asp-action="AsignarEcosistema" class="btn btn-asignar">Asignar</a>
-                    </p>
+                    </div>
                 </td>
                 <td>
-                    <form method="post" asp-action="Delete" asp-route-id="@item.EspecieId">
+                    <form method="post" asp-action="Delete" asp-route-id="@item.EspecieId" id="deleteForm">
                         <button type="submit" class="btn btn-delete">Borrar</button>
                     </form>
                 </td>
@@ -219,6 +220,20 @@
 </table>
 
 </body>
+
+<script>
+    $(document).ready(function () {
+        $('.btn-delete').click(function () {
+            var form = $(this).closest('form');
+            var id = form.find('input[name="id"]').val();
+            if (confirm("¿Estás seguro de que deseas eliminar este elemento?")) {
+                form.submit();
+            } else {
+                return false;
+            }
+        });
+    });
+</script>
 
 <script>
 
