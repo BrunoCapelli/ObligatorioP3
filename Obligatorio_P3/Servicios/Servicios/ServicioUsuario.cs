@@ -33,8 +33,9 @@ namespace Servicios.Servicios
                 if(usuario != null) //programacion defensiva
                 {
                     usuario.Password = HashPassword(usuario.Password); // Guardo la contraseña hasheada. Si quiero ver si es correcta, hasheo la que entra y la comparo con la guardada en la base
-                    Usuario newUser = _repoUsuario.Add(usuario);
                     DateTime fecha = DateTime.Now;
+                    usuario.FechaAlta = fecha;
+                    Usuario newUser = _repoUsuario.Add(usuario);
                     _repoUsuario.Save();
 
                     
