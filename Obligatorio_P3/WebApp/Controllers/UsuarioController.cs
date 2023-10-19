@@ -81,17 +81,17 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            if (HttpContext.Session.GetString("email") == "admin1")
-            {
+            //if (HttpContext.Session.GetString("email") == "admin1")
+            //{
                 
                 return View();
 
-            }
-            else
-            {
-                return RedirectToAction("Index", "Home");
+            //}
+            //else
+            //{
+            //    return RedirectToAction("Index", "Home");
 
-            }
+            //}
         }
 
         [HttpPost]
