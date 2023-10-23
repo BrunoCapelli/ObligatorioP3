@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.DTO;
+using Domain.Exceptions;
 using Domain.Interfaces;
 
 namespace Domain.Entities
 {
-    public class EcosistemaMarino
+    public class EcosistemaMarino: IValidable
     {
         public int EcosistemaMarinoId { get; set; }
         public string Nombre { get; set; }
@@ -17,6 +18,8 @@ namespace Domain.Entities
         public List<EcosistemaAmenaza> EcosistemaAmenazas = new List<EcosistemaAmenaza>();
         public EstadoConservacion EstadoConservacion { get; set; }
         public int PaisId { get; set; }
+        public int NombreMin { get; set; }
+        public int NombreMax { get; set; }
         public int? EspecieId { get; set; }
         public List<Especie> Especies = new List<Especie>();
 
@@ -31,6 +34,18 @@ namespace Domain.Entities
             this.EstadoConservacion = estado;
         }
 
+        public void Validate()
+        {
+            if (this.Nombre.Length < NombreMin || this.Nombre.Length > NombreMax)
+            {
+                throw new NombreLargoException("El largo del nombre debe estar entre 2 y 50 caracteres");
+            }
+            if (Area <= 0)
+            {
+                throw new RangoException("El area debe ser positiva");
+            }
+
+        }
 
     }
 }

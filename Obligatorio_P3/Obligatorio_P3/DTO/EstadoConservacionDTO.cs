@@ -6,9 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities;
 using Domain.Exceptions;
+using Domain.Interfaces;
 
 namespace Domain.DTO {
-    public class EstadoConservacionDTO {
+    public class EstadoConservacionDTO : IValidable
+    {
         public int EstadoConservacionId { get; set; }
         public string Nombre { get; set; }
         public int ValorDesde { get; set; }
@@ -49,5 +51,18 @@ namespace Domain.DTO {
                 }
             }
         }
+
+        public void Validate()
+        {
+            if (!String.IsNullOrEmpty(this.Nombre))
+            {
+                throw new StringException("El nombre del estado no puede ser vacio");
+            }
+            if(ValorDesde <= 0 || ValorHasta <= 0)
+            {
+                throw new RangoException("Los valores ingresados no son correctos");
+            }
+        }
     }
+    
 }
