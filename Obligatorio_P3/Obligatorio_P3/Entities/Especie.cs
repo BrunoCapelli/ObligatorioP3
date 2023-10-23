@@ -12,10 +12,6 @@ namespace Domain.Entities
         public string Descripcion {  get; set; }
         public double PesoMin { get; set; }
         public double PesoMax { get; set; }
-        public int NombreMin { get; set; }
-        public int NombreMax { get; set; }
-        public int DescripcionMin { get; set; }
-        public int DescripcionMax { get; set; }
         public List<EspecieAmenaza> EspecieAmenazas = new List<EspecieAmenaza>();
         public EstadoConservacion EstadoConservacion { get; set; }
         public int? EcosistemaMarinoId  { get; set; }
@@ -44,23 +40,9 @@ namespace Domain.Entities
             {
                 throw new StringException("El nombre vulgar no puede ser vacio");
             }
-
-            if (NombreCientifico.Length < NombreMin || NombreCientifico.Length > NombreMax)
-            {
-                throw new NombreLargoException("El nombre cientifico debe contener entre 50 y 500 caracteres");
-            }
-            if (NombreCientifico.Length < NombreMin || NombreCientifico.Length > NombreMax)
-            {
-                throw new NombreLargoException("El nombre vulgar debe contener entre 50 y 500 caracteres");
-            }
-
             if (Descripcion == "")
             {
                 throw new StringException("La descripcion no puede ser vacio");
-            }
-            if (Descripcion.Length < DescripcionMin || Descripcion.Length > DescripcionMax)
-            {
-                throw new NombreLargoException("La descripcion debe contener entre 50 y 500 caracteres");
             }
 
             if (PesoMin <= 0)

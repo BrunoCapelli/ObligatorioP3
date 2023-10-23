@@ -18,8 +18,6 @@ namespace Domain.Entities
         public List<EcosistemaAmenaza> EcosistemaAmenazas = new List<EcosistemaAmenaza>();
         public EstadoConservacion EstadoConservacion { get; set; }
         public int PaisId { get; set; }
-        public int NombreMin { get; set; }
-        public int NombreMax { get; set; }
         public int? EspecieId { get; set; }
         public List<Especie> Especies = new List<Especie>();
 
@@ -36,10 +34,6 @@ namespace Domain.Entities
 
         public void Validate()
         {
-            if (this.Nombre.Length < NombreMin || this.Nombre.Length > NombreMax)
-            {
-                throw new NombreLargoException("El largo del nombre debe estar entre 2 y 50 caracteres");
-            }
             if (Area <= 0)
             {
                 throw new RangoException("El area debe ser positiva");
