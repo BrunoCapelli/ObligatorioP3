@@ -88,7 +88,7 @@
                 <th>Grado de Peligro</th>
                 <th>Estado de conservacion</th>
                 <th>Foto</th>
-                <th>Amenaza</th>
+                
                 <th></th>
             </tr>
         </thead>
@@ -106,11 +106,7 @@
                     <td>
                         <img src="~/img/ecosistemas/@item.ImagenURL" />
                     </td>
-                    <td>
-                        <div>
-                            <a asp-action="AsignarAmenaza" class="btn btn-asignar">Asignar</a>
-                        </div>
-                    </td>
+                    
                     <td>
                         <form method="post" asp-action="Delete" asp-route-id="@item.EcosistemaMarinoId" id="deleteForm">
                             <div class="btn-container">
