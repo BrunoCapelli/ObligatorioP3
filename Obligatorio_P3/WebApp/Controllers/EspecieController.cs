@@ -133,7 +133,7 @@ namespace WebApp.Controllers
                     if (extension != ".jpg" && extension != ".jpeg" && extension != ".png")
                     {
                         ViewBag.Msg = "Formatos de imagen admitidos: jpeg,jpg o png";
-                        return View();
+                        throw new Exception("La imagen ingresada no es valida");
                     }
 
                     string rutaRaiz = _webHostEnvironment.WebRootPath;
