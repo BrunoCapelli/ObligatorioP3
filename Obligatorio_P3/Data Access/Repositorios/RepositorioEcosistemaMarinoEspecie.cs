@@ -27,6 +27,15 @@ namespace Data_Access.Repositorios
            return Context.Ecosistemas.FirstOrDefault(em => em.EcosistemaMarinoId == id);
         }
 
+        public List<EcosistemaMarinoEspecie> GetEspeciesByEcosistemaId(int id)
+        {
+            return Context.Set<EcosistemaMarinoEspecie>().Where(em => em.EcosistemaMarinoId.Equals(id))
+                .Include(em=> em.Especie)
+                .Include(em=> em.Especie.EstadoConservacion)
+                .ToList();
+        }
+        
+
         public Especie GetByEspecieId(int id)
         {
             return Context.Especies.FirstOrDefault(em => em.EspecieId == id);

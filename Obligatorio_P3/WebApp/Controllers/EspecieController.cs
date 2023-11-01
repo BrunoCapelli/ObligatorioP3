@@ -46,6 +46,7 @@ namespace WebApp.Controllers
         public IActionResult Index()
         {
             ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
+            ViewBag.Estados = _servicioEstadoConservacion.GetAll();
             IEnumerable<EspecieDTO> especies = _servicioEspecie.GetAll();
             foreach (EspecieDTO e in especies) {
                 e.ImagenURL = ObtenerNombreImagen(e.EspecieId);
@@ -260,7 +261,14 @@ namespace WebApp.Controllers
         {
             if (!String.IsNullOrEmpty(fNombreCientifico))
             {
-                ViewBag.Especies = _servicioEspecie.FiltrarPorNombreCientifico(fNombreCientifico);
+                IEnumerable<EspecieDTO> Especies = _servicioEspecie.FiltrarPorNombreCientifico(fNombreCientifico);
+                foreach (EspecieDTO e in Especies)
+                {
+                    e.ImagenURL = ObtenerNombreImagen(e.EspecieId);
+                }
+
+                ViewBag.Especies = Especies;    
+                return View("Index");
 
             }
             else
@@ -276,13 +284,21 @@ namespace WebApp.Controllers
         {
             if (RangosExtincion > 0)
             {
-                ViewBag.Especies = _servicioEspecie.FiltrarPorGradoDeConservacion(RangosExtincion);
+                IEnumerable<EspecieDTO> Especies = _servicioEspecie.FiltrarPorGradoDeConservacion(RangosExtincion);
+
+                foreach (EspecieDTO e in Especies)
+                {
+                    e.ImagenURL = ObtenerNombreImagen(e.EspecieId);
+                }
+                ViewBag.Especies = Especies;
+                
             }
             else
             {
                 ViewBag.Especies = _servicioEspecie.GetAll();
             }
             ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
+            ViewBag.Estados = _servicioEstadoConservacion.GetAll();
 
             return View("Index");
         }
@@ -293,13 +309,19 @@ namespace WebApp.Controllers
         {
             if (pesoDesde > 0 && pesoHasta >0)
             {
-                ViewBag.Especies = _servicioEspecie.FiltrarPorPeso(pesoDesde, pesoHasta);
+                IEnumerable<EspecieDTO> Especies = _servicioEspecie.FiltrarPorPeso(pesoDesde, pesoHasta);
+                foreach (EspecieDTO e in Especies)
+                {
+                    e.ImagenURL = ObtenerNombreImagen(e.EspecieId);
+                }
+                ViewBag.Especies = Especies;
             }
             else
             {
                 ViewBag.Especies = _servicioEspecie.GetAll();
             }
             ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
+            ViewBag.Estados = _servicioEstadoConservacion.GetAll();
 
             return View("Index");
         }
@@ -309,9 +331,15 @@ namespace WebApp.Controllers
         {
             if(EcosistemaID > 0)
             {
-                ViewBag.Especies= _servicioEspecie.FiltrarPorEcosistema(EcosistemaID);
+                IEnumerable<EspecieDTO> Especies = _servicioEspecie.FiltrarPorEcosistema(EcosistemaID);
+                foreach (EspecieDTO e in Especies)
+                {
+                    e.ImagenURL = ObtenerNombreImagen(e.EspecieId);
+                }
+                ViewBag.Especies = Especies;
             }
-            ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();    
+            ViewBag.Ecosistemas = _servicioEcosistemaMarino.GetAll();
+            ViewBag.Estados = _servicioEstadoConservacion.GetAll();
 
             return View("Index");
         }

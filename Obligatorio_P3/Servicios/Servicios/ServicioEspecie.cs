@@ -88,79 +88,61 @@ namespace Servicios.Servicios
 
         public IEnumerable<EspecieDTO> FiltrarPorNombreCientifico(string nombre)
         {
-            IEnumerable<EspecieDTO> especies = GetAll();
-            List<EspecieDTO> especieFiltradas = new List<EspecieDTO>();
-            foreach (EspecieDTO especie in especies)
+            
+            IEnumerable<Especie> especies = _repoEspecie.GetEspecieByName(nombre);
+
+            List<EspecieDTO> especiesFiltradas = new List<EspecieDTO>();
+            foreach (Especie especie in especies)
             {
-                if (nombre != "" && especie.NombreCientifico.Contains(nombre) )
-                {
-                    especieFiltradas.Add(especie);
-                }
+                EspecieDTO eDTO = new EspecieDTO(especie);
+                especiesFiltradas.Add(eDTO);
             }
-            return especieFiltradas;
+
+
+            return especiesFiltradas;
         }
 
         
         public IEnumerable<EspecieDTO> FiltrarPorGradoDeConservacion(int estadoId)
         {
-            IEnumerable<Especie> especies = _repoEspecie.GetAllEspecies();
-            List<Especie> especieFiltradas = new List<Especie>();
+            IEnumerable<Especie> especies = _repoEspecie.GetEspecieByGradoConservacion(estadoId);
+            List<EspecieDTO> especieFiltradas = new List<EspecieDTO>();
 
-            foreach (Especie especie in especies)
+            foreach(Especie especie in especies)
             {
-                if (estadoId!=0 && especie.EstadoConservacion.EstadoConservacionId == estadoId)
-                {
-                    especieFiltradas.Add(especie);
-                }
+                EspecieDTO especieDTO = new EspecieDTO(especie);
+                especieFiltradas.Add(especieDTO);
             }
 
-            List<EspecieDTO> especiesDTO = new List<EspecieDTO>();
-            foreach (Especie e in especieFiltradas)
-            {
-                EspecieDTO especieDTO = new EspecieDTO(e);
-                especiesDTO.Add(especieDTO);
-            }
-
-            return especiesDTO;
+            return especieFiltradas;
         }
 
         public IEnumerable<EspecieDTO> FiltrarPorPeso(int pesoDesde, int pesoHasta)
         {
-            IEnumerable<Especie> especies = _repoEspecie.GetAll();
-            List<Especie> especieFiltradas = new List<Especie>();
+            IEnumerable<Especie> especies = _repoEspecie.GetEspecieByPeso(pesoDesde, pesoHasta);
+            List<EspecieDTO> especieFiltradas = new List<EspecieDTO>();
 
-            foreach (Especie especie in especies)
+            foreach(Especie e in especies)
             {
-                if (especie.PesoMin >= pesoDesde && especie.PesoMax <= pesoHasta)
-                {
-                    especieFiltradas.Add(especie);
-                }
+                EspecieDTO eDTO = new EspecieDTO(e);
+                especieFiltradas.Add(eDTO);
             }
 
-            List<EspecieDTO> especiesDTO = new List<EspecieDTO>();
-            foreach (Especie e in especieFiltradas)
-            {
-                EspecieDTO especieDTO = new EspecieDTO(e);
-                especiesDTO.Add(especieDTO);
-            }
-
-            return especiesDTO;
+            return especieFiltradas;
         }
 
         public IEnumerable<EspecieDTO> FiltrarPorEcosistema(int EcosistemaId)
         {
 
-            IEnumerable<EcosistemaMarinoEspecie> Ecosistemas = _repoEcosistemaMarinoEspecie.GetAll();
+            IEnumerable<EcosistemaMarinoEspecie> Ecosistemas = _repoEcosistemaMarinoEspecie.GetEspeciesByEcosistemaId(EcosistemaId);
              List<EspecieDTO> especieFiltradas = new List<EspecieDTO>();
-             foreach (EcosistemaMarinoEspecie eco in Ecosistemas)
-             {
-                if(eco.EcosistemaMarinoId == EcosistemaId)
-                {
-                    EspecieDTO especieDto = new EspecieDTO(eco.Especie);
-                    especieFiltradas.Add(especieDto);
-                }
+             
+            foreach(EcosistemaMarinoEspecie em in Ecosistemas)
+            {                
+                EspecieDTO eDTO = new EspecieDTO(em.Especie);
+                especieFiltradas.Add(eDTO);
+            }
 
-             }
              return especieFiltradas;
         }
         public IEnumerable<EcosistemaMarinoDTO> FiltrarPorEspecieQueNoHabita(int EspecieId)
